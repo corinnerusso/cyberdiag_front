@@ -35,9 +35,11 @@
       </div>
       <v-col cols="12" sm="1">
         <v-overflow-btn
+          icon="true"
           class="my-2"
-          :items="dropdown_choice"
-          target="#dropdown-example"
+          :items="dropdown_font"
+          label="Overflow Btn"
+          target="#dropdown-example-1"
         ></v-overflow-btn>
       </v-col>
     </v-app-bar>
@@ -46,13 +48,11 @@
       <HelloWorld />
     </v-content>
     <div id="app">
-      <v-app id="inspire">
-        <v-footer padless>
-          <v-col class="text-center" cols="12">
-            {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-          </v-col>
-        </v-footer>
-      </v-app>
+      <v-footer>
+        <v-col class="text-center" cols="12">
+          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        </v-col>
+      </v-footer>
     </div>
   </v-app>
 </template>
