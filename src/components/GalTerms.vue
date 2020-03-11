@@ -1,9 +1,9 @@
 <template>
-  <div>Hello world</div>
+  <div>CONDITIONS GENERALES</div>
 </template>
 
 <script>
 export default {
-  name: "HelloWorld"
+  name: "General_terms"
 };
 </script>
