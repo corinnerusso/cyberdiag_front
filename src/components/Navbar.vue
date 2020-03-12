@@ -28,6 +28,11 @@
           <div class="profile_picture">
             <i class="material-icons">perm_identity</i>
           </div>
+
+          <!-- POSSIBLE AVATAR FROM VUETIFY -->
+          <!-- <v-avatar color="indigo">
+            <v-icon dark>mdi-account-circle</v-icon>
+          </v-avatar> -->
           <div>M. Nobody ▼</div>
         </button>
         <div class="dropdown-content">
@@ -44,9 +49,6 @@ export default {
   name: "Navbar"
 };
 </script>
-
-
-
 
 <style scoped>
 .v-application .primary {
