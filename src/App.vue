@@ -21,12 +21,11 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style scoped>
 #app {
+  text-align: center;
+  background-color: #f5f8fa;
   display: flex;
   justify-content: center;
-  background-color: #f5f8fa;
 }
 </style>
-
-
