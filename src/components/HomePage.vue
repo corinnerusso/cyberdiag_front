@@ -4,7 +4,7 @@
       <h1>MES QUESTIONNAIRES</h1>
     </div>
 
-    <div>
+    <!-- <div>
       <table>
         <thead>
           <th>Titre du questionnaire</th>
@@ -15,8 +15,14 @@
         </thead>
       </table>
     </div>
-
-    <div>test</div>
+    <div>
+      <ul class="homepage_table">
+        <li>Titre du questionnaire</li>
+        <li>Nom du client</li>
+        <li>Type entreprise</li>
+        <li>Créé le</li>
+        <li>Actions</li>
+      </ul>-->
   </div>
 </template>
 
@@ -30,13 +36,24 @@ export default {
 .hompepage_title {
   color: white;
   background-color: #226782;
-  /* width: 80%; */
 
-  /* margin: 0 10% 0 10%; */
+  margin: 0 10% 0 10%;
   border-radius: 5px;
 }
 
-table {
+.homepage_table {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
   background-color: red;
+  margin: 5% 10% 5% 10%;
+  text-align: center;
 }
+
+/* TABLE */
+/* thead {
+  background-color: brown;
+  margin-left: auto !important;
+  margin-right: auto !important;
+} */
 </style>
