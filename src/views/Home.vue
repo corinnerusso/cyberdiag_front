@@ -15,3 +15,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.home {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+</style>
