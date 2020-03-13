@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px" class="home">
+  <div style="margin-top:100px" class="login">
     <LoginPage />
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style scoped>
-.home {
+.login {
   padding-left: 10%;
   padding-right: 10%;
 }

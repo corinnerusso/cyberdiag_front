@@ -16,3 +16,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.survey {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+</style>

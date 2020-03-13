@@ -29,3 +29,10 @@ export default {
   justify-content: center;
 }
 </style>
+
+<style >
+.router-link {
+  color: white;
+  text-decoration: none;
+}
+</style>

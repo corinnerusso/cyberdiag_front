@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px" class="home">
+  <div style="margin-top:100px" class="account">
     <MyAccount />
   </div>
 </template>
