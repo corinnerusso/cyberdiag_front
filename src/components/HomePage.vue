@@ -159,5 +159,6 @@ export default {
 <style scoped>
 .v-icon.v-icon.v-icon--link {
   margin: 4px;
+  color: gray;
 }
 </style>

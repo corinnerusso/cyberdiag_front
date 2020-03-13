@@ -16,7 +16,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-avatar class="avatar_pic" color="orange darken-4">
+      <v-avatar class="avatar_pic" color="orange darken-3">
         <v-icon dark>mdi-account-circle</v-icon>
       </v-avatar>
 
@@ -25,7 +25,7 @@
           <v-btn color="primary" dark v-on="on">No one ▼</v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
+          <v-list-item v-for="(item, index) in items" :key="index" :to="item.link" link>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -38,7 +38,7 @@
 export default {
   name: "Navbar",
   data: () => ({
-    items: [{ title: "Mon compte" }, { title: "Deconnexion" }]
+    items: [{ title: "Mon compte", link: "/account" }, { title: "Deconnexion" }]
   })
 };
 </script>
