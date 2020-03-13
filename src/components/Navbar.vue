@@ -60,8 +60,8 @@ export default {
 /* PROFILE PIC */
 .avatar_pic {
   height: 45px !important;
-  min-width: 45px;
-  width: 45px;
+  min-width: 44px;
+  width: 44px;
   margin: 2%;
 }
 

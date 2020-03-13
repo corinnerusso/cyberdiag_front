@@ -30,9 +30,4 @@ export default {
 }
 </style>
 
-<style >
-.router-link {
-  color: white;
-  text-decoration: none;
-}
-</style>
+

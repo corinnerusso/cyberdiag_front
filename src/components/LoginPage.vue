@@ -45,7 +45,7 @@ export default {
   width: 25rem;
   padding: 2.5rem;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.3);
+  background: #bdbdbd;
   border-radius: 0.625rem;
 }
 
