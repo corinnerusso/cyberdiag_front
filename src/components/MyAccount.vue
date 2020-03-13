@@ -12,6 +12,11 @@
       <p>*******</p>
       <button>Modifier</button>
     </div>
+    <div>
+      <button class="account_end_button">
+        <router-link class="router-link" to="/home">Terminer</router-link>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -42,10 +47,25 @@ export default {
   border: 0.1rem solid grey;
 }
 
+/* MODIFY BUTTON */
+
 button {
   background-image: linear-gradient(to right, #56b1c8, #175a77);
   padding-left: 1vw;
   padding-right: 1vw;
   border-radius: 5px;
+  color: white;
+}
+
+/* END BUTTON */
+.account_end_button {
+  margin-top: 2vw;
+  padding: 0.8vw 1.5vw 0.8vw 1.5vw;
+  border-radius: 5px;
+}
+
+.router-link {
+  color: white;
+  text-decoration: none;
 }
 </style>

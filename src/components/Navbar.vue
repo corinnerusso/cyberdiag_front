@@ -64,4 +64,8 @@ export default {
   width: 45px;
   margin: 2%;
 }
+
+.v-icon.v-icon {
+  font-size: 30px;
+}
 </style>

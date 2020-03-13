@@ -1,24 +1,23 @@
 <template>
-  <div style="margin-top:100px;color:black;" class="survey">
-    <MySurvey />
+  <div style="margin-top:100px" class="login">
+    <LoginPage />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import MySurvey from "@/components/MySurvey.vue";
+import LoginPage from "@/components/LoginPage.vue";
 
 export default {
-  name: "Survey",
-
+  name: "Login",
   components: {
-    MySurvey
+    LoginPage
   }
 };
 </script>
 
 <style scoped>
-.survey {
+.login {
   padding-left: 10%;
   padding-right: 10%;
 }

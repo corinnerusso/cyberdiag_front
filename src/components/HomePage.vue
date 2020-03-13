@@ -52,8 +52,9 @@
         title="Modifier le questionnaire"
       >mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
-      <v-icon small @click="deleteItem(item)" title="Aller au questionnaire">arrow_right_alt</v-icon>
-      <v-icon small @click="deleteItem(item)" title="Voir les résultats">trending_up</v-icon>
+
+      <router-link class="router-link" to="/Survey">→</router-link>
+      <v-icon small title="Voir les résultats">trending_up</v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -159,6 +160,12 @@ export default {
 <style scoped>
 .v-icon.v-icon.v-icon--link {
   margin: 4px;
+  color: gray;
+}
+
+.router-link {
+  text-decoration: none;
+  margin-right: 5px;
   color: gray;
 }
 </style>
