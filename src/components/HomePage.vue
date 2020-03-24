@@ -3,7 +3,7 @@
     <template v-slot:top>
       <p>BARRE DE RECHERCHE</p>
       <v-toolbar color="#4CA3BB">
-        <v-toolbar-title color="white !important">MES QUESTIONNAIRES</v-toolbar-title>
+        <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
@@ -20,16 +20,25 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Survey"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Questionnaire"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.client" label="client"></v-text-field>
+                    <v-text-field v-model="editedItem.client" label="Client"></v-text-field>
+                  </v-col>
+                  <!-- <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.created" label="Créé le"></v-text-field>
+                  </v-col>-->
+                  <v-col cols="12" sm="6" md="4">
+                    <span>Crée le</span>
+                    <br />
+                    <input type="date" v-model="editedItem.created" label="Créé le" />
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.created" label="created"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.type" label="type"></v-text-field>
+                    <v-overflow-btn
+                      v-model="editedItem.type"
+                      :items="items"
+                      label="Type d'entreprise"
+                    ></v-overflow-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -37,14 +46,16 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Sauvegarder</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
+      <router-link class="router-link" to="/Survey">→</router-link>
+      <v-icon small title="Voir les résultats">trending_up</v-icon>
       <v-icon
         small
         class="mr-2"
@@ -52,9 +63,6 @@
         title="Modifier le questionnaire"
       >mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
-
-      <router-link class="router-link" to="/Survey">→</router-link>
-      <v-icon small title="Voir les résultats">trending_up</v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -67,6 +75,10 @@ export default {
   name: "HomePage",
 
   data: () => ({
+    items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
+
+    picker: new Date().toISOString().substr(0, 10),
+
     dialog: false,
     headers: [
       {
@@ -97,11 +109,11 @@ export default {
     }
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
-  },
+  // computed: {
+  //   formTitle() {
+  //     return this.editedIndex === -1 ? "Intitulé" : "Edit Item";
+  //   }
+  // },
 
   watch: {
     dialog(val) {
