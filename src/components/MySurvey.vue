@@ -15,8 +15,10 @@
         :hover="hover"
         :tile="tile"
       >
-        <v-expansion-panel v-for="(item,index) in items" :key="index">
-          <v-expansion-panel-header style="color:white">{{item}}</v-expansion-panel-header>
+        <v-expansion-panel v-for="(item, index) in items" :key="index">
+          <v-expansion-panel-header style="color:white">{{
+            item.topic_title
+          }}</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="survey_questions">
               <p>Question 1</p>
@@ -42,23 +44,39 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "MySurvey",
 
-  data: () => ({
-    accordion: false,
-    popout: true,
-    inset: false,
-    multiple: false,
-    disabled: false,
-    readonly: false,
-    focusable: false,
-    flat: false,
-    hover: false,
-    tile: true,
-    items: ["cyber", "mot de passe", "infra"],
-    isClicked: true
-  })
+  data() {
+    return {
+      accordion: false,
+      popout: true,
+      inset: false,
+      multiple: false,
+      disabled: false,
+      readonly: false,
+      focusable: false,
+      flat: false,
+      hover: false,
+      tile: true,
+      items: [],
+      isClicked: true
+    };
+  },
+
+  created() {
+    axios
+      .get(`http://localhost:3000/survey/topics`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.items = response.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+  }
 };
 </script>
 
