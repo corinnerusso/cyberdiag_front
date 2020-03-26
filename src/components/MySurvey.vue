@@ -15,24 +15,22 @@
         :hover="hover"
         :tile="tile"
       >
-        <v-expansion-panel v-for="(item, index) in items" :key="index">
-          <v-expansion-panel-header style="color:white">{{
-            item.topic_title
-          }}</v-expansion-panel-header>
+        <v-expansion-panel v-for="(item, index) in items" v-bind:key="index">
+          <v-expansion-panel-header style="color:white">
+            {{
+            item.topic.topic_title
+            }}
+          </v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="survey_questions">
-              <p>Question 1</p>
-              <input type="checkbox" id="checkbox" v-model="checked" />
-              <label for="one">One</label>
-              <br />
-              <input type="checkbox" id="checkbox" v-model="checked" />
-              <label for="two">Two</label>
-              <p>Question 2</p>
-              <input type="checkbox" id="checkbox" v-model="checked" />
-              <label for="one">One</label>
-              <br />
-              <input type="checkbox" id="checkbox" v-model="checked" />
-              <label for="two">Two</label>
+              <p>{{ item.question_title }}</p>
+              <p>{{item.comments}}</p>
+              <div v-for="(item, index) in item.answers" :key="index">
+                <!-- <p v-for="(item, index) in item.answers" :key="index"> -->
+                <input type="checkbox" id="checkbox" v-model="checked" />
+                <label for="one">{{item.answer_title}}</label>
+                <!-- </p> -->
+              </div>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -61,14 +59,16 @@ export default {
       flat: false,
       hover: false,
       tile: true,
+      isClicked: true,
       items: [],
-      isClicked: true
+
+      currentQuestion: 1
     };
   },
 
-  created() {
+  beforeMount() {
     axios
-      .get(`http://localhost:3000/survey/topics`)
+      .get(`http://localhost:3000/questions/answers`)
       .then(response => {
         // JSON responses are automatically parsed.
         this.items = response.data;
