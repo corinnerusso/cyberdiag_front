@@ -1,43 +1,45 @@
 <template>
   <div>
-    <p>TITRE QUESTIONNAIRE</p>
+    <div v-for="(item, index) in items" v-bind:key="index">
+      <p>{{item.model_title}}</p>
 
-    <v-row align="center">
-      <v-expansion-panels
-        :accordion="accordion"
-        :popout="popout"
-        :inset="inset"
-        :multiple="multiple"
-        :focusable="focusable"
-        :disabled="disabled"
-        :readonly="readonly"
-        :flat="flat"
-        :hover="hover"
-        :tile="tile"
-      >
-        <v-expansion-panel v-for="(item, index) in items" v-bind:key="index">
-          <v-expansion-panel-header style="color:white">
-            {{
-            item.topic.topic_title
-            }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div class="survey_questions">
-              <p>{{ item.question_title }}</p>
-              <p>{{item.comments}}</p>
-              <div v-for="(item, index) in item.answers" :key="index">
-                <!-- <p v-for="(item, index) in item.answers" :key="index"> -->
-                <input type="checkbox" id="checkbox" v-model="checked" />
-                <label for="one">{{item.answer_title}}</label>
-                <!-- </p> -->
+      <v-row align="center">
+        <v-expansion-panels
+          :accordion="accordion"
+          :popout="popout"
+          :inset="inset"
+          :multiple="multiple"
+          :focusable="focusable"
+          :disabled="disabled"
+          :readonly="readonly"
+          :flat="flat"
+          :hover="hover"
+          :tile="tile"
+        >
+          <v-expansion-panel v-for="(item, index) in item.topics" v-bind:key="index">
+            <v-expansion-panel-header style="color:white">
+              {{
+              item.topic_title
+              }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content v-for="(item, index) in item.questions" v-bind:key="index">
+              <div class="survey_questions">
+                <p>{{ item.question_title }}</p>
+                <p>{{item.comments}}</p>
+                <div v-for="(item, index) in item.answers" :key="index">
+                  <!-- <p v-for="(item, index) in item.answers" :key="index"> -->
+                  <input type="checkbox" id="checkbox" v-model="checked" />
+                  <label for="one">{{item.answer_title}}</label>
+                  <!-- </p> -->
+                </div>
               </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-row>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-row>
 
-    <button class="survey_submit_button">Soumettre</button>
+      <button class="survey_submit_button">Soumettre</button>
+    </div>
   </div>
 </template>
 
@@ -68,7 +70,7 @@ export default {
 
   beforeMount() {
     axios
-      .get(`http://localhost:3000/questions/answers`)
+      .get(`http://localhost:3005/models`)
       .then(response => {
         // JSON responses are automatically parsed.
         this.items = response.data;
