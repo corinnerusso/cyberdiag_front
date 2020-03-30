@@ -24,7 +24,7 @@
             </v-expansion-panel-header>
             <v-expansion-panel-content v-for="(item, index) in item.questions" v-bind:key="index">
               <div class="survey_questions">
-                <p>{{ item.question_title }}</p>
+                <p>{{item.questionId}} - {{ item.question_title }}</p>
                 <p>{{item.comments}}</p>
                 <div v-for="(item, index) in item.answers" :key="index">
                   <!-- <p v-for="(item, index) in item.answers" :key="index"> -->
