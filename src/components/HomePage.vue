@@ -4,35 +4,34 @@
       <p>BARRE DE RECHERCHE</p>
       <v-toolbar color="#4CA3BB">
         <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
+          <!-- boutton "nouveau questionnaire" -->
           <template v-slot:activator="{ on }">
             <v-btn color="#40778f" dark class="mb-2" v-on="on">Nouveau questionnaire</v-btn>
           </template>
 
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
+            <!-- MODAL -->
             <v-card-text>
               <v-container>
                 <v-row>
+                  <!-- "Questinnaire" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Questionnaire"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Questionnaire">fdgfghfgj</v-text-field>
                   </v-col>
+
+                  <!-- "Nom du client" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.client" label="Client"></v-text-field>
                   </v-col>
-                  <!-- <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.created" label="Créé le"></v-text-field>
-                  </v-col>-->
+                  <!-- "Créé le" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <span>Crée le</span>
                     <br />
                     <input type="date" v-model="editedItem.created" label="Créé le" />
                   </v-col>
+                  <!-- "Type d'entreprise" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <v-overflow-btn
                       v-model="editedItem.type"
@@ -43,16 +42,18 @@
                 </v-row>
               </v-container>
             </v-card-text>
-
+            <!-- Bouttons Annuler et Sauvegarder dans la modal -->
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
               <v-btn color="blue darken-1" text @click="save">Sauvegarder</v-btn>
             </v-card-actions>
+            <!-- FIN DE LA MODAL -->
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
+    <!-- ACTIONS -->
     <template v-slot:item.actions="{ item }">
       <router-link class="router-link" to="/Survey">→</router-link>
       <v-icon small title="Voir les résultats">trending_up</v-icon>
@@ -71,12 +72,14 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "HomePage",
 
   data: () => ({
     items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
-
+    newsurveys: [],
     picker: new Date().toISOString().substr(0, 10),
 
     dialog: false,
@@ -109,12 +112,16 @@ export default {
     }
   }),
 
-  // computed: {
-  //   formTitle() {
-  //     return this.editedIndex === -1 ? "Intitulé" : "Edit Item";
-  //   }
-  // },
-
+  beforeMount() {
+    axios
+      .get(`http://localhost:3005/surveys`)
+      .then(response => {
+        this.newsurveys = response.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+  },
   watch: {
     dialog(val) {
       val || this.close();

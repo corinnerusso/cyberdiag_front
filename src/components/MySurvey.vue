@@ -62,9 +62,7 @@ export default {
       hover: false,
       tile: true,
       isClicked: true,
-      items: [],
-
-      currentQuestion: 1
+      items: []
     };
   },
 
