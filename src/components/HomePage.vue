@@ -18,23 +18,23 @@
                 <v-row>
                   <!-- "Questinnaire" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Questionnaire">fdgfghfgj</v-text-field>
+                    <v-text-field v-model="editedItem.survey_title" label="Questionnaire"></v-text-field>
                   </v-col>
 
                   <!-- "Nom du client" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.client" label="Client"></v-text-field>
+                    <v-text-field v-model="editedItem.client_name" label="Client"></v-text-field>
                   </v-col>
                   <!-- "Créé le" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <span>Crée le</span>
                     <br />
-                    <input type="date" v-model="editedItem.created" label="Créé le" />
+                    <input type="date" v-model="editedItem.creation_date" label="Créé le" />
                   </v-col>
                   <!-- "Type d'entreprise" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <v-overflow-btn
-                      v-model="editedItem.type"
+                      v-model="editedItem.company_type"
                       :items="items"
                       label="Type d'entreprise"
                     ></v-overflow-btn>
@@ -79,7 +79,7 @@ export default {
 
   data: () => ({
     items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
-    newsurveys: [],
+    surveys: [],
     picker: new Date().toISOString().substr(0, 10),
 
     dialog: false,
@@ -88,15 +88,15 @@ export default {
         text: "Titre du questionnaire",
         align: "start",
         sortable: false,
-        value: "name"
+        value: "survey_title"
       },
-      { text: "Nom du client", value: "client" },
-      { text: "Type d'entreprise", value: "type" },
-      { text: "Créé le", value: "created" },
+      { text: "Nom du client", value: "client_name" },
+      { text: "Type d'entreprise", value: "company.company_type" },
+      { text: "Créé le", value: "creation_date" },
 
       { text: "Actions", value: "actions", sortable: false }
     ],
-    surveys: [],
+
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -116,7 +116,7 @@ export default {
     axios
       .get(`http://localhost:3005/surveys`)
       .then(response => {
-        this.newsurveys = response.data;
+        this.surveys = response.data;
       })
       .catch(e => {
         this.errors.push(e);
