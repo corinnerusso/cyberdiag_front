@@ -34,7 +34,7 @@
                   <!-- "Type d'entreprise" input dans la modal -->
                   <v-col cols="12" sm="6" md="4">
                     <v-overflow-btn
-                      v-model="editedItem.company_type"
+                      v-model="editedItem.company"
                       :items="items"
                       label="Type d'entreprise"
                     ></v-overflow-btn>
@@ -78,7 +78,8 @@ export default {
   name: "HomePage",
 
   data: () => ({
-    items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
+    // items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
+    items: ["1", "2", "3", "4", "5"],
     surveys: [],
     picker: new Date().toISOString().substr(0, 10),
 
@@ -99,16 +100,16 @@ export default {
 
     editedIndex: -1,
     editedItem: {
-      name: "",
-      client: "",
-      type: "",
-      created: ""
+      survey_title: "",
+      client_name: "",
+      company: "",
+      creation_date: ""
     },
     defaultItem: {
-      name: "",
-      client: "",
-      type: "",
-      created: ""
+      survey_title: "",
+      client_name: "",
+      company: "",
+      creation_date: ""
     }
   }),
 
@@ -133,17 +134,6 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.surveys = [
-        {
-          name: "Exemple questionnaire",
-          client: "Big client",
-          created: "12 / 03 / 2020",
-          type: "PME"
-        }
-      ];
-    },
-
     editItem(item) {
       this.editedIndex = this.surveys.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -166,11 +156,36 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
+        axios
+          .put(`http://localhost:3005/surveys` + this.editedItem.id, {
+            survey_title: this.editedItem.survey_title,
+            client_name: this.editedItem.client_name,
+            creation_date: this.editedItem.creation_date,
+            company: this.editedItem.company
+          })
+          .then(response => {
+            console.log(response);
+          });
+
         Object.assign(this.surveys[this.editedIndex], this.editedItem);
       } else {
-        this.surveys.push(this.editedItem);
+        {
+          console.log("created data");
+          console.log(this.editedItem);
+          axios
+            .post(`http://localhost:3005/surveys`, {
+              survey_title: this.editedItem.survey_title,
+              client_name: this.editedItem.client_name,
+              creation_date: this.editedItem.creation_date,
+              company: this.editedItem.company
+            })
+            .then(response => {
+              console.log(response);
+            });
+          this.surveys.push(this.editedItem);
+        }
+        this.close();
       }
-      this.close();
     }
   }
 };
