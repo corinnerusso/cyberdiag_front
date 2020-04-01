@@ -135,8 +135,13 @@ export default {
 
     deleteItem(item) {
       const index = this.surveys.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("Suppression de ce questionnaire ?") &&
         this.surveys.splice(index, 1);
+      axios
+        .delete(`http://localhost:3005/surveys/` + item.id)
+        .then(response => {
+          console.log(response);
+        });
     },
 
     close() {
@@ -161,6 +166,7 @@ export default {
           });
 
         Object.assign(this.surveys[this.editedIndex], this.editedItem);
+        this.close();
       } else {
         {
           console.log("created data");
