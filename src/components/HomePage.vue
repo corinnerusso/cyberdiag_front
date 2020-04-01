@@ -65,9 +65,6 @@
       >mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -129,10 +126,6 @@ export default {
     }
   },
 
-  created() {
-    this.initialize();
-  },
-
   methods: {
     editItem(item) {
       this.editedIndex = this.surveys.indexOf(item);
@@ -157,7 +150,7 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         axios
-          .put(`http://localhost:3005/surveys` + this.editedItem.id, {
+          .put(`http://localhost:3005/surveys/` + this.editedItem.id, {
             survey_title: this.editedItem.survey_title,
             client_name: this.editedItem.client_name,
             creation_date: this.editedItem.creation_date,
