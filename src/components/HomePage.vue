@@ -77,6 +77,7 @@ export default {
   data: () => ({
     // items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
     items: ["1", "2", "3", "4", "5"],
+
     surveys: [],
     picker: new Date().toISOString().substr(0, 10),
 
@@ -97,12 +98,6 @@ export default {
 
     editedIndex: -1,
     editedItem: {
-      survey_title: "",
-      client_name: "",
-      company: "",
-      creation_date: ""
-    },
-    defaultItem: {
       survey_title: "",
       client_name: "",
       company: "",
@@ -147,7 +142,6 @@ export default {
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
     },
