@@ -16,7 +16,8 @@
                 <p>{{item.questionId}} - {{ item.question_title }}</p>
                 <p>{{item.comments}}</p>
                 <div v-for="(item, index) in item.answers" :key="index">
-                  <input type="checkbox" id="checkbox" v-model="checked" />
+                  <input type="checkbox" v-model="item.checked" />
+                  <label for="one">{{item.answerId}}</label>
                   <label for="one">{{item.answer_title}}</label>
                 </div>
               </div>
@@ -25,7 +26,7 @@
         </v-expansion-panels>
       </v-row>
 
-      <button class="survey_submit_button">Soumettre</button>
+      <button class="survey_submit_button" @click="postAnswer">Soumettre</button>
     </div>
   </div>
 </template>
@@ -36,26 +37,36 @@ import axios from "axios";
 export default {
   name: "MySurvey",
 
-  data() {
-    return {
-      popout: true,
+  data: () => ({
+    popout: true,
+    tile: true,
+    isClicked: true,
+    items: []
+  }),
 
-      tile: true,
-      isClicked: true,
-      items: []
-    };
-  },
-
+  //get topics + comments + questions from database//
   beforeMount() {
     axios
       .get(`http://localhost:3005/models`)
       .then(response => {
-        // JSON responses are automatically parsed.
         this.items = response.data;
       })
       .catch(e => {
         this.errors.push(e);
       });
+  },
+
+  //post checked boxes into submission table//
+  methods: {
+    postAnswer() {
+      axios
+        .post(`http://localhost:3005/submit`, {
+          answerId: this.items.cheked
+        })
+        .then(function(data) {
+          console.log(data);
+        });
+    }
   }
 };
 </script>

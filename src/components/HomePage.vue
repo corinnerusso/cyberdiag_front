@@ -35,7 +35,7 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-overflow-btn
                       v-model="editedItem.company"
-                      :items="items"
+                      v-bind:items="items"
                       label="Type d'entreprise"
                     ></v-overflow-btn>
                   </v-col>
@@ -76,7 +76,29 @@ export default {
 
   data: () => ({
     // items: ["TPE", "PME", "ETI", "Grand groupe", "Association"],
-    items: ["1", "2", "3", "4", "5"],
+    // items: ["1", "2", "3", "4", "5"],
+    items: [
+      {
+        text: "TPE",
+        value: 1
+      },
+      {
+        text: "PME",
+        value: 2
+      },
+      {
+        text: "ETI",
+        value: 3
+      },
+      {
+        text: "Grand Groupe",
+        value: 4
+      },
+      {
+        text: "Association",
+        value: 5
+      }
+    ],
 
     surveys: [],
     picker: new Date().toISOString().substr(0, 10),
@@ -105,7 +127,7 @@ export default {
     }
   }),
 
-  beforeMount() {
+  created() {
     axios
       .get(`http://localhost:3005/surveys`)
       .then(response => {
