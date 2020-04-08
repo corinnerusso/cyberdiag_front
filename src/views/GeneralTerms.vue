@@ -3,9 +3,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import GalTerms from "@/components/GalTerms.vue";
-
 export default {
   name: "GeneralTerms"
 };
