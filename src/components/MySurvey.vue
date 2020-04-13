@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>Nom du questionnaire : {{currentSurvey.survey_title}}</p>
+    <p>Type d'entreprise : {{currentSurvey.company.company_type}}</p>
     <div v-for="(item, index) in items" v-bind:key="index">
       <v-row align="center">
         <v-expansion-panels :popout="popout" :tile="tile">
@@ -37,7 +38,7 @@ export default {
     tile: true,
     isClicked: true,
     items: [],
-    currentSurvey: null
+    currentSurvey: []
   }),
 
   //get topics + comments + questions from database//
