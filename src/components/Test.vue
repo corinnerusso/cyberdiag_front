@@ -1,16 +1,23 @@
 <template>
   <div>
-    <ul v-for="(info,index) in infos" v-bind:key="index"></ul>
-    <li>{{info.message}}</li>
+    <ul>
+      <li v-for="(info, x) in infos" :key="x">
+        <h3>{{ info.message }}</h3>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   name: "Test",
-  props: ["info"]
+  //   props: ["info"],
+  props: {
+    infos: {
+      type: Array,
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

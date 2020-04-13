@@ -1,24 +1,19 @@
 <template>
   <div>
+    <p>Nom du questionnaire : {{currentSurvey.survey_title}}</p>
     <div v-for="(item, index) in items" v-bind:key="index">
-      <p>{{item.model_title}}</p>
-
       <v-row align="center">
         <v-expansion-panels :popout="popout" :tile="tile">
           <v-expansion-panel v-for="(item, index) in item.topics" v-bind:key="index">
-            <v-expansion-panel-header style="color:white">
-              {{
-              item.topic_title
-              }}
-            </v-expansion-panel-header>
+            <v-expansion-panel-header style="color:white">{{ item.topic_title }}</v-expansion-panel-header>
             <v-expansion-panel-content v-for="(item, index) in item.questions" v-bind:key="index">
               <div class="survey_questions">
-                <p>{{item.questionId}} - {{ item.question_title }}</p>
-                <p>{{item.comments}}</p>
+                <p>{{ item.questionId }} - {{ item.question_title }}</p>
+                <p>{{ item.comments }}</p>
                 <div v-for="(item, index) in item.answers" :key="index">
-                  <input type="checkbox" v-model="item.checked" />
-                  <label for="one">{{item.answerId}}</label>
-                  <label for="one">{{item.answer_title}}</label>
+                  <input type="radio" v-model="item.checked" value="answerId" />
+                  <label for="one">{{ item.answerId }}</label>
+                  <label for="one">{{ item.answer_title }}</label>
                 </div>
               </div>
             </v-expansion-panel-content>
@@ -41,7 +36,8 @@ export default {
     popout: true,
     tile: true,
     isClicked: true,
-    items: []
+    items: [],
+    currentSurvey: null
   }),
 
   //get topics + comments + questions from database//
@@ -54,6 +50,16 @@ export default {
       .catch(e => {
         this.errors.push(e);
       });
+
+    axios
+      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
+      .then(response => {
+        this.currentSurvey = response.data;
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   },
 
   //post checked boxes into submission table//
@@ -61,7 +67,7 @@ export default {
     postAnswer() {
       axios
         .post(`http://localhost:3005/submit`, {
-          answerId: this.items.cheked
+          answerId: this.answerId
         })
         .then(function(data) {
           console.log(data);
