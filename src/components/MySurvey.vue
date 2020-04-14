@@ -4,7 +4,6 @@
     <p>Type d'entreprise : {{currentSurveys.company.company_type}}</p>
 
     <div>
-      <p>--------------------------------------------------------------------</p>
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
@@ -23,7 +22,7 @@
                     <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
                     <p>{{ currentSurvey.comments }}</p>
                     <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
-                      <input type="radio" v-model="item.checked" value="answerId" />
+                      <input type="radio" value="answerId" />
                       <label for="one">{{ currentSurvey.answerId }}</label>
                       <label for="one">{{ currentSurvey.answer_title }}</label>
                     </div>
@@ -49,21 +48,11 @@ export default {
     popout: true,
     tile: true,
     isClicked: true,
-    items: [],
+
     currentSurveys: []
   }),
 
-  //get topics + comments + questions from database//
   beforeMount() {
-    axios
-      .get(`http://localhost:3005/models`)
-      .then(response => {
-        this.items = response.data;
-      })
-      .catch(e => {
-        this.errors.push(e);
-      });
-
     axios
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
