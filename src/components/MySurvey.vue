@@ -1,31 +1,39 @@
 <template>
   <div>
-    <div v-for="(item, index) in items" v-bind:key="index">
-      <p>{{item.model_title}}</p>
+    <p>Nom du questionnaire : {{currentSurveys.survey_title}}</p>
+    <p>Type d'entreprise : {{currentSurveys.company.company_type}}</p>
 
-      <v-row align="center">
-        <v-expansion-panels :popout="popout" :tile="tile">
-          <v-expansion-panel v-for="(item, index) in item.topics" v-bind:key="index">
-            <v-expansion-panel-header style="color:white">
-              {{
-              item.topic_title
-              }}
-            </v-expansion-panel-header>
-            <v-expansion-panel-content v-for="(item, index) in item.questions" v-bind:key="index">
-              <div class="survey_questions">
-                <p>{{item.questionId}} - {{ item.question_title }}</p>
-                <p>{{item.comments}}</p>
-                <div v-for="(item, index) in item.answers" :key="index">
-                  <input type="checkbox" v-model="item.checked" />
-                  <label for="one">{{item.answerId}}</label>
-                  <label for="one">{{item.answer_title}}</label>
-                </div>
+    <div>
+      <p>--------------------------------------------------------------------</p>
+      <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
+        <v-row align="center">
+          <v-expansion-panels :popout="popout" :tile="tile">
+            <v-expansion-panel
+              v-for="(currentSurvey, index) in currentSurvey.models"
+              v-bind:key="index"
+            >
+              <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
+                <v-expansion-panel-header style="color:white">{{ currentSurvey.topic_title }}</v-expansion-panel-header>
+
+                <v-expansion-panel-content
+                  v-for="(currentSurvey, index) in currentSurvey.questions"
+                  v-bind:key="index"
+                >
+                  <div class="survey_questions">
+                    <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
+                    <p>{{ currentSurvey.comments }}</p>
+                    <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
+                      <input type="radio" v-model="item.checked" value="answerId" />
+                      <label for="one">{{ currentSurvey.answerId }}</label>
+                      <label for="one">{{ currentSurvey.answer_title }}</label>
+                    </div>
+                  </div>
+                </v-expansion-panel-content>
               </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-row>
-
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-row>
+      </div>
       <button class="survey_submit_button" @click="postAnswer">Soumettre</button>
     </div>
   </div>
@@ -41,7 +49,8 @@ export default {
     popout: true,
     tile: true,
     isClicked: true,
-    items: []
+    items: [],
+    currentSurveys: []
   }),
 
   //get topics + comments + questions from database//
@@ -54,6 +63,15 @@ export default {
       .catch(e => {
         this.errors.push(e);
       });
+
+    axios
+      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
+      .then(response => {
+        this.currentSurveys = response.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
   },
 
   //post checked boxes into submission table//
@@ -61,7 +79,7 @@ export default {
     postAnswer() {
       axios
         .post(`http://localhost:3005/submit`, {
-          answerId: this.items.cheked
+          answerId: this.answerId
         })
         .then(function(data) {
           console.log(data);

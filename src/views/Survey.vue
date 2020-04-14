@@ -12,8 +12,8 @@ export default {
   name: "Survey",
 
   components: {
-    MySurvey
-  }
+    MySurvey,
+  },
 };
 </script>
 

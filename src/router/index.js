@@ -8,45 +8,45 @@ const routes = [
   {
     path: "/",
     name: "Login",
-    component: () => import("../views/Login.vue")
+    component: () => import("@/views/Login.vue"),
   },
   {
     path: "/home",
     name: "Home",
-    component: Home
+    component: Home,
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("../views/About.vue")
+    component: () => import("@/views/About.vue"),
   },
   {
     path: "/contact",
-    name: "Contact_page",
-    component: () => import("../views/Contact.vue")
+    name: "Contact",
+    component: () => import("@/views/Contact.vue"),
   },
   {
     path: "/general-terms",
-    name: "General_terms",
-    component: () => import("../views/GeneralTerms.vue")
+    name: "GeneralTerms",
+    component: () => import("@/views/GeneralTerms.vue"),
   },
   {
     path: "/account",
     name: "My_account",
-    component: () => import("../views/Account.vue")
+    component: () => import("@/views/Account.vue"),
   },
 
   {
-    path: "/survey",
+    path: "/survey/:id",
     name: "Survey",
-    component: () => import("../views/Survey.vue")
-  }
+    component: () => import("@/views/Survey.vue"),
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;
