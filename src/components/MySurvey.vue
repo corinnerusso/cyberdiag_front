@@ -2,6 +2,7 @@
   <div>
     <p>Nom du questionnaire : {{currentSurveys.survey_title}}</p>
     <p>Type d'entreprise : {{currentSurveys.company.company_type}}</p>
+    <p>answer Id : {{picked}}</p>
 
     <div>
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
@@ -22,9 +23,15 @@
                     <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
                     <p>{{ currentSurvey.comments }}</p>
                     <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
-                      <input type="radio" value="answerId" />
-                      <label for="one">{{ currentSurvey.answerId }}</label>
-                      <label for="one">{{ currentSurvey.answer_title }}</label>
+                      <!-- <input type="checkbox" value="currentSurvey.answerId" :v-model="picked" /> -->
+                      <input
+                        type="checkbox"
+                        :value="currentSurvey.answerId"
+                        @input="isPicked"
+                        @change="postAnswer()"
+                      />
+                      <label>{{ currentSurvey.answerId }}</label>
+                      <label>{{ currentSurvey.answer_title }}</label>
                     </div>
                   </div>
                 </v-expansion-panel-content>
@@ -33,7 +40,7 @@
           </v-expansion-panels>
         </v-row>
       </div>
-      <button class="survey_submit_button" @click="postAnswer">Soumettre</button>
+      <button class="survey_submit_button" @click="updateAnswer">Soumettre</button>
     </div>
   </div>
 </template>
@@ -45,11 +52,12 @@ export default {
   name: "MySurvey",
 
   data: () => ({
+    editedIndex: -1,
     popout: true,
     tile: true,
     isClicked: true,
-
-    currentSurveys: []
+    currentSurveys: [],
+    picked: ""
   }),
 
   beforeMount() {
@@ -68,11 +76,38 @@ export default {
     postAnswer() {
       axios
         .post(`http://localhost:3005/submit`, {
-          answerId: this.answerId
+          answerId: this.picked
         })
         .then(function(data) {
           console.log(data);
         });
+    },
+    //get only one id when chekcbox is cliked
+    isPicked: function($event) {
+      this.picked = parseInt($event.target.value);
+    },
+
+    //test put
+    updateAnswer() {
+      if (this.editedIndex > -1) {
+        axios
+          .put(`http://localhost:3005/submit/1`, {
+            answerId: this.picked
+          })
+          .then(function(data) {
+            console.log(data);
+          });
+      } else {
+        {
+          console.log(this.editedIndex);
+          axios.post(`http://localhost:3005/submit`, {
+            answerId: this.picked
+          });
+        }
+      }
+    },
+    editItem(item) {
+      this.editedIndex = this.currentSurveys.indexOf(item);
     }
   }
 };
