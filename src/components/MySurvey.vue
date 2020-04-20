@@ -13,7 +13,11 @@
               v-bind:key="index"
             >
               <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
-                <v-expansion-panel-header style="color:white">{{ currentSurvey.topic_title }}</v-expansion-panel-header>
+                <v-expansion-panel-header
+                  style="color:white"
+                  v-model="topic"
+                  :value="topicId"
+                >{{ currentSurvey.topic_title }}</v-expansion-panel-header>
 
                 <v-expansion-panel-content
                   v-for="(currentSurvey, index) in currentSurvey.questions"
@@ -57,7 +61,8 @@ export default {
     tile: true,
     isClicked: true,
     currentSurveys: [],
-    picked: ""
+    picked: "",
+    topic: ""
   }),
 
   beforeMount() {
@@ -91,7 +96,7 @@ export default {
     updateAnswer() {
       if (this.editedIndex > -1) {
         axios
-          .put(`http://localhost:3005/submit/1`, {
+          .put(`http://localhost:3005/submit/` + this.$route.params.id, {
             answerId: this.picked
           })
           .then(function(data) {
@@ -101,7 +106,7 @@ export default {
         {
           console.log(this.editedIndex);
           axios.post(`http://localhost:3005/submit`, {
-            answerId: this.picked
+            surveyId: 1
           });
         }
       }

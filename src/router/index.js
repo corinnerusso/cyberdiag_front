@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     path: "/survey/:id",
     name: "Survey",
     component: () => import("@/views/Survey.vue"),
+  },
+  {
+    path: "/chart/:id",
+    name: "Chart",
+    component: () => import("@/views/Chart.vue"),
   },
 ];
 

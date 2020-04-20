@@ -56,6 +56,7 @@
       </template>
       <!-- ACTIONS -->
       <template v-slot:item.actions="{ item }">
+        <!-- Remplir le questionnaire -->
         <router-link :to="`/survey/${item.id}`">
           <v-icon
             class="router-link"
@@ -64,13 +65,26 @@
             @click="showSurvey = editedItem.id"
           >→</v-icon>
         </router-link>
-        <v-icon small title="Voir les résultats">trending_up</v-icon>
+
+        <!-- Voir le graphique -->
+        <router-link :to="`/chart/${item.id}`">
+          <v-icon
+            small
+            title="Voir les résultats"
+            v-model="editedItem.company"
+            @click="showSurvey = editedItem.id"
+          >trending_up</v-icon>
+        </router-link>
+
+        <!-- Modifier le questionnaire -->
         <v-icon
           small
           class="mr-2"
           @click="editItem(item)"
           title="Modifier le questionnaire"
         >mdi-pencil</v-icon>
+
+        <!-- Supprimer un questionnaire -->
         <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
       </template>
     </v-data-table>
