@@ -13,11 +13,7 @@
               v-bind:key="index"
             >
               <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
-                <v-expansion-panel-header
-                  style="color:white"
-                  v-model="topic"
-                  :value="topicId"
-                >{{ currentSurvey.topic_title }}</v-expansion-panel-header>
+                <v-expansion-panel-header style="color:white">{{ currentSurvey.topic_title }}</v-expansion-panel-header>
 
                 <v-expansion-panel-content
                   v-for="(currentSurvey, index) in currentSurvey.questions"
@@ -27,14 +23,14 @@
                     <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
                     <p>{{ currentSurvey.comments }}</p>
                     <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
-                      <!-- <input type="checkbox" value="currentSurvey.answerId" :v-model="picked" /> -->
                       <input
                         type="checkbox"
-                        :value="currentSurvey.answerId"
+                        :value="currentSurvey.answer_quote"
                         @input="isPicked"
                         @change="postAnswer()"
                       />
                       <label>{{ currentSurvey.answerId }}</label>
+                      <label>quote : {{currentSurvey.answer_quote}}</label>
                       <label>{{ currentSurvey.answer_title }}</label>
                     </div>
                   </div>
@@ -62,10 +58,10 @@ export default {
     isClicked: true,
     currentSurveys: [],
     picked: "",
-    topic: ""
+    currentTopic: 0
   }),
 
-  beforeMount() {
+  mounted() {
     axios
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
@@ -79,9 +75,15 @@ export default {
   //post checked boxes into submission table//
   methods: {
     postAnswer() {
+      let topicId = this.currentTopic;
       axios
         .post(`http://localhost:3005/submit`, {
-          answerId: this.picked
+          answer_quote: this.picked,
+          // topicId: this.topic,
+
+          topic_title: this.currentSurveys.company.models[0].topics[topicId]
+            .topic_title,
+          surveyId: this.currentSurveys.id
         })
         .then(function(data) {
           console.log(data);
@@ -90,6 +92,10 @@ export default {
     //get only one id when chekcbox is cliked
     isPicked: function($event) {
       this.picked = parseInt($event.target.value);
+    },
+
+    isTopic: function($event) {
+      this.topic = parseInt($event.target.value);
     },
 
     //test put

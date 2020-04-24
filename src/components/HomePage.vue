@@ -152,7 +152,7 @@ export default {
     }
   }),
 
-  beforeMount() {
+  mounted() {
     axios
       .get(`http://localhost:3005/surveys`)
       .then(response => {
