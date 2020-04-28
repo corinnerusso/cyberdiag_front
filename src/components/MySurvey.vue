@@ -1,36 +1,50 @@
 <template>
   <div>
-    <p>Nom du questionnaire : {{currentSurveys.survey_title}}</p>
-    <p>Type d'entreprise : {{currentSurveys.company.company_type}}</p>
-    <p>answer Id : {{picked}}</p>
+    <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
+    <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
 
     <div>
+      <!-- 1ère boucle pour parser les données -->
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
+            <!-- 2ème boucle pour atteindre les données de modèle de questionnaire (s'il s'agit d'un modèle pour TPE, PME, etc) -->
             <v-expansion-panel
               v-for="(currentSurvey, index) in currentSurvey.models"
               v-bind:key="index"
             >
+              <!-- 3ème boucle pour atteindre les données de "topic" (les sujets du questionnaire) -->
               <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
                 <v-expansion-panel-header style="color:white">{{ currentSurvey.topic_title }}</v-expansion-panel-header>
 
+                <!-- 4ème boucle pour atteindre les données des questions' -->
                 <v-expansion-panel-content
                   v-for="(currentSurvey, index) in currentSurvey.questions"
                   v-bind:key="index"
                 >
                   <div class="survey_questions">
-                    <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
+                    <p>
+                      {{ currentSurvey.questionId }} -
+                      {{ currentSurvey.question_title }}
+                    </p>
                     <p>{{ currentSurvey.comments }}</p>
+                    <!-- 5ème boucle pour afficher sous forme de checkbox les réponses possibles. Un seul choix possible -->
+                    <!-- Dans un premier temps, je veux utiliser la fonction "postAnswer" pour poster les informations suivantes dans une table spécifique à chaque click de checkbox : 
+                    surveyId, 
+                    modelId, 
+                    topicId, 
+                    questionId 
+                    et answerId-->
+                    <!-- Je récupère la donnée answerId par la fonction "isPicked" -->
                     <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
                       <input
                         type="checkbox"
-                        :value="currentSurvey.answer_quote"
+                        :value="currentSurvey.answerId"
                         @input="isPicked"
                         @change="postAnswer()"
                       />
                       <label>{{ currentSurvey.answerId }}</label>
-                      <label>quote : {{currentSurvey.answer_quote}}</label>
+                      <!-- <label>quote : {{ currentSurvey.answer_quote }}</label> -->
                       <label>{{ currentSurvey.answer_title }}</label>
                     </div>
                   </div>
@@ -40,7 +54,7 @@
           </v-expansion-panels>
         </v-row>
       </div>
-      <button class="survey_submit_button" @click="updateAnswer">Soumettre</button>
+      <button class="survey_submit_button">Soumettre</button>
     </div>
   </div>
 </template>
@@ -52,18 +66,18 @@ export default {
   name: "MySurvey",
 
   data: () => ({
-    editedIndex: -1,
     popout: true,
     tile: true,
-    isClicked: true,
+
     currentSurveys: [],
-    picked: "",
-    currentTopic: 0
+    picked: ""
   }),
 
+  // Il est possible de voir un schéma de la BDD dans les assets
+  //récupérer les données de la BDD et les stocker dans la data "currentSurvey:[]"
   mounted() {
     axios
-      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
+      .get(`http://localhost:3005/surveys/` + this.$route.params.id) //voir le fichier surveydata.json
       .then(response => {
         this.currentSurveys = response.data;
       })
@@ -72,53 +86,27 @@ export default {
       });
   },
 
-  //post checked boxes into submission table//
+  //poster les infos des checkbox cochées//
   methods: {
     postAnswer() {
-      let topicId = this.currentTopic;
       axios
         .post(`http://localhost:3005/submit`, {
-          answer_quote: this.picked,
-          // topicId: this.topic,
+          answerId: this.picked, //récupère la valeur de l'answerId
+          surveyId: this.currentSurveys.id //récupère la valeur de surveyId
+          // modelId:??
+          // topicId:??
+          // questionId:??
 
-          topic_title: this.currentSurveys.company.models[0].topics[topicId]
-            .topic_title,
-          surveyId: this.currentSurveys.id
+          // topicId: this.currentSurveys.company.models[0].topics[1].topicId
+          // peut fonctionner si on arrive à changer dynamiquement les valeurs des index
         })
         .then(function(data) {
           console.log(data);
         });
     },
-    //get only one id when chekcbox is cliked
+    //récupère la valeur de l'id de la checkbox
     isPicked: function($event) {
       this.picked = parseInt($event.target.value);
-    },
-
-    isTopic: function($event) {
-      this.topic = parseInt($event.target.value);
-    },
-
-    //test put
-    updateAnswer() {
-      if (this.editedIndex > -1) {
-        axios
-          .put(`http://localhost:3005/submit/` + this.$route.params.id, {
-            answerId: this.picked
-          })
-          .then(function(data) {
-            console.log(data);
-          });
-      } else {
-        {
-          console.log(this.editedIndex);
-          axios.post(`http://localhost:3005/submit`, {
-            surveyId: 1
-          });
-        }
-      }
-    },
-    editItem(item) {
-      this.editedIndex = this.currentSurveys.indexOf(item);
     }
   }
 };

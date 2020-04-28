@@ -1,0 +1,1053 @@
+[
+    {
+        "id": 1,
+        "survey_title": "questionnaire TIC TAC",
+        "client_name": "TIC TAC",
+        "creation_date": "2020-03-30",
+        "company": {
+            "companyId": 1,
+            "company_type": "TPE",
+            "models": [
+                {
+                    "modelId": 1,
+                    "model_title": "Questionnaire TPE",
+                    "topics": [
+                        {
+                            "topicId": 1,
+                            "topic_title": "Sécurité des systèmes d'informations",
+                            "topic_max_quote": 36,
+                            "questions": [
+                                {
+                                    "questionId": 1,
+                                    "question_title": "Avez-vous, un jour, procédé à un audit de sécurité du système d'information de votre entreprise par une entreprise externe ?",
+                                    "comments": "Des audits de sécurité permettent de détecter les éléments dangereux et les corrigés rapidement. L'audit doit être fait par une entreprise externe pour être avoir un résultat le plus neutre possible.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 3,
+                                            "answer_title": "Une fois",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 4,
+                                            "answer_title": "Récemment",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 2,
+                                    "question_title": "Avez-vous procédé à un inventaire des OS & logiciels, installés sur le matériel fixe et portable de l'entreprise ?",
+                                    "comments": "Connaître les programmes installés sur les ordinateurs et machines permet de limiter l'installation de nouveaux programmes et l'oublie de renouvellement de licences.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 3,
+                                    "question_title": "Votre matériel informatique fixe et portable est-il équipé de logiciels de sécurité (antivirus, firewall, etc.) ?",
+                                    "comments": "Les matériaux informatiques doivent être obligatoirement équipés de logiciels de sécurité sous peine d'être contaminé très rapidement.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 8,
+                                            "answer_title": "Matériel portable",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 9,
+                                            "answer_title": "Matériel fixe et portable",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 10,
+                                            "answer_title": "Tous types de matériels",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 4,
+                                    "question_title": "Les logiciels détenus par l'entreprise sont-ils mis à jour ?",
+                                    "comments": "Les logiciels non mis à jour possèdent souvent des failles de sécurité.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 5,
+                                    "question_title": "Avez-vous mis en place une charte d'utilisation du système d'information et de communication, et/ou une clause de reconnaissance de responsabilité, pour l'usage d'internet et d'intranet, des matériels informatiques et des logiciels de l'entreprise, signée par chaque salarié ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 12,
+                                            "answer_title": "En fonction du poste occupé",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 6,
+                                    "question_title": "Avez-vous mis en place une politique d'attribution et de gestion des droits d'utilisation du Système d'Information en fonction des besoins de chaque salarié ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 12,
+                                            "answer_title": "En fonction du poste occupé",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 7,
+                                    "question_title": "Avez-vous une réglementation pour l’installation de tout nouveau matériel ou logiciel sur les ordinateurs fixes et mobiles de l’entreprise ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 13,
+                                            "answer_title": "Partiellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 8,
+                                    "question_title": "Avez-vous mis en œuvre une procédure d'authentification (identification par login & mot de passe) du personnel pour accéder au système d'information ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 9,
+                                    "question_title": "Les mots de passe utilisés pour accéder au matériel informatique de l'entreprise sont-ils une combinaison de chiffres ou bien de lettres et de caractères spéciaux ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 15,
+                                            "answer_title": "Entre 1 et 4 caractères",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 16,
+                                            "answer_title": "Entre 4 et 7 caractères",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 17,
+                                            "answer_title": "Plus de 8 caractères",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "topicId": 2,
+                            "topic_title": "Sécurité du réseau",
+                            "topic_max_quote": 16,
+                            "questions": [
+                                {
+                                    "questionId": 10,
+                                    "question_title": "Présence d'un pare-feu ?",
+                                    "comments": "Un pare-feu est un outil indispensable pour la sécurité de votre réseau. L'essentiel des menaces peut être bloqué grâce à cet outil performant. Il doit néanmoins être bien configuré pour être efficace.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 18,
+                                            "answer_title": "Oui mais il n'est pas mis à jour",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 19,
+                                            "answer_title": "Oui mis à jour régulièrement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 11,
+                                    "question_title": "Les appareils importants sont-ils reliés à un onduleur ?",
+                                    "comments": "Les onduleurs permettent de gérer les coupures de courant et des orages. Ils assurent les fonctionnalités des appareils reliés.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 20,
+                                            "answer_title": "En partie",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 21,
+                                            "answer_title": "Oui",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 12,
+                                    "question_title": "La baie serveur est-elle nettoyée ?",
+                                    "comments": "La baie de brassage est un goulot d'étranglement et peut paralyser pendant plusieurs heures votre réseau en cas de dysfonctionnement. La saleté essouffle les ventilateurs et risque de ralentir vos appareils.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 22,
+                                            "answer_title": "Oui tous les mois",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 23,
+                                            "answer_title": "Oui toutes les semaines",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 13,
+                                    "question_title": "Existe-t-il un plan réseau ?",
+                                    "comments": "Un mapping réseau est dangereux car il montre tous les équipements réseau avec leurs adresses ip. Néanmoins il est très utile pour gérer un réseau ou pour une reprise rapide en cas de défaillance.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 24,
+                                            "answer_title": "Oui mais seulement une partie du réseau",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 25,
+                                            "answer_title": "Oui mais pas mis à jour",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 26,
+                                            "answer_title": "Oui tout le réseau est mis à jour régulièrement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 14,
+                                    "question_title": "Les serveurs et autres appareils sont-ils dans des locaux sécurisés ?",
+                                    "comments": "Les éléments importants de votre réseau doivent être protégés par des locaux sécurisés (Climatiseur, détection incendie, fermé à clé, etc.).",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 21,
+                                            "answer_title": "Oui",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": 29,
+        "survey_title": "Mars",
+        "client_name": "et ça repart",
+        "creation_date": "2020-04-07",
+        "company": {
+            "companyId": 1,
+            "company_type": "TPE",
+            "models": [
+                {
+                    "modelId": 1,
+                    "model_title": "Questionnaire TPE",
+                    "topics": [
+                        {
+                            "topicId": 1,
+                            "topic_title": "Sécurité des systèmes d'informations",
+                            "topic_max_quote": 36,
+                            "questions": [
+                                {
+                                    "questionId": 1,
+                                    "question_title": "Avez-vous, un jour, procédé à un audit de sécurité du système d'information de votre entreprise par une entreprise externe ?",
+                                    "comments": "Des audits de sécurité permettent de détecter les éléments dangereux et les corrigés rapidement. L'audit doit être fait par une entreprise externe pour être avoir un résultat le plus neutre possible.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 3,
+                                            "answer_title": "Une fois",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 4,
+                                            "answer_title": "Récemment",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 2,
+                                    "question_title": "Avez-vous procédé à un inventaire des OS & logiciels, installés sur le matériel fixe et portable de l'entreprise ?",
+                                    "comments": "Connaître les programmes installés sur les ordinateurs et machines permet de limiter l'installation de nouveaux programmes et l'oublie de renouvellement de licences.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 3,
+                                    "question_title": "Votre matériel informatique fixe et portable est-il équipé de logiciels de sécurité (antivirus, firewall, etc.) ?",
+                                    "comments": "Les matériaux informatiques doivent être obligatoirement équipés de logiciels de sécurité sous peine d'être contaminé très rapidement.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 8,
+                                            "answer_title": "Matériel portable",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 9,
+                                            "answer_title": "Matériel fixe et portable",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 10,
+                                            "answer_title": "Tous types de matériels",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 4,
+                                    "question_title": "Les logiciels détenus par l'entreprise sont-ils mis à jour ?",
+                                    "comments": "Les logiciels non mis à jour possèdent souvent des failles de sécurité.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 5,
+                                    "question_title": "Avez-vous mis en place une charte d'utilisation du système d'information et de communication, et/ou une clause de reconnaissance de responsabilité, pour l'usage d'internet et d'intranet, des matériels informatiques et des logiciels de l'entreprise, signée par chaque salarié ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 12,
+                                            "answer_title": "En fonction du poste occupé",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 6,
+                                    "question_title": "Avez-vous mis en place une politique d'attribution et de gestion des droits d'utilisation du Système d'Information en fonction des besoins de chaque salarié ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 12,
+                                            "answer_title": "En fonction du poste occupé",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 7,
+                                    "question_title": "Avez-vous une réglementation pour l’installation de tout nouveau matériel ou logiciel sur les ordinateurs fixes et mobiles de l’entreprise ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 11,
+                                            "answer_title": "Peu",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 13,
+                                            "answer_title": "Partiellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 8,
+                                    "question_title": "Avez-vous mis en œuvre une procédure d'authentification (identification par login & mot de passe) du personnel pour accéder au système d'information ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 5,
+                                            "answer_title": "Régulièrement",
+                                            "answer_quote": 5,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 6,
+                                            "answer_title": "Occasionnellement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 14,
+                                            "answer_title": "Systématiquement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 9,
+                                    "question_title": "Les mots de passe utilisés pour accéder au matériel informatique de l'entreprise sont-ils une combinaison de chiffres ou bien de lettres et de caractères spéciaux ?",
+                                    "comments": null,
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 15,
+                                            "answer_title": "Entre 1 et 4 caractères",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 16,
+                                            "answer_title": "Entre 4 et 7 caractères",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 17,
+                                            "answer_title": "Plus de 8 caractères",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "topicId": 2,
+                            "topic_title": "Sécurité du réseau",
+                            "topic_max_quote": 16,
+                            "questions": [
+                                {
+                                    "questionId": 10,
+                                    "question_title": "Présence d'un pare-feu ?",
+                                    "comments": "Un pare-feu est un outil indispensable pour la sécurité de votre réseau. L'essentiel des menaces peut être bloqué grâce à cet outil performant. Il doit néanmoins être bien configuré pour être efficace.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 18,
+                                            "answer_title": "Oui mais il n'est pas mis à jour",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 19,
+                                            "answer_title": "Oui mis à jour régulièrement",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 11,
+                                    "question_title": "Les appareils importants sont-ils reliés à un onduleur ?",
+                                    "comments": "Les onduleurs permettent de gérer les coupures de courant et des orages. Ils assurent les fonctionnalités des appareils reliés.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 20,
+                                            "answer_title": "En partie",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 21,
+                                            "answer_title": "Oui",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 12,
+                                    "question_title": "La baie serveur est-elle nettoyée ?",
+                                    "comments": "La baie de brassage est un goulot d'étranglement et peut paralyser pendant plusieurs heures votre réseau en cas de dysfonctionnement. La saleté essouffle les ventilateurs et risque de ralentir vos appareils.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 22,
+                                            "answer_title": "Oui tous les mois",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 23,
+                                            "answer_title": "Oui toutes les semaines",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 13,
+                                    "question_title": "Existe-t-il un plan réseau ?",
+                                    "comments": "Un mapping réseau est dangereux car il montre tous les équipements réseau avec leurs adresses ip. Néanmoins il est très utile pour gérer un réseau ou pour une reprise rapide en cas de défaillance.",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 24,
+                                            "answer_title": "Oui mais seulement une partie du réseau",
+                                            "answer_quote": 2,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 25,
+                                            "answer_title": "Oui mais pas mis à jour",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 26,
+                                            "answer_title": "Oui tout le réseau est mis à jour régulièrement",
+                                            "answer_quote": 4,
+                                            "selected": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "questionId": 14,
+                                    "question_title": "Les serveurs et autres appareils sont-ils dans des locaux sécurisés ?",
+                                    "comments": "Les éléments importants de votre réseau doivent être protégés par des locaux sécurisés (Climatiseur, détection incendie, fermé à clé, etc.).",
+                                    "answers": [
+                                        {
+                                            "answerId": 1,
+                                            "answer_title": "Inconnu",
+                                            "answer_quote": 0,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 2,
+                                            "answer_title": "Non",
+                                            "answer_quote": 1,
+                                            "selected": 0
+                                        },
+                                        {
+                                            "answerId": 21,
+                                            "answer_title": "Oui",
+                                            "answer_quote": 3,
+                                            "selected": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": 30,
+        "survey_title": "nouveau",
+        "client_name": "test",
+        "creation_date": "2020-04-07",
+        "company": {
+            "companyId": 2,
+            "company_type": "PME",
+            "models": []
+        }
+    }
+]
