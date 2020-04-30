@@ -10,24 +10,27 @@
           <v-expansion-panels :popout="popout" :tile="tile">
             <!-- 2ème boucle pour atteindre les données de modèle de questionnaire (s'il s'agit d'un modèle pour TPE, PME, etc) -->
             <v-expansion-panel
-              v-for="(currentSurvey, index) in currentSurvey.models"
+              v-for="(surveyModel, index) in currentSurvey.models"
               v-bind:key="index"
             >
               <!-- 3ème boucle pour atteindre les données de "topic" (les sujets du questionnaire) -->
-              <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
-                <v-expansion-panel-header style="color:white">{{ currentSurvey.topic_title }}</v-expansion-panel-header>
+              <v-expansion-panel
+                v-for="(surveyTopic, index) in surveyModel.topics"
+                v-bind:key="index"
+              >
+                <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
 
                 <!-- 4ème boucle pour atteindre les données des questions' -->
                 <v-expansion-panel-content
-                  v-for="(currentSurvey, index) in currentSurvey.questions"
+                  v-for="(surveyQuestion, index) in surveyTopic.questions"
                   v-bind:key="index"
                 >
                   <div class="survey_questions">
                     <p>
-                      {{ currentSurvey.questionId }} -
-                      {{ currentSurvey.question_title }}
+                      {{ surveyQuestion.questionId }} -
+                      {{ surveyQuestion.question_title }}
                     </p>
-                    <p>{{ currentSurvey.comments }}</p>
+                    <p>{{ surveyQuestion.comments }}</p>
                     <!-- 5ème boucle pour afficher sous forme de checkbox les réponses possibles. Un seul choix possible -->
                     <!-- Dans un premier temps, je veux utiliser la fonction "postAnswer" pour poster les informations suivantes dans une table spécifique à chaque click de checkbox : 
                     surveyId, 
@@ -36,25 +39,25 @@
                     questionId 
                     et answerId-->
                     <!-- Je récupère la donnée answerId par la fonction "isPicked" -->
-                    <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
+                    <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
                       <input
                         type="checkbox"
-                        :value="currentSurvey.answerId"
-                        @input="isPicked"
-                        @change="postAnswer()"
+                        @change="postAnswer(currentSurveys.id,surveyModel.modelId, surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
                       />
-                      <label>{{ currentSurvey.answerId }}</label>
+                      <label>{{ surveyAnswer.answerId }}</label>
                       <!-- <label>quote : {{ currentSurvey.answer_quote }}</label> -->
-                      <label>{{ currentSurvey.answer_title }}</label>
+                      <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
                   </div>
                 </v-expansion-panel-content>
-              </div>
+              </v-expansion-panel>
             </v-expansion-panel>
           </v-expansion-panels>
         </v-row>
       </div>
-      <button class="survey_submit_button">Soumettre</button>
+      <div>
+        <button class="survey_submit_button">Soumettre</button>
+      </div>
     </div>
   </div>
 </template>
@@ -68,9 +71,7 @@ export default {
   data: () => ({
     popout: true,
     tile: true,
-
-    currentSurveys: [],
-    picked: ""
+    currentSurveys: []
   }),
 
   // Il est possible de voir un schéma de la BDD dans les assets
@@ -88,14 +89,18 @@ export default {
 
   //poster les infos des checkbox cochées//
   methods: {
-    postAnswer() {
+    postAnswerTest: function(surveyId, modelId, topicId, questionId, answerId) {
+      console.log(surveyId, modelId, topicId, questionId, answerId);
+    },
+
+    postAnswer: function(surveyId, modelId, topicId, questionId, answerId) {
       axios
         .post(`http://localhost:3005/submit`, {
-          answerId: this.picked, //récupère la valeur de l'answerId
-          surveyId: this.currentSurveys.id //récupère la valeur de surveyId
-          // modelId:??
-          // topicId:??
-          // questionId:??
+          answerId: answerId,
+          surveyId: surveyId,
+          modelId: modelId,
+          topicId: topicId,
+          questionId: questionId
 
           // topicId: this.currentSurveys.company.models[0].topics[1].topicId
           // peut fonctionner si on arrive à changer dynamiquement les valeurs des index
@@ -103,10 +108,6 @@ export default {
         .then(function(data) {
           console.log(data);
         });
-    },
-    //récupère la valeur de l'id de la checkbox
-    isPicked: function($event) {
-      this.picked = parseInt($event.target.value);
     }
   }
 };
@@ -141,5 +142,6 @@ label {
   padding: 1vw;
   border-radius: 5px;
   color: white;
+  position: flex 2;
 }
 </style>
