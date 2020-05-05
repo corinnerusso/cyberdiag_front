@@ -1,26 +1,27 @@
 <template>
   <div>
     <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
+
     <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
 
     <div>
-      <!-- 1ère boucle pour parser les données -->
+      <!-- 1rst loop to parse all datas -->
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
-            <!-- 2ème boucle pour atteindre les données de modèle de questionnaire (s'il s'agit d'un modèle pour TPE, PME, etc) -->
+            <!-- 2nd loop to access models -->
             <v-expansion-panel
               v-for="(surveyModel, index) in currentSurvey.models"
               v-bind:key="index"
             >
-              <!-- 3ème boucle pour atteindre les données de "topic" (les sujets du questionnaire) -->
+              <!-- 3rd loop to access topics -->
               <v-expansion-panel
                 v-for="(surveyTopic, index) in surveyModel.topics"
                 v-bind:key="index"
               >
                 <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
 
-                <!-- 4ème boucle pour atteindre les données des questions' -->
+                <!-- 4th loop to access questions -->
                 <v-expansion-panel-content
                   v-for="(surveyQuestion, index) in surveyTopic.questions"
                   v-bind:key="index"
@@ -31,21 +32,17 @@
                       {{ surveyQuestion.question_title }}
                     </p>
                     <p>{{ surveyQuestion.comments }}</p>
-                    <!-- 5ème boucle pour afficher sous forme de checkbox les réponses possibles. Un seul choix possible -->
-                    <!-- Dans un premier temps, je veux utiliser la fonction "postAnswer" pour poster les informations suivantes dans une table spécifique à chaque click de checkbox : 
-                    surveyId, 
-                    modelId, 
-                    topicId, 
-                    questionId 
-                    et answerId-->
-                    <!-- Je récupère la donnée answerId par la fonction "isPicked" -->
+                    <!-- 5th loop to access answers -->
+
                     <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
                       <input
-                        type="checkbox"
-                        @change="postAnswer(currentSurveys.id,surveyModel.modelId, surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
+                        type="radio"
+                        :value="surveyAnswer.answerId"
+                        v-model="surveyQuestion.answer"
+                        @change="getCheckedIds(currentSurveys.id,surveyModel.modelId,surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
                       />
                       <label>{{ surveyAnswer.answerId }}</label>
-                      <!-- <label>quote : {{ currentSurvey.answer_quote }}</label> -->
+
                       <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
                   </div>
@@ -56,8 +53,11 @@
         </v-row>
       </div>
       <div>
-        <button class="survey_submit_button">Soumettre</button>
+        <button class="survey_submit_button" @click="finalSubmit()">Soumettre</button>
       </div>
+      <br />
+      <br />
+      <br />
     </div>
   </div>
 </template>
@@ -71,14 +71,18 @@ export default {
   data: () => ({
     popout: true,
     tile: true,
-    currentSurveys: []
+    currentSurveys: [],
+    isSurveyId: null,
+    isModelId: null,
+    isTopicId: null,
+    isQuestionId: null,
+    isAnswerId: null,
+    finalArray: []
   }),
 
-  // Il est possible de voir un schéma de la BDD dans les assets
-  //récupérer les données de la BDD et les stocker dans la data "currentSurvey:[]"
   mounted() {
     axios
-      .get(`http://localhost:3005/surveys/` + this.$route.params.id) //voir le fichier surveydata.json
+      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
         this.currentSurveys = response.data;
       })
@@ -87,27 +91,49 @@ export default {
       });
   },
 
-  //poster les infos des checkbox cochées//
   methods: {
-    postAnswerTest: function(surveyId, modelId, topicId, questionId, answerId) {
-      console.log(surveyId, modelId, topicId, questionId, answerId);
+    //function to modelize all the checked ids as an array of ids object
+    getCheckedIds: function(id, modelId, topicId, questionId, answerId) {
+      var finalAnswer = { id, modelId, topicId, questionId, answerId };
+      this.finalArray[questionId] = finalAnswer;
+      // console.log(this.finalArray);
+      // console.log("finalArray : ", this.finalArray);
     },
 
-    postAnswer: function(surveyId, modelId, topicId, questionId, answerId) {
-      axios
-        .post(`http://localhost:3005/submit`, {
-          answerId: answerId,
-          surveyId: surveyId,
-          modelId: modelId,
-          topicId: topicId,
-          questionId: questionId
-
-          // topicId: this.currentSurveys.company.models[0].topics[1].topicId
-          // peut fonctionner si on arrive à changer dynamiquement les valeurs des index
-        })
-        .then(function(data) {
-          console.log(data);
-        });
+    //function which iterates over all the objects of finalArray and post ids in each loop
+    finalSubmit: function() {
+      this.finalArray.forEach(
+        x => (
+          (this.isSurveyId = x.id),
+          (this.isModelId = x.modelId),
+          (this.isTopicId = x.topicId),
+          (this.isQuestionId = x.questionId),
+          (this.isAnswerId = x.answerId),
+          axios
+            .post(`http://localhost:3005/submit`, {
+              surveyId: this.isSurveyId,
+              answerId: this.isAnswerId,
+              modelId: this.isModelId,
+              topicId: this.isTopicId,
+              questionId: this.isQuestionId
+            })
+            .then(function(data) {
+              console.log(data);
+            })
+        )
+      );
+      // console.log(
+      //   "survey",
+      //   this.isSurveyId,
+      //   "model",
+      //   this.isModelId,
+      //   "topic",
+      //   this.isTopicId,
+      //   "question",
+      //   this.isQuestionId,
+      //   "answer",
+      //   this.isAnswerId
+      // );
     }
   }
 };
