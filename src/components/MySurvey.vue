@@ -3,7 +3,10 @@
     <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
 
     <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
-
+    <p>All question Ids : {{allQuestionsIds}}</p>
+    <p>checkedQuestions : {{checkedQuestions}}</p>
+    <p>Not answered questions : {{notAnsweredQuestions}}</p>
+    <p>finalArray : {{finalArray}}</p>
     <div>
       <!-- 1rst loop to parse all datas -->
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
@@ -41,8 +44,6 @@
                         v-model="surveyQuestion.answer"
                         @change="getCheckedIds(currentSurveys.id,surveyModel.modelId,surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
                       />
-                      <label>{{ surveyAnswer.answerId }}</label>
-
                       <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
                   </div>
@@ -53,8 +54,22 @@
         </v-row>
       </div>
       <div>
-        <button class="survey_submit_button" @click="finalSubmit()">Soumettre</button>
+        <button
+          class="survey_submit_button"
+          @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),surveyIsAnswered(),finalSubmit()"
+        >Soumettre</button>
+        <transition name="fade">
+          <div v-if="modal">
+            <div>
+              <h2 class="mb-2">Réponses manquantes</h2>
+              <p>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}</p>
+              <button @click="closeModal()">Close</button>
+            </div>
+          </div>
+        </transition>
       </div>
+      <!-- test modal -->
+
       <br />
       <br />
       <br />
@@ -77,10 +92,14 @@ export default {
     isTopicId: null,
     isQuestionId: null,
     isAnswerId: null,
-    finalArray: []
+    finalArray: [],
+    allQuestionsIds: [],
+    checkedQuestions: [],
+    notAnsweredQuestions: [],
+    modal: false
   }),
 
-  mounted() {
+  created() {
     axios
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
@@ -91,17 +110,20 @@ export default {
       });
   },
 
+  beforeMount() {},
+
   methods: {
-    //function to modelize all the checked ids as an array of ids object
+    //********** RADIO BUTTON FUNCTIONS ****************//
+
+    //function to modelize all the checked ids as an array of ids object (finalArray)
     getCheckedIds: function(id, modelId, topicId, questionId, answerId) {
       var finalAnswer = { id, modelId, topicId, questionId, answerId };
       this.finalArray[questionId] = finalAnswer;
-      // console.log(this.finalArray);
-      // console.log("finalArray : ", this.finalArray);
     },
 
-    //function which iterates over all the objects of finalArray and post ids in each loop
-    finalSubmit: function() {
+    //********** SUBMIT BUTTON FUNCTIONS ****************//
+    // create an array with all the question ids checked (checkedQuestions[])
+    questionIsChecked: function() {
       this.finalArray.forEach(
         x => (
           (this.isSurveyId = x.id),
@@ -109,31 +131,87 @@ export default {
           (this.isTopicId = x.topicId),
           (this.isQuestionId = x.questionId),
           (this.isAnswerId = x.answerId),
-          axios
-            .post(`http://localhost:3005/submit`, {
-              surveyId: this.isSurveyId,
-              answerId: this.isAnswerId,
-              modelId: this.isModelId,
-              topicId: this.isTopicId,
-              questionId: this.isQuestionId
-            })
-            .then(function(data) {
-              console.log(data);
-            })
+          this.checkedQuestions.push(this.isQuestionId)
         )
       );
-      // console.log(
-      //   "survey",
-      //   this.isSurveyId,
-      //   "model",
-      //   this.isModelId,
-      //   "topic",
-      //   this.isTopicId,
-      //   "question",
-      //   this.isQuestionId,
-      //   "answer",
-      //   this.isAnswerId
-      // );
+    },
+
+    //create an array with all the ids of the current survey (allQuestionsIds[])
+    showIds() {
+      this.currentSurveys.company.models.forEach(item => {
+        item.topics.forEach(topic => {
+          topic.questions.forEach(question =>
+            this.allQuestionsIds.push(question.questionId)
+          );
+        });
+      });
+    },
+
+    //compare two arrays, checkedQuestions[] and allQuestionsIds[] and create an array
+    //array with all questions not checked (notAnsweredQuestions[])
+    compareArrays(allQuestionsIds, checkedQuestions) {
+      const array1 = allQuestionsIds
+        .toString()
+        .split(",")
+        .map(Number);
+      const array2 = checkedQuestions
+        .toString()
+        .split(",")
+        .map(Number);
+
+      for (var i in array1) {
+        if (!array2.includes(array1[i]))
+          this.notAnsweredQuestions.push(array1[i]);
+      }
+      for (i in array2) {
+        if (!array1.includes(array2[i]))
+          this.notAnsweredQuestions.push(array2[i]);
+      }
+    },
+
+    //iterate over all the objects of finalArray and post ids in each loop (axios request)
+    finalSubmit: function() {
+      if (this.notAnsweredQuestions.length === 0) {
+        this.finalArray.forEach(
+          x => (
+            (this.isSurveyId = x.id),
+            (this.isModelId = x.modelId),
+            (this.isTopicId = x.topicId),
+            (this.isQuestionId = x.questionId),
+            (this.isAnswerId = x.answerId),
+            axios
+              .post(`http://localhost:3005/submit`, {
+                surveyId: this.isSurveyId,
+                answerId: this.isAnswerId,
+                modelId: this.isModelId,
+                topicId: this.isTopicId,
+                questionId: this.isQuestionId
+              })
+              .then(function(data) {
+                console.log(data);
+              })
+          )
+        );
+      }
+    },
+
+    //********** MODAL FUNCTIONS ****************//
+    //show modal
+    showModal() {
+      if (this.notAnsweredQuestions.length > 0) {
+        this.modal = true;
+      } else {
+        this.modal = false;
+      }
+    },
+
+    // close modal
+    closeModal() {
+      if (this.modal == false) {
+        this.modal = true;
+      } else {
+        this.modal = false;
+      }
     }
   }
 };
@@ -159,6 +237,13 @@ input,
 label {
   margin-left: 10px;
 }
+input:invalid {
+  border: 2px dashed red;
+}
+
+input:valid {
+  border: 1px solid black;
+}
 
 /* SUBMIT BUTTON */
 
@@ -169,5 +254,20 @@ label {
   border-radius: 5px;
   color: white;
   position: flex 2;
+}
+
+/* MODAL BUTTON */
+.bg-smoke {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
