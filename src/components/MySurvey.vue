@@ -1,11 +1,8 @@
 <template>
-  <div>
+  <div class="infos">
     <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
 
     <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
-    <p>All question Ids : {{allQuestionsIds}}</p>
-    <p>checkedQuestions : {{checkedQuestions}}</p>
-    <p>Not answered questions : {{notAnsweredQuestions}}</p>
 
     <div>
       <!-- 1rst loop to parse all datas -->
@@ -56,10 +53,11 @@
       <br />
 
       <!-- modal -->
-      <!-- <div class="text-center">
-        <v-dialog v-model="modal" width="500">
+      <div class="text-center">
+        <v-dialog width="500">
           <template v-slot:activator="{ on }">
             <v-btn
+              class="v-btn"
               color="blue-grey darken-4"
               dark
               v-on="on"
@@ -76,28 +74,11 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="(closeModal(), viderTableau())">Fermer</v-btn>
+                <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
               </v-card-actions>
             </v-card>
           </div>
         </v-dialog>
-      </div>-->
-
-      <!-- modal -->
-      <div>
-        <button
-          class="survey_submit_button"
-          @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),surveyIsAnswered(),finalSubmit()"
-        >Soumettre</button>
-        <transition name="fade">
-          <div v-if="modal">
-            <div>
-              <h2 class="mb-2">Réponses manquantes</h2>
-              <p>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}</p>
-              <button @click="(closeModal(),viderTableau())">Close</button>
-            </div>
-          </div>
-        </transition>
       </div>
       <!-- modal  -->
 
@@ -144,13 +125,6 @@ export default {
   beforeMount() {},
 
   methods: {
-    viderTableau: function() {
-      if (this.notAnsweredQuestions.length >= 1) {
-        this.notAnsweredQuestions = [];
-        this.checkedQuestions = [];
-        this.allQuestionsIds = [];
-      }
-    },
     //********** RADIO BUTTON FUNCTIONS ****************//
 
     //function to modelize all the checked ids as an array of ids object (finalArray)
@@ -251,6 +225,15 @@ export default {
       } else {
         this.modal = false;
       }
+    },
+
+    //empty all arrays if all questions are not answered
+    emptyArrays: function() {
+      if (this.notAnsweredQuestions.length >= 1) {
+        this.notAnsweredQuestions = [];
+        this.checkedQuestions = [];
+        this.allQuestionsIds = [];
+      }
     }
   }
 };
@@ -260,6 +243,7 @@ export default {
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
   background-image: linear-gradient(to right, #56b1c8, #175a77);
+  font-size: 1.2em;
 }
 
 /*QUESTIONS*/
@@ -268,42 +252,15 @@ p {
   margin-bottom: 7px;
   margin-top: 7px;
 }
-
+.infos {
+  font-size: 1.2em;
+}
 input,
 label {
   margin-left: 10px;
 }
-input:invalid {
-  border: 2px dashed red;
-}
 
-input:valid {
-  border: 1px solid black;
-}
-
-/* SUBMIT BUTTON */
-
-.survey_submit_button {
-  background-image: linear-gradient(to right, #56b1c8, #175a77);
-  margin-top: 2vw;
-  padding: 1vw;
-  border-radius: 5px;
-  color: white;
-  position: flex 2;
-}
-
-/* MODAL BUTTON */
-.bg-smoke {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.v-btn {
+  font-size: 1.2em;
 }
 </style>
