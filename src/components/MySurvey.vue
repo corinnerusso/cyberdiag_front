@@ -6,7 +6,7 @@
     <p>All question Ids : {{allQuestionsIds}}</p>
     <p>checkedQuestions : {{checkedQuestions}}</p>
     <p>Not answered questions : {{notAnsweredQuestions}}</p>
-    <p>finalArray : {{finalArray}}</p>
+
     <div>
       <!-- 1rst loop to parse all datas -->
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
@@ -29,12 +29,12 @@
                   v-for="(surveyQuestion, index) in surveyTopic.questions"
                   v-bind:key="index"
                 >
-                  <div class="survey_questions">
-                    <p>
+                  <div style="text-align : start">
+                    <p style="font-weight:bold">
                       {{ surveyQuestion.questionId }} -
                       {{ surveyQuestion.question_title }}
                     </p>
-                    <p>{{ surveyQuestion.comments }}</p>
+                    <p style="font-style:italic">{{ surveyQuestion.comments }}</p>
                     <!-- 5th loop to access answers -->
 
                     <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
@@ -53,6 +53,37 @@
           </v-expansion-panels>
         </v-row>
       </div>
+      <br />
+
+      <!-- modal -->
+      <!-- <div class="text-center">
+        <v-dialog v-model="modal" width="500">
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color="blue-grey darken-4"
+              dark
+              v-on="on"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit()"
+            >Soumettre</v-btn>
+          </template>
+          <div v-if="modal">
+            <v-card>
+              <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
+
+              <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="(closeModal(), viderTableau())">Fermer</v-btn>
+              </v-card-actions>
+            </v-card>
+          </div>
+        </v-dialog>
+      </div>-->
+
+      <!-- modal -->
       <div>
         <button
           class="survey_submit_button"
@@ -63,12 +94,12 @@
             <div>
               <h2 class="mb-2">Réponses manquantes</h2>
               <p>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}</p>
-              <button @click="closeModal()">Close</button>
+              <button @click="(closeModal(),viderTableau())">Close</button>
             </div>
           </div>
         </transition>
       </div>
-      <!-- test modal -->
+      <!-- modal  -->
 
       <br />
       <br />
@@ -113,6 +144,13 @@ export default {
   beforeMount() {},
 
   methods: {
+    viderTableau: function() {
+      if (this.notAnsweredQuestions.length >= 1) {
+        this.notAnsweredQuestions = [];
+        this.checkedQuestions = [];
+        this.allQuestionsIds = [];
+      }
+    },
     //********** RADIO BUTTON FUNCTIONS ****************//
 
     //function to modelize all the checked ids as an array of ids object (finalArray)
@@ -179,17 +217,16 @@ export default {
             (this.isTopicId = x.topicId),
             (this.isQuestionId = x.questionId),
             (this.isAnswerId = x.answerId),
-            axios
-              .post(`http://localhost:3005/submit`, {
-                surveyId: this.isSurveyId,
-                answerId: this.isAnswerId,
-                modelId: this.isModelId,
-                topicId: this.isTopicId,
-                questionId: this.isQuestionId
-              })
-              .then(function(data) {
-                console.log(data);
-              })
+            axios.post(`http://localhost:3005/submit`, {
+              surveyId: this.isSurveyId,
+              answerId: this.isAnswerId,
+              modelId: this.isModelId,
+              topicId: this.isTopicId,
+              questionId: this.isQuestionId
+            })
+            // .then(function(data) {
+            //   console.log(data);
+            // })
           )
         );
       }
@@ -198,11 +235,13 @@ export default {
     //********** MODAL FUNCTIONS ****************//
     //show modal
     showModal() {
-      if (this.notAnsweredQuestions.length > 0) {
-        this.modal = true;
-      } else {
+      if (this.notAnsweredQuestions.length < 1) {
         this.modal = false;
+      } else {
+        this.modal = true;
       }
+      console.log(this.notAnsweredQuestions.length);
+      console.log(this.modal);
     },
 
     // close modal
@@ -225,9 +264,6 @@ export default {
 
 /*QUESTIONS*/
 
-.survey_questions {
-  text-align: start;
-}
 p {
   margin-bottom: 7px;
   margin-top: 7px;
