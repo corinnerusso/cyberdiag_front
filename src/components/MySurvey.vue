@@ -1,50 +1,90 @@
 <template>
-  <div>
-    <p>Nom du questionnaire : {{currentSurveys.survey_title}}</p>
-    <p>Type d'entreprise : {{currentSurveys.company.company_type}}</p>
-    <p>answer Id : {{picked}}</p>
+  <div class="infos">
+    <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
+
+    <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
 
     <div>
+      <!-- 1rst loop to parse all datas -->
       <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
+            <!-- 2nd loop to access models -->
             <v-expansion-panel
-              v-for="(currentSurvey, index) in currentSurvey.models"
+              v-for="(surveyModel, index) in currentSurvey.models"
               v-bind:key="index"
             >
-              <div v-for="(currentSurvey, index) in currentSurvey.topics" v-bind:key="index">
-                <v-expansion-panel-header
-                  style="color:white"
-                  v-model="topic"
-                  :value="topicId"
-                >{{ currentSurvey.topic_title }}</v-expansion-panel-header>
+              <!-- 3rd loop to access topics -->
+              <v-expansion-panel
+                v-for="(surveyTopic, index) in surveyModel.topics"
+                v-bind:key="index"
+              >
+                <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
 
+                <!-- 4th loop to access questions -->
                 <v-expansion-panel-content
-                  v-for="(currentSurvey, index) in currentSurvey.questions"
+                  v-for="(surveyQuestion, index) in surveyTopic.questions"
                   v-bind:key="index"
                 >
-                  <div class="survey_questions">
-                    <p>{{ currentSurvey.questionId }} - {{ currentSurvey.question_title }}</p>
-                    <p>{{ currentSurvey.comments }}</p>
-                    <div v-for="(currentSurvey, index) in currentSurvey.answers" :key="index">
-                      <!-- <input type="checkbox" value="currentSurvey.answerId" :v-model="picked" /> -->
+                  <div style="text-align : start">
+                    <p style="font-weight:bold">
+                      {{ surveyQuestion.questionId }} -
+                      {{ surveyQuestion.question_title }}
+                    </p>
+                    <p style="font-style:italic">{{ surveyQuestion.comments }}</p>
+                    <!-- 5th loop to access answers -->
+
+                    <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
                       <input
-                        type="checkbox"
-                        :value="currentSurvey.answerId"
-                        @input="isPicked"
-                        @change="postAnswer()"
+                        type="radio"
+                        :value="surveyAnswer.answerId"
+                        v-model="surveyQuestion.answer"
+                        @change="getCheckedIds(currentSurveys.id,surveyModel.modelId,surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
                       />
-                      <label>{{ currentSurvey.answerId }}</label>
-                      <label>{{ currentSurvey.answer_title }}</label>
+                      <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
                   </div>
                 </v-expansion-panel-content>
-              </div>
+              </v-expansion-panel>
             </v-expansion-panel>
           </v-expansion-panels>
         </v-row>
       </div>
-      <button class="survey_submit_button" @click="updateAnswer">Soumettre</button>
+      <br />
+
+      <!-- modal -->
+      <div class="text-center">
+        <v-dialog width="500">
+          <template v-slot:activator="{ on }">
+            <v-btn
+              class="v-btn"
+              color="blue-grey darken-4"
+              dark
+              v-on="on"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit()"
+            >Soumettre</v-btn>
+          </template>
+          <div v-if="modal">
+            <v-card>
+              <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
+
+              <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
+              </v-card-actions>
+            </v-card>
+          </div>
+        </v-dialog>
+      </div>
+      <!-- modal  -->
+
+      <br />
+      <br />
+      <br />
     </div>
   </div>
 </template>
@@ -56,16 +96,22 @@ export default {
   name: "MySurvey",
 
   data: () => ({
-    editedIndex: -1,
     popout: true,
     tile: true,
-    isClicked: true,
     currentSurveys: [],
-    picked: "",
-    topic: ""
+    isSurveyId: null,
+    isModelId: null,
+    isTopicId: null,
+    isQuestionId: null,
+    isAnswerId: null,
+    finalArray: [],
+    allQuestionsIds: [],
+    checkedQuestions: [],
+    notAnsweredQuestions: [],
+    modal: false
   }),
 
-  beforeMount() {
+  created() {
     axios
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
@@ -76,43 +122,118 @@ export default {
       });
   },
 
-  //post checked boxes into submission table//
+  beforeMount() {},
+
   methods: {
-    postAnswer() {
-      axios
-        .post(`http://localhost:3005/submit`, {
-          answerId: this.picked
-        })
-        .then(function(data) {
-          console.log(data);
-        });
-    },
-    //get only one id when chekcbox is cliked
-    isPicked: function($event) {
-      this.picked = parseInt($event.target.value);
+    //********** RADIO BUTTON FUNCTIONS ****************//
+
+    //function to modelize all the checked ids as an array of ids object (finalArray)
+    getCheckedIds: function(id, modelId, topicId, questionId, answerId) {
+      var finalAnswer = { id, modelId, topicId, questionId, answerId };
+      this.finalArray[questionId] = finalAnswer;
     },
 
-    //test put
-    updateAnswer() {
-      if (this.editedIndex > -1) {
-        axios
-          .put(`http://localhost:3005/submit/` + this.$route.params.id, {
-            answerId: this.picked
-          })
-          .then(function(data) {
-            console.log(data);
-          });
-      } else {
-        {
-          console.log(this.editedIndex);
-          axios.post(`http://localhost:3005/submit`, {
-            surveyId: 1
-          });
-        }
+    //********** SUBMIT BUTTON FUNCTIONS ****************//
+    // create an array with all the question ids checked (checkedQuestions[])
+    questionIsChecked: function() {
+      this.finalArray.forEach(
+        x => (
+          (this.isSurveyId = x.id),
+          (this.isModelId = x.modelId),
+          (this.isTopicId = x.topicId),
+          (this.isQuestionId = x.questionId),
+          (this.isAnswerId = x.answerId),
+          this.checkedQuestions.push(this.isQuestionId)
+        )
+      );
+    },
+
+    //create an array with all the ids of the current survey (allQuestionsIds[])
+    showIds() {
+      this.currentSurveys.company.models.forEach(item => {
+        item.topics.forEach(topic => {
+          topic.questions.forEach(question =>
+            this.allQuestionsIds.push(question.questionId)
+          );
+        });
+      });
+    },
+
+    //compare two arrays, checkedQuestions[] and allQuestionsIds[] and create an array
+    //array with all questions not checked (notAnsweredQuestions[])
+    compareArrays(allQuestionsIds, checkedQuestions) {
+      const array1 = allQuestionsIds
+        .toString()
+        .split(",")
+        .map(Number);
+      const array2 = checkedQuestions
+        .toString()
+        .split(",")
+        .map(Number);
+
+      for (var i in array1) {
+        if (!array2.includes(array1[i]))
+          this.notAnsweredQuestions.push(array1[i]);
+      }
+      for (i in array2) {
+        if (!array1.includes(array2[i]))
+          this.notAnsweredQuestions.push(array2[i]);
       }
     },
-    editItem(item) {
-      this.editedIndex = this.currentSurveys.indexOf(item);
+
+    //iterate over all the objects of finalArray and post ids in each loop (axios request)
+    finalSubmit: function() {
+      if (this.notAnsweredQuestions.length === 0) {
+        this.finalArray.forEach(
+          x => (
+            (this.isSurveyId = x.id),
+            (this.isModelId = x.modelId),
+            (this.isTopicId = x.topicId),
+            (this.isQuestionId = x.questionId),
+            (this.isAnswerId = x.answerId),
+            axios.post(`http://localhost:3005/submit`, {
+              surveyId: this.isSurveyId,
+              answerId: this.isAnswerId,
+              modelId: this.isModelId,
+              topicId: this.isTopicId,
+              questionId: this.isQuestionId
+            })
+            // .then(function(data) {
+            //   console.log(data);
+            // })
+          )
+        );
+      }
+    },
+
+    //********** MODAL FUNCTIONS ****************//
+    //show modal
+    showModal() {
+      if (this.notAnsweredQuestions.length < 1) {
+        this.modal = false;
+      } else {
+        this.modal = true;
+      }
+      console.log(this.notAnsweredQuestions.length);
+      console.log(this.modal);
+    },
+
+    // close modal
+    closeModal() {
+      if (this.modal == false) {
+        this.modal = true;
+      } else {
+        this.modal = false;
+      }
+    },
+
+    //empty all arrays if all questions are not answered
+    emptyArrays: function() {
+      if (this.notAnsweredQuestions.length >= 1) {
+        this.notAnsweredQuestions = [];
+        this.checkedQuestions = [];
+        this.allQuestionsIds = [];
+      }
     }
   }
 };
@@ -122,30 +243,24 @@ export default {
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
   background-image: linear-gradient(to right, #56b1c8, #175a77);
+  font-size: 1.2em;
 }
 
 /*QUESTIONS*/
 
-.survey_questions {
-  text-align: start;
-}
 p {
   margin-bottom: 7px;
   margin-top: 7px;
 }
-
+.infos {
+  font-size: 1.2em;
+}
 input,
 label {
   margin-left: 10px;
 }
 
-/* SUBMIT BUTTON */
-
-.survey_submit_button {
-  background-image: linear-gradient(to right, #56b1c8, #175a77);
-  margin-top: 2vw;
-  padding: 1vw;
-  border-radius: 5px;
-  color: white;
+.v-btn {
+  font-size: 1.2em;
 }
 </style>

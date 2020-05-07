@@ -19,6 +19,5 @@ export default {
 .home {
   padding-left: 10%;
   padding-right: 10%;
-  padding-top: 250px;
 }
 </style>
