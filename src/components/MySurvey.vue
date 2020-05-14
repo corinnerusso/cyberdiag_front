@@ -39,7 +39,16 @@
                         type="radio"
                         :value="surveyAnswer.answerId"
                         v-model="surveyQuestion.answer"
-                        @change="getCheckedIds(currentSurveys.id,surveyModel.modelId,surveyTopic.topicId, surveyQuestion.questionId, surveyAnswer.answerId)"
+                        @change="getCheckedIds(
+                          currentSurveys.id,
+                          surveyModel.modelId,
+                          surveyTopic.topicId, 
+                          surveyQuestion.questionId, 
+                          surveyAnswer.answerId, 
+                          surveyAnswer.answer_quote, 
+                          currentSurveys.survey_title, 
+                          surveyTopic.topic_title, 
+                          surveyTopic.topic_max_quote)"
                       />
                       <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
@@ -96,19 +105,26 @@ export default {
   name: "MySurvey",
 
   data: () => ({
+    //vuetify component
     popout: true,
     tile: true,
+
+    //functions
+    allQuestionsIds: [],
+    checkedQuestions: [],
     currentSurveys: [],
+    finalArray: [],
+    modal: false,
+    notAnsweredQuestions: [],
     isSurveyId: null,
     isModelId: null,
     isTopicId: null,
     isQuestionId: null,
     isAnswerId: null,
-    finalArray: [],
-    allQuestionsIds: [],
-    checkedQuestions: [],
-    notAnsweredQuestions: [],
-    modal: false
+    isAnswer_quote: null,
+    isSurveyTitle: null,
+    isTopicTitle: null,
+    isTopicMaxQuote: null
   }),
 
   created() {
@@ -128,8 +144,28 @@ export default {
     //********** RADIO BUTTON FUNCTIONS ****************//
 
     //function to modelize all the checked ids as an array of ids object (finalArray)
-    getCheckedIds: function(id, modelId, topicId, questionId, answerId) {
-      var finalAnswer = { id, modelId, topicId, questionId, answerId };
+    getCheckedIds: function(
+      id,
+      modelId,
+      topicId,
+      questionId,
+      answerId,
+      answer_quote,
+      survey_title,
+      topic_title,
+      topic_max_quote
+    ) {
+      var finalAnswer = {
+        id,
+        modelId,
+        topicId,
+        questionId,
+        answerId,
+        answer_quote,
+        survey_title,
+        topic_title,
+        topic_max_quote
+      };
       this.finalArray[questionId] = finalAnswer;
     },
 
@@ -143,6 +179,10 @@ export default {
           (this.isTopicId = x.topicId),
           (this.isQuestionId = x.questionId),
           (this.isAnswerId = x.answerId),
+          (this.isAnswer_quote = x.answer_quote),
+          (this.isSurveyTitle = x.survey_title),
+          (this.isTopicTitle = x.topic_title),
+          (this.isTopicMaxQuote = x.topic_max_quote),
           this.checkedQuestions.push(this.isQuestionId)
         )
       );
@@ -191,16 +231,26 @@ export default {
             (this.isTopicId = x.topicId),
             (this.isQuestionId = x.questionId),
             (this.isAnswerId = x.answerId),
-            axios.post(`http://localhost:3005/submit`, {
-              surveyId: this.isSurveyId,
-              answerId: this.isAnswerId,
-              modelId: this.isModelId,
-              topicId: this.isTopicId,
-              questionId: this.isQuestionId
-            })
-            // .then(function(data) {
-            //   console.log(data);
-            // })
+            (this.isAnswer_quote = x.answer_quote),
+            (this.isSurveyTitle = x.survey_title),
+            (this.isTopicTitle = x.topic_title),
+            (this.isTopicMaxQuote = x.topic_max_quote),
+            this.checkedQuestions.push(this.isQuestionId),
+            axios
+              .post(`http://localhost:3005/submit`, {
+                surveyId: this.isSurveyId,
+                answerId: this.isAnswerId,
+                modelId: this.isModelId,
+                topicId: this.isTopicId,
+                questionId: this.isQuestionId,
+                answerQuote: this.isAnswer_quote,
+                surveyTitle: this.isSurveyTitle,
+                topicTitle: this.isTopicTitle,
+                topicQuote: this.isTopicMaxQuote
+              })
+              .then(function(data) {
+                console.log(data);
+              })
           )
         );
       }

@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-<template class="radarStyle">
+<template>
   <div>
-    page de graphique
-    <p>Nom du questionnaire : {{ currentCharts.survey_title }}</p>
-    <div v-for="(currentChart, index) in currentChart" v-bind:key="index">fg</div>
+    <p>{{currentData[0].survey_surveyTitle}}</p>
     <div id="chart">
-      <apexchart type="radar" height="600" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="radar" height="700" :options="chartOptions" :series="series"></apexchart>
     </div>
+    <br />
+    <br />
   </div>
 </template>
 
@@ -16,15 +16,15 @@ import axios from "axios";
 export default {
   name: "ChartPage",
   data: () => ({
-    currentCharts: [],
+    currentData: [],
     series: [
       {
         name: "Niveau maximal",
-        data: [36, 16, 16, 14]
+        data: []
       },
       {
         name: "Résultat",
-        data: [20, 10, 5, 12]
+        data: []
       }
     ],
 
@@ -39,11 +39,9 @@ export default {
           top: 2
         }
       },
-      // title: {
-      //   text: "Radar Chart - Multi Series"
-      // },
+
       stroke: {
-        width: 3
+        show: false
       },
       fill: {
         opacity: 0.1
@@ -52,23 +50,46 @@ export default {
         size: 0
       },
       xaxis: {
-        categories: [
-          "Sécurité des systèmes d'information",
-          "Sécurité des réseaux",
-          "Facteur humain",
-          "Incidents et gestion de crise"
-        ]
+        categories: [],
+        labels: {
+          show: true,
+          style: {
+            fontSize: "0.8rem",
+            fontWeight: 700
+          }
+        }
+      },
+
+      dataLabels: {
+        enabled: true,
+        background: {
+          enabled: true,
+          borderRadius: 2
+        }
       }
     }
   }),
 
-  beforeMount() {
+  beforeCreate() {
     axios
-      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
+      .get(`http://localhost:3005/submit/` + this.$route.params.id)
       .then(response => {
-        this.currentCharts = response.data;
-        this.categories = response.data.topics;
-        console.log("page chart", response.data.company.models);
+        this.currentData = response.data;
+        //set topic labels
+        let topicTitle = this.chartOptions.xaxis.categories;
+        topicTitle = this.currentData.map(el =>
+          topicTitle.push(el.survey_topicTitle)
+        );
+
+        //set max quote
+        let maxQuote = this.series[0].data;
+        maxQuote = this.currentData.map(el =>
+          maxQuote.push(el.survey_topicQuote)
+        );
+
+        // set current survey quote
+        let surveyQuote = this.series[1].data;
+        surveyQuote = this.currentData.map(el => surveyQuote.push(el.sum));
       })
       .catch(e => {
         console.log(e);
@@ -78,7 +99,4 @@ export default {
 </script>
 
 <style scoped>
-.radarStyle {
-  padding-top: 100px !important;
-}
 </style>
