@@ -2,11 +2,19 @@
 <template class="radarStyle">
   <div>
     page de graphique
-    <p>Nom du questionnaire : {{ currentCharts.survey_title }}</p>
-    <div v-for="(currentChart, index) in currentChart" v-bind:key="index">fg</div>
+    <p>Nom du questionnaire : {{ currentData[0].survey_surveyTitle }}</p>
+    <p>topic Title : {{topicTitle}}</p>
+
+    <div v-for="(data, index) in topicTitle" v-bind:key="index">
+      <p>{{data}}</p>
+    </div>
+
+    <p>---------------------------------</p>
     <div id="chart">
       <apexchart type="radar" height="600" :options="chartOptions" :series="series"></apexchart>
     </div>
+    <br />
+    <br />
   </div>
 </template>
 
@@ -16,7 +24,8 @@ import axios from "axios";
 export default {
   name: "ChartPage",
   data: () => ({
-    currentCharts: [],
+    currentData: [],
+
     series: [
       {
         name: "Niveau maximal",
@@ -29,6 +38,7 @@ export default {
     ],
 
     chartOptions: {
+      topicTitle: [],
       chart: {
         height: 250,
         type: "radar",
@@ -52,23 +62,21 @@ export default {
         size: 0
       },
       xaxis: {
-        categories: [
-          "Sécurité des systèmes d'information",
-          "Sécurité des réseaux",
-          "Facteur humain",
-          "Incidents et gestion de crise"
-        ]
+        categories: []
       }
     }
   }),
 
-  beforeMount() {
+  mounted() {
     axios
-      .get(`http://localhost:3005/surveys/` + this.$route.params.id)
+      .get(`http://localhost:3005/submit/` + this.$route.params.id)
       .then(response => {
-        this.currentCharts = response.data;
-        this.categories = response.data.topics;
-        console.log("page chart", response.data.company.models);
+        let topicTitle = this.chartOptions.xaxis.categories;
+        this.currentData = response.data;
+        topicTitle = this.currentData.map(
+          x => topicTitle.push(x.survey_topicTitle),
+          console.log("topicTitle", this.chartOptions.xaxis.categories)
+        );
       })
       .catch(e => {
         console.log(e);
