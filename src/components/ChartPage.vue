@@ -1,11 +1,9 @@
 /* eslint-disable prettier/prettier */
-<template class="radarStyle">
+<template>
   <div>
-    page de graphique
-    <p>Nom du questionnaire : {{ currentData[0].survey_surveyTitle }}</p>
-
+    <p>{{currentData[0].survey_surveyTitle}}</p>
     <div id="chart">
-      <apexchart type="radar" height="600" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="radar" height="700" :options="chartOptions" :series="series"></apexchart>
     </div>
     <br />
     <br />
@@ -19,7 +17,6 @@ export default {
   name: "ChartPage",
   data: () => ({
     currentData: [],
-
     series: [
       {
         name: "Niveau maximal",
@@ -44,7 +41,7 @@ export default {
       },
 
       stroke: {
-        width: 3
+        show: false
       },
       fill: {
         opacity: 0.1
@@ -53,12 +50,27 @@ export default {
         size: 0
       },
       xaxis: {
-        categories: []
+        categories: [],
+        labels: {
+          show: true,
+          style: {
+            fontSize: "0.8rem",
+            fontWeight: 700
+          }
+        }
+      },
+
+      dataLabels: {
+        enabled: true,
+        background: {
+          enabled: true,
+          borderRadius: 2
+        }
       }
     }
   }),
 
-  mounted() {
+  beforeCreate() {
     axios
       .get(`http://localhost:3005/submit/` + this.$route.params.id)
       .then(response => {
@@ -87,7 +99,4 @@ export default {
 </script>
 
 <style scoped>
-.radarStyle {
-  padding-top: 100px !important;
-}
 </style>
