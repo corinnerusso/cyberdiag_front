@@ -20,7 +20,7 @@ export default {
     };
   },
 
-  created() {
+  beforeCreate() {
     axios
       .get(`http://localhost:3005/submit/` + this.$route.params.id)
       .then(response => {

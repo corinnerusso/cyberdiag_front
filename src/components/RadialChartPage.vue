@@ -1,11 +1,18 @@
 <template>
   <div id="gauge">
-    <p>{{chartDatas}}</p>
-    <p>{{allDatas}}</p>
-    <div class="charts">
-      <div class="chart1">
-        <apexchart type="radialBar" height="400" :options="chartOptions" :series="series"></apexchart>
-      </div>
+    <!-- <div v-for="(item, index) in series" v-bind:key="index">{{item}}</div> -->
+    {{chartDatas[0].survey_surveyTitle}}
+    {{chartOptions.labels}}
+    <div>
+      <apexchart
+        v-for="(item, index) in series"
+        v-bind:key="index"
+        type="radialBar"
+        height="400"
+        :options="chartOptions"
+        :series="[item]"
+        :labels="labels"
+      ></apexchart>
     </div>
   </div>
 </template>
@@ -15,16 +22,18 @@ export default {
   props: {
     chartDatas: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
+      // default: () => []
     }
   },
   data() {
     return {
-      allDatas: this.chartDatas,
+      newChartDatas: this.chartDatas,
 
       series: [],
-      series2: [70],
+      allSeries: [],
+      series2: [1, 2, 3, 4],
+
       chartOptions: {
         //chart
         chart: {
@@ -75,32 +84,62 @@ export default {
         },
 
         //labels
-        labels: []
+        labels: [],
+        allLabels: []
       }
     };
   },
 
   //************************************************************* */
 
-  created() {
-    this.sendnewlabel();
-    this.sendnewserie;
-    console.log("lalal", this.sendnewserie());
+  beforeUpdate() {
+    this.updateLabel();
+    this.updateSeries();
+    // this.sendnewserie();
+    // this.convert();
   },
 
   methods: {
-    sendnewlabel() {
-      const newlabel = this.chartOptions.labels;
-      return newlabel.push(this.allDatas[0].survey_topicTitle);
+    updateLabel() {
+      const newlabel = this.chartOptions.allLabels;
+
+      newlabel.push(this.newChartDatas.map(el => el.survey_topicTitle));
+
+      const newData2 = this.chartOptions.allLabels[0].map(x => {
+        return x;
+      });
+
+      this.chartOptions.labels = newData2;
     },
 
-    sendnewserie() {
-      const newserie = this.series;
-      return newserie.push(
-        Math.round(
-          (this.allDatas[0].sum * 100) / this.allDatas[0].survey_topicQuote
+    // sendnewserie() {
+    //   const newserie = this.allSeries;
+    //   newserie.push(
+    //     this.newChartDatas.map(el =>
+    //       Math.round((el.sum * 100) / el.survey_topicQuote)
+    //     )
+    //   );
+    // },
+
+    // convert() {
+    //   this.series = this.allSeries[0].map(el => {
+    //     return el;
+    //   });
+    // },
+
+    updateSeries() {
+      const newserie = this.allSeries;
+      newserie.push(
+        this.newChartDatas.map(el =>
+          Math.round((el.sum * 100) / el.survey_topicQuote)
         )
       );
+
+      const newData = this.allSeries[0].map(el => {
+        return el;
+      });
+      this.series = newData;
+      console.log("newSerie", this.series);
     }
   }
 };
