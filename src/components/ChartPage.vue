@@ -14,7 +14,7 @@
 import axios from "axios";
 
 export default {
-  name: "ChartPage",
+  name: "RadialChartPage",
   data: () => ({
     currentData: [],
     series: [

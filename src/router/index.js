@@ -47,6 +47,11 @@ const routes = [
     name: "Chart",
     component: () => import("@/views/Chart.vue"),
   },
+  {
+    path: "/radialchart/:id",
+    name: "RadialChart",
+    component: () => import("@/views/RadialChart.vue"),
+  },
 ];
 
 const router = new VueRouter({

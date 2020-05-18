@@ -75,6 +75,14 @@
             @click="showSurvey = editedItem.id"
           >trending_up</v-icon>
         </router-link>
+        <router-link :to="`/radialChart/${item.id}`">
+          <v-icon
+            small
+            title="Voir les résultats"
+            v-model="editedItem.company"
+            @click="showSurvey = editedItem.id"
+          >trending_up</v-icon>
+        </router-link>
 
         <!-- Modifier le questionnaire -->
         <v-icon
