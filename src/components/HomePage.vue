@@ -60,6 +60,7 @@
         <router-link :to="`/survey/${item.id}`">
           <v-icon
             class="router-link"
+            title="Remplir le questionnaire"
             small
             v-model="editedItem.company"
             @click="showSurvey = editedItem.id"
@@ -161,14 +162,11 @@ export default {
   }),
 
   mounted() {
-    axios
-      .get(`http://localhost:3005/surveys`)
-      .then(response => {
-        this.surveys = response.data;
-      })
-      .catch(e => {
-        this.errors.push(e);
-      });
+    this.retrieveAllSurveys();
+  },
+
+  updated() {
+    this.retrieveAllSurveys();
   },
   watch: {
     dialog(val) {
@@ -244,7 +242,7 @@ export default {
               company: this.editedItem.company
             })
             .then(response => {
-              console.log(response);
+              console.log("response", response);
             });
           this.surveys.push(this.editedItem);
         }
@@ -252,7 +250,7 @@ export default {
       }
     },
 
-    mounted() {
+    computed() {
       this.retrieveAllSurveys();
     }
   }
