@@ -48,7 +48,7 @@
                           surveyAnswer.answer_quote, 
                           currentSurveys.survey_title, 
                           surveyTopic.topic_title, 
-                          surveyTopic.topic_max_quote)"
+                          surveyTopic.topic_max_quote), onClick()"
                       />
                       <label>{{ surveyAnswer.answer_title }}</label>
                     </div>
@@ -70,7 +70,7 @@
               color="blue-grey darken-4"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit()"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit(),showChart()"
             >Soumettre</v-btn>
           </template>
           <div v-if="modal">
@@ -87,6 +87,7 @@
               </v-card-actions>
             </v-card>
           </div>
+          <!-- ******************* -->
         </v-dialog>
       </div>
       <!-- modal  -->
@@ -110,6 +111,7 @@ export default {
     tile: true,
 
     //functions
+    cliked: false,
     allQuestionsIds: [],
     checkedQuestions: [],
     currentSurveys: [],
@@ -284,12 +286,22 @@ export default {
         this.checkedQuestions = [];
         this.allQuestionsIds = [];
       }
+    },
+
+    //test//
+    showChart: function() {
+      if (this.notAnsweredQuestions.length === 0) {
+        this.$router.push("/chart/" + this.$route.params.id);
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.red {
+  background-color: red;
+}
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
   background-image: linear-gradient(to right, #56b1c8, #175a77);
@@ -297,7 +309,9 @@ export default {
 }
 
 /*QUESTIONS*/
-
+.selected {
+  border: 1px solid red;
+}
 p {
   margin-bottom: 7px;
   margin-top: 7px;
