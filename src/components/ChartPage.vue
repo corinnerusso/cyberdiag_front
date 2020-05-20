@@ -70,30 +70,40 @@ export default {
     }
   }),
 
-  beforeCreate() {
-    axios
-      .get(`http://localhost:3005/submit/` + this.$route.params.id)
-      .then(response => {
-        this.currentData = response.data;
-        //set topic labels
-        let topicTitle = this.chartOptions.xaxis.categories;
-        topicTitle = this.currentData.map(el =>
-          topicTitle.push(el.survey_topicTitle)
-        );
+  created() {
+    this.getResults();
+  },
 
-        //set max quote
-        let maxQuote = this.series[0].data;
-        maxQuote = this.currentData.map(el =>
-          maxQuote.push(el.survey_topicQuote)
-        );
+  beforeUpdate() {
+    this.getResults();
+  },
 
-        // set current survey quote
-        let surveyQuote = this.series[1].data;
-        surveyQuote = this.currentData.map(el => surveyQuote.push(el.sum));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  methods: {
+    getResults: function() {
+      axios
+        .get(`http://localhost:3005/submit/` + this.$route.params.id)
+        .then(response => {
+          this.currentData = response.data;
+          //set topic labels
+          let topicTitle = this.chartOptions.xaxis.categories;
+          topicTitle = this.currentData.map(el =>
+            topicTitle.push(el.survey_topicTitle)
+          );
+
+          //set max quote
+          let maxQuote = this.series[0].data;
+          maxQuote = this.currentData.map(el =>
+            maxQuote.push(el.survey_topicQuote)
+          );
+
+          // set current survey quote
+          let surveyQuote = this.series[1].data;
+          surveyQuote = this.currentData.map(el => surveyQuote.push(el.sum));
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 };
 </script>
