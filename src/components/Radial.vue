@@ -13,7 +13,6 @@ export default {
     chartDatas: {
       type: Array,
       required: true
-      // default: () => []
     }
   },
 
@@ -21,10 +20,10 @@ export default {
     return {
       newChartDatas: this.chartDatas,
       series: [],
-      allSeries: [],
+
       chartOptions: {
         labels: [],
-        allLabels: [],
+
         //chart
         chart: {
           height: 390,
@@ -70,7 +69,9 @@ export default {
             size: 0
           },
           formatter: function(seriesName, opts) {
-            return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+            return (
+              seriesName + ":  " + opts.w.globals.series[opts.seriesIndex] + "%"
+            );
           },
           itemMargin: {
             vertical: 3
@@ -93,37 +94,24 @@ export default {
   //******************************************************** *//
 
   created() {
-    // this.updateLabel();
     this.updateSeries();
     this.updateLabel();
   },
 
   methods: {
     updateSeries() {
-      const newserie = this.allSeries;
-      newserie.push(
-        this.newChartDatas.map(el =>
-          Math.round((el.sum * 100) / el.survey_topicQuote)
-        )
+      let newserie = this.series;
+      newserie = this.newChartDatas.map(el =>
+        newserie.push(Math.round((el.sum * 100) / el.survey_topicQuote))
       );
-
-      const newData = this.allSeries[0].map(el => {
-        return el;
-      });
-      this.series = newData;
     },
 
     updateLabel() {
-      const newlabel = this.chartOptions.allLabels;
+      let newlabel = this.chartOptions.labels;
 
-      newlabel.push(this.newChartDatas.map(el => el.survey_topicTitle));
-      console.log("newLabel", newlabel);
-
-      const newData2 = this.chartOptions.allLabels[0].map(x => {
-        return x;
-      });
-
-      this.chartOptions.labels = newData2;
+      newlabel = this.newChartDatas.map(el =>
+        newlabel.push(el.survey_topicTitle)
+      );
     }
   }
 };

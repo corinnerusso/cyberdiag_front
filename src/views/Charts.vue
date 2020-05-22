@@ -1,18 +1,21 @@
 <template>
   <div style="margin-top:100px;color:black;" class="survey">
     <v-tabs v-model="tabs" centered>
-      <v-tab>Spider</v-tab>
-      <v-tab>Radial</v-tab>
+      <v-tab>Radar</v-tab>
+      <v-tab>Cercle</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tabs">
       <v-tab-item>
         <v-card flat>
-          <ChartPage />
+          <v-card-title class="headline">Titre : {{chartDatas[0].survey_surveyTitle}}</v-card-title>
+          <v-card-text>
+            <Radar v-bind:chartDatas="chartDatas" />
+          </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-title class="headline">An awesome title</v-card-title>
+          <v-card-title class="headline">Titre : {{chartDatas[0].survey_surveyTitle}}</v-card-title>
           <v-card-text>
             <Radial v-bind:chartDatas="chartDatas" />
           </v-card-text>
@@ -24,7 +27,7 @@
 
 <script>
 // @ is an alias to /src
-import ChartPage from "@/components/ChartPage.vue";
+import Radar from "@/components/Radar.vue";
 import Radial from "@/components/Radial.vue";
 
 import axios from "axios";
@@ -32,7 +35,7 @@ export default {
   name: "Charts",
 
   components: {
-    ChartPage,
+    Radar,
     Radial
   },
   data() {

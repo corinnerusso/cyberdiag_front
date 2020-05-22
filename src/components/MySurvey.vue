@@ -291,7 +291,7 @@ export default {
     //test//
     showChart: function() {
       if (this.notAnsweredQuestions.length === 0) {
-        this.$router.push("/chart/" + this.$route.params.id);
+        this.$router.push("/charts/" + this.$route.params.id);
       }
     }
   }

@@ -1,0 +1,123 @@
+/* eslint-disable prettier/prettier */
+<template>
+  <div>
+    <div id="chart">
+      <apexchart type="radar" height="700" :options="chartOptions" :series="series"></apexchart>
+    </div>
+    <br />
+    <br />
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Radar",
+  props: {
+    chartDatas: {
+      type: Array,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      newChartDatas: this.chartDatas,
+
+      series: [
+        {
+          name: "Niveau maximal",
+          data: []
+        },
+        {
+          name: "Résultat",
+          data: []
+        }
+      ],
+
+      chartOptions: {
+        chart: {
+          height: 50,
+          type: "radar",
+          dropShadow: {
+            enabled: true,
+            blur: 2,
+            left: 2,
+            top: 2
+          }
+        },
+        legend: {
+          show: true,
+          position: "top"
+        },
+
+        stroke: {
+          show: true
+        },
+        fill: {
+          opacity: 0.1
+        },
+
+        xaxis: {
+          categories: [],
+          labels: {
+            show: true,
+            style: {
+              fontSize: "0.8rem",
+              fontWeight: 700
+            },
+            offsetY: -10
+          }
+        },
+        yaxis: {
+          show: false
+        },
+        dataLabels: {
+          enabled: true,
+          background: {
+            enabled: true,
+            borderRadius: 2
+          }
+        }
+      }
+    };
+  },
+
+  created() {
+    this.updateCategories();
+    this.updateSerieMax();
+    this.updateSerieCurrentSurvey();
+  },
+
+  beforeUpdate() {
+    this.updateCategories();
+    this.updateSerieMax();
+    this.updateSerieCurrentSurvey();
+  },
+
+  methods: {
+    updateCategories() {
+      let newCategorie = this.chartOptions.xaxis.categories;
+      newCategorie = this.newChartDatas.map(el =>
+        newCategorie.push(el.survey_topicTitle)
+      );
+    },
+
+    updateSerieMax() {
+      let newSerieMax = this.series[0].data;
+      newSerieMax = this.newChartDatas.map(el =>
+        newSerieMax.push(el.survey_topicQuote)
+      );
+    },
+
+    updateSerieCurrentSurvey() {
+      let newSerieCurrentSurvey = this.series[1].data;
+      newSerieCurrentSurvey = this.newChartDatas.map(el =>
+        newSerieCurrentSurvey.push(el.sum)
+      );
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>

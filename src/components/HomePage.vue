@@ -57,18 +57,18 @@
       <!-- ACTIONS -->
       <template v-slot:item.actions="{ item }">
         <!-- Remplir le questionnaire -->
-        <router-link :to="`/survey/${item.id}`">
+        <router-link class="router-link" :to="`/survey/${item.id}`">
           <v-icon
             class="router-link"
             title="Remplir le questionnaire"
             small
             v-model="editedItem.company"
             @click="showSurvey = editedItem.id"
-          >→</v-icon>
+          >mdi-pencil</v-icon>
         </router-link>
 
         <!-- Voir le graphique -->
-        <router-link :to="`/charts/${item.id}`">
+        <router-link class="router-link" :to="`/charts/${item.id}`">
           <v-icon
             small
             title="Voir les résultats"
@@ -78,12 +78,7 @@
         </router-link>
 
         <!-- Modifier le questionnaire -->
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-          title="Modifier le questionnaire"
-        >mdi-pencil</v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)" title="Modifier le questionnaire">build</v-icon>
 
         <!-- Supprimer un questionnaire -->
         <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
@@ -256,7 +251,7 @@ export default {
 }
 
 .router-link {
-  text-decoration: none;
+  text-decoration: none !important;
   margin-right: 5px;
   color: gray;
 }
