@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top:100px;color:black;" class="survey">
-    <v-tabs v-model="tabs" centered>
+    <v-tabs v-model="tabs" centered background-color="cyan darken-1">
       <v-tab>Radar</v-tab>
       <v-tab>Cercle</v-tab>
     </v-tabs>
@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       tabs: null,
+      right: true,
       chartDatas: []
     };
   },
