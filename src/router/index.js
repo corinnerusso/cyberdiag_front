@@ -42,15 +42,12 @@ const routes = [
     name: "Survey",
     component: () => import("@/views/Survey.vue"),
   },
+
+
   {
-    path: "/chart/:id",
-    name: "Chart",
-    component: () => import("@/views/Chart.vue"),
-  },
-  {
-    path: "/radialchart/:id",
-    name: "RadialChart",
-    component: () => import("@/views/RadialChart.vue"),
+    path: "/charts/:id",
+    name: "Charts",
+    component: () => import("@/views/Charts.vue"),
   },
 ];
 
