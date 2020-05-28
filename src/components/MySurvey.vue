@@ -266,8 +266,6 @@ export default {
       } else {
         this.modal = true;
       }
-      console.log(this.notAnsweredQuestions.length);
-      console.log(this.modal);
     },
 
     // close modal

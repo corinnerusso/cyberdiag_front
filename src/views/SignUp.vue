@@ -13,7 +13,6 @@
           <v-text-field
             ref="firstname"
             v-model="firstname"
-            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="Prénom"
             placeholder="Jean"
@@ -24,7 +23,6 @@
           <v-text-field
             ref="lastname"
             v-model="lastname"
-            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="Nom"
             placeholder="Dupont"
@@ -34,7 +32,6 @@
           <v-text-field
             ref="cieName"
             v-model="cieName"
-            :rules="[() => !!cieName || 'Champs obligatoire']"
             :error-messages="errorMessages"
             label="Nom de l'entreprise"
             placeholder="..."
@@ -44,7 +41,6 @@
           <v-text-field
             ref="phoneNumber"
             v-model="phoneNumber"
-            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="N° de téléphone"
             placeholder="0600000000"
@@ -56,7 +52,6 @@
           <v-text-field
             ref="email"
             v-model="email"
-            :rules="[rules.required, rules.email]"
             :error-messages="errorMessages"
             label="Email"
             placeholder="jean.martin@mail.com"
@@ -100,12 +95,58 @@
             :type="show1 ? 'text' : 'password'"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
-            :once="checkPasswords(password, password_confirmation)"
-            :rules="[rules.password]"
-            hide-details="auto"
           ></v-text-field>
 
-          <v-btn color="#175a77" class="mr-4 white--text" @click="handleSubmit">Register</v-btn>
+          <v-checkbox v-model="checkbox" @change="(enableButton())">
+            <template v-slot:label>
+              <div>
+                J'ai lu et j'accepte
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <a
+                      target="_blank"
+                      href="http://localhost:8080/rgpd"
+                      @click.stop
+                      v-on="on"
+                    >les conditions générales d'utilisation</a>
+                  </template>
+                  Ouvre dans un nouvel onglet
+                </v-tooltip>
+              </div>
+            </template>
+          </v-checkbox>
+
+          <!-- <v-btn
+            color="#175a77"
+            class="mr-4 white--text"
+            :disabled="disabled"
+            @click="handleSubmit"
+          >ENREGISTRER</v-btn>-->
+          <v-dialog v-model="dialog" width="500">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                color="#175a77"
+                class="mr-4 white--text"
+                :disabled="disabled"
+                @click="(handleSubmit, showModal)"
+                v-on="on"
+              >Enregistrer</v-btn>
+            </template>
+            <div>
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>Confirmation</v-card-title>
+
+                <v-card-text>Un e-mail de confirmation va vous être envoyé à l'adresse {{this.email}}</v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="dialog = false">Fermer</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
+          </v-dialog>
         </v-form>
       </v-card-text>
     </v-card>
@@ -114,7 +155,7 @@
 
 <script>
 import axios from "axios";
-import { sameAs } from "vuelidate/lib/validators";
+
 export default {
   name: "SignUp",
   data: () => ({
@@ -125,9 +166,9 @@ export default {
     phoneNumber: "",
     password: "",
     password_confirmation: "",
-    color: "green",
-    notcolor: "red",
+    checkbox: false,
 
+    disabled: true,
     samePassword: null,
     errorMessages: "",
     errors: [],
@@ -139,17 +180,9 @@ export default {
 
     show1: false,
 
-    rules: {
-      required: value => !!value || "Champs obligatoire",
-      email: value => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
-      },
-      password: value => (!!value && value !== this.password) || "not ok"
-    }
+    modal: false,
+    dialog: false
   }),
-
-  //vuelidate
 
   //check form
   computed: {
@@ -168,16 +201,21 @@ export default {
   watch: {
     name() {
       this.errorMessages = "";
-      this.checkPassword();
     }
   },
 
   methods: {
-    //*********** */
+    //check if password respect good practicies/
     password_check: function() {
       this.has_number = /\d/.test(this.password);
       this.has_uppercase = /[A-Z]/.test(this.password);
       this.has_special = /[!@#$%^&*+=._-]/.test(this.password);
+    },
+
+    //enable register button if RPSG checkbox is cliked
+    enableButton() {
+      this.disabled = false;
+      console.log("disabled", this.disabled);
     },
 
     //submit form
@@ -193,7 +231,8 @@ export default {
             email: this.email,
             cieName: this.cieName,
             phoneNumber: this.phoneNumber,
-            password: this.password
+            password: this.password_confirmation,
+            RGPD: this.checkbox
           })
           .then(response => {
             console.log(response.data);
@@ -204,21 +243,17 @@ export default {
           });
       }
     },
-    //check if all the fields are completed
-    submit() {
-      this.formHasErrors = false;
 
-      Object.keys(this.form).forEach(f => {
-        if (!this.form[f]) this.formHasErrors = true;
-
-        this.$refs[f].validate(true);
-      });
+    //modal
+    showModal() {
+      if ((this.disabled = false)) {
+        this.modal = true;
+      }
     },
 
     //check if the 2 passwords are the same
 
     checkPasswords(password, password_confirmation) {
-      //   console.log("password", password, "passconf", password_confirmation);
       if (password.length !== password_confirmation) {
         this.samePassword = false;
       }
@@ -235,7 +270,6 @@ export default {
       } else {
         this.samePassword = false;
       }
-      console.log("samepassword", this.samePassword);
     }
   }
 };
