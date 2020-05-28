@@ -9,33 +9,28 @@
 
       <v-card-text>
         <v-form ref="form" class="form">
-          <!-- <v-text-field
-            v-model="firstname"
-            label="Prénom"
-            required
-            :rules="[() => !!name || 'This field is required']"
-          ></v-text-field>-->
-
+          <!-- FIRSTNAME -->
           <v-text-field
             ref="firstname"
             v-model="firstname"
-            :rules="[() => !!firstname || 'Champs obligatoire']"
+            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="Prénom"
             placeholder="Jean"
             required
           ></v-text-field>
-          <!-- <v-text-field v-model="lastname" label="Nom" required></v-text-field> -->
+
+          <!-- LASTNAME -->
           <v-text-field
             ref="lastname"
             v-model="lastname"
-            :rules="[() => !!lastname || 'Champs obligatoire']"
+            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="Nom"
             placeholder="Dupont"
             required
           ></v-text-field>
-          <!-- <v-text-field v-model="cieName" label="Nom de l'entreprise" required></v-text-field> -->
+          <!-- COMPANY NAME -->
           <v-text-field
             ref="cieName"
             v-model="cieName"
@@ -45,42 +40,36 @@
             placeholder="..."
             required
           ></v-text-field>
-          <!-- <v-text-field v-model="phoneNumber" label="N° de téléphone" required></v-text-field> -->
+          <!-- PHONE NUMBER -->
           <v-text-field
             ref="phoneNumber"
             v-model="phoneNumber"
-            :rules="[() => !!phoneNumber || 'Champs obligatoire']"
+            :rules="[rules.required]"
             :error-messages="errorMessages"
             label="N° de téléphone"
             placeholder="0600000000"
+            maxlength="10"
+            counter
             required
           ></v-text-field>
-          <!-- <v-text-field type="email" v-model="email" label="Email" required></v-text-field> -->
+          <!--EMAIL-->
           <v-text-field
             ref="email"
             v-model="email"
-            :rules="[() => !!email || 'Champs obligatoire']"
+            :rules="[rules.required, rules.email]"
             :error-messages="errorMessages"
             label="Email"
             placeholder="jean.martin@mail.com"
             required
           ></v-text-field>
 
-          <!-- <v-text-field v-model="password" type="password" label="Mot de passe" required></v-text-field> -->
-
-          <!-- <v-text-field
-            v-model="password_confirmation"
-            
-            
-            :error-messages="errorMessages"
-            type="password"
-            label="Confirmer le mot de passe"
-            required
-          ></v-text-field>-->
+          <!-- PASSWORD -->
           <v-text-field
             label="Mot de passe"
             placeholder="Mot de passe"
             name="password"
+            minlength="12"
+            counter
             :type="show1 ? 'text' : 'password'"
             @input="password_check"
             v-model="password"
@@ -88,8 +77,8 @@
             @click:append="show1 = !show1"
           ></v-text-field>
           <div class="frmValidation">
-            <p :class="{'frmValidation--passed' : password.length > 12}">
-              <v-icon v-if="password.length > 12">done</v-icon>Doit contenir au moins 12 caractères
+            <p :class="{'frmValidation--passed' : password.length > 11}">
+              <v-icon v-if="password.length > 11">done</v-icon>Doit contenir au moins 12 caractères
             </p>
             <p :class="{'frmValidation--passed' :has_uppercase }">
               <v-icon v-if="has_uppercase">done</v-icon>Une lettre en majuscule
@@ -102,6 +91,8 @@
               <v-icon v-if="has_special">done</v-icon>Un caractère special
             </p>
           </div>
+
+          <!-- PASSWORD CONFIRMATION -->
           <v-text-field
             label="Confirmer le mot de passe"
             v-model="password_confirmation"
@@ -109,9 +100,11 @@
             :type="show1 ? 'text' : 'password'"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
-            @click="checkPassword()"
-            :color="samePassword ? 'green' : 'red'"
+            :once="checkPasswords(password, password_confirmation)"
+            :rules="[rules.password]"
+            hide-details="auto"
           ></v-text-field>
+
           <v-btn color="#175a77" class="mr-4 white--text" @click="handleSubmit">Register</v-btn>
         </v-form>
       </v-card-text>
@@ -121,7 +114,7 @@
 
 <script>
 import axios from "axios";
-
+import { sameAs } from "vuelidate/lib/validators";
 export default {
   name: "SignUp",
   data: () => ({
@@ -132,7 +125,10 @@ export default {
     phoneNumber: "",
     password: "",
     password_confirmation: "",
-    samePassword: "",
+    color: "green",
+    notcolor: "red",
+
+    samePassword: null,
     errorMessages: "",
     errors: [],
     formHasErrors: false,
@@ -141,8 +137,19 @@ export default {
     has_uppercase: false,
     has_special: false,
 
-    show1: false
+    show1: false,
+
+    rules: {
+      required: value => !!value || "Champs obligatoire",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Invalid e-mail.";
+      },
+      password: value => (!!value && value !== this.password) || "not ok"
+    }
   }),
+
+  //vuelidate
 
   //check form
   computed: {
@@ -169,7 +176,6 @@ export default {
     //*********** */
     password_check: function() {
       this.has_number = /\d/.test(this.password);
-
       this.has_uppercase = /[A-Z]/.test(this.password);
       this.has_special = /[!@#$%^&*+=._-]/.test(this.password);
     },
@@ -210,17 +216,26 @@ export default {
     },
 
     //check if the 2 passwords are the same
-    checkPassword() {
-      let password = this.password;
-      let password_confirmation = this.password_confirmation;
-      if (password === password_confirmation) {
+
+    checkPasswords(password, password_confirmation) {
+      //   console.log("password", password, "passconf", password_confirmation);
+      if (password.length !== password_confirmation) {
+        this.samePassword = false;
+      }
+      let newPassword = password
+        .split("")
+        .sort()
+        .join("");
+      let newPasswordConfirmation = password_confirmation
+        .split("")
+        .sort()
+        .join("");
+      if (newPassword === newPasswordConfirmation) {
         this.samePassword = true;
-        console.log("samepass", this.samePassword);
-        console.log("this.password", this.password);
-        console.log("pass-cong", this.password_confirmation);
       } else {
         this.samePassword = false;
       }
+      console.log("samepassword", this.samePassword);
     }
   }
 };
