@@ -7,7 +7,7 @@
           <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
-            <!-- boutton "nouveau questionnaire" -->
+            <!-- new survey button-->
             <template v-slot:activator="{ on }">
               <v-btn color="#40778f" dark class="mb-2" v-on="on">Nouveau questionnaire</v-btn>
             </template>
@@ -17,22 +17,22 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <!-- "Questinnaire" input dans la modal -->
+                    <!-- "survey title -->
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.survey_title" label="Questionnaire"></v-text-field>
                     </v-col>
 
-                    <!-- "Nom du client" input dans la modal -->
+                    <!-- client name -->
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.client_name" label="Client"></v-text-field>
                     </v-col>
-                    <!-- "Créé le" input dans la modal -->
+                    <!-- creation date -->
                     <v-col cols="12" sm="6" md="4">
                       <span>Crée le</span>
                       <br />
                       <input type="date" v-model="editedItem.creation_date" label="Créé le" />
                     </v-col>
-                    <!-- "Type d'entreprise" input dans la modal -->
+                    <!-- company type -->
                     <v-col cols="12" sm="6" md="4">
                       <v-overflow-btn
                         v-model="editedItem.company"
