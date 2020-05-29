@@ -79,6 +79,7 @@ export default {
 
     editedIndex: -1,
     editedItem: {
+      ok: "",
       comments: ""
     }
   }),
