@@ -105,7 +105,7 @@
                   <template v-slot:activator="{ on }">
                     <a
                       target="_blank"
-                      href="http://localhost:8080/rgpd"
+                      href="http://localhost:8080/general-terms"
                       @click.stop
                       v-on="on"
                     >les conditions générales d'utilisation</a>
@@ -116,36 +116,46 @@
             </template>
           </v-checkbox>
 
-          <!-- <v-btn
-            color="#175a77"
-            class="mr-4 white--text"
-            :disabled="disabled"
-            @click="handleSubmit"
-          >ENREGISTRER</v-btn>-->
           <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ on }">
               <v-btn
                 color="#175a77"
                 class="mr-4 white--text"
                 :disabled="disabled"
-                @click="(handleSubmit, showModal)"
+                @click="(checkPasswords(password, password_confirmation),handleSubmit(), showModal)"
                 v-on="on"
               >Enregistrer</v-btn>
             </template>
-            <div>
-              <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>Confirmation</v-card-title>
 
-                <v-card-text>Un e-mail de confirmation va vous être envoyé à l'adresse {{this.email}}</v-card-text>
+            <v-card v-if="samePassword==true">
+              <v-card-title class="headline grey lighten-2" primary-title>Confirmation</v-card-title>
 
-                <v-divider></v-divider>
+              <v-card-text>Un e-mail de confirmation va vous être envoyé à l'adresse {{this.email}}</v-card-text>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <router-link to="/">
                   <v-btn color="primary" text @click="dialog = false">Fermer</v-btn>
-                </v-card-actions>
-              </v-card>
-            </div>
+                </router-link>
+              </v-card-actions>
+            </v-card>
+
+            <!-- *** -->
+
+            <v-card v-if="samePassword==false">
+              <v-card-title class="headline grey lighten-2" primary-title>ERREUR</v-card-title>
+
+              <v-card-text>Les mots de passe ne correspondent pas</v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog = false">Fermer</v-btn>
+              </v-card-actions>
+            </v-card>
           </v-dialog>
         </v-form>
       </v-card-text>
@@ -181,7 +191,9 @@ export default {
     show1: false,
 
     modal: false,
-    dialog: false
+    dialog: false,
+
+    modalError: false
   }),
 
   //check form
@@ -212,17 +224,18 @@ export default {
       this.has_special = /[!@#$%^&*+=._-]/.test(this.password);
     },
 
-    //enable register button if RPSG checkbox is cliked
+    //enable register button if CGU checkbox is cliked
     enableButton() {
-      this.disabled = false;
-      console.log("disabled", this.disabled);
+      this.disabled = !this.disabled;
+      console.log(this.disabled);
     },
 
     //submit form
     handleSubmit() {
       if (
         this.password === this.password_confirmation &&
-        this.password.length > 0
+        this.password.length > 0 &&
+        this.password_confirmation.length > 0
       ) {
         axios
           .post(`http://localhost:3005/users`, {
@@ -232,7 +245,7 @@ export default {
             cieName: this.cieName,
             phoneNumber: this.phoneNumber,
             password: this.password_confirmation,
-            RGPD: this.checkbox
+            RGPD: !this.disabled
           })
           .then(response => {
             console.log(response.data);
@@ -270,6 +283,7 @@ export default {
       } else {
         this.samePassword = false;
       }
+      console.log("samePassword", this.samePassword);
     }
   }
 };

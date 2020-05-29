@@ -55,11 +55,7 @@ const routes = [
     component: () => import("@/views/Charts.vue"),
   },
 
-  {
-    path: "/rgpd",
-    name: "RGPD",
-    component: () => import("@/views/RGPD.vue"),
-  },
+
 ];
 
 const router = new VueRouter({
