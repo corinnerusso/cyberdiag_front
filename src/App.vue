@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <Navbar />
+    <Navbar v-if="showIt" />
 
     <router-view></router-view>
     <Footer />
@@ -17,6 +17,12 @@ export default {
   components: {
     Navbar,
     Footer
+  },
+
+  computed: {
+    showIt() {
+      return this.$route.path !== "/" && this.$route.path !== "/register";
+    }
   }
 };
 </script>
