@@ -245,7 +245,7 @@ export default {
             cieName: this.cieName,
             phoneNumber: this.phoneNumber,
             password: this.password_confirmation,
-            RGPD: !this.disabled
+            CGU: !this.disabled
           })
           .then(response => {
             console.log(response.data);
