@@ -1,10 +1,25 @@
 <template>
   <div>
-    <v-data-table :headers="headers" :items="surveys" sort-by="client" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="surveys"
+      sort-by="client"
+      class="elevation-1"
+      :search="search"
+    >
       <template v-slot:top>
-        <p>BARRE DE RECHERCHE</p>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Chercher"
+          single-line
+          hide-details
+        ></v-text-field>
         <v-toolbar color="#4CA3BB">
-          <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
+          <v-toolbar-title style="color:white">
+            MES QUESTIONNAIRES
+            <v-spacer></v-spacer>
+          </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <!-- new survey button-->
@@ -30,7 +45,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <span>Crée le</span>
                       <br />
-                      <input type="date" v-model="editedItem.creation_date" label="Créé le" />
+                      <input type="date" v-model="editedItem.survey_creation_date" label="Créé le" />
                     </v-col>
                     <!-- company type -->
                     <v-col cols="12" sm="6" md="4">
@@ -95,6 +110,7 @@ export default {
   name: "HomePage",
 
   data: () => ({
+    search: "",
     showSurvey: null,
     currentSurvey: null,
     currentIndex: -1,
@@ -134,7 +150,7 @@ export default {
       },
       { text: "Nom du client", value: "client_name" },
       { text: "Type d'entreprise", value: "company.company_type" },
-      { text: "Créé le", value: "creation_date" },
+      { text: "Créé le", value: "survey_creation_date" },
 
       { text: "Actions", value: "actions", sortable: false }
     ],
@@ -144,7 +160,7 @@ export default {
       survey_title: "",
       client_name: "",
       company: "",
-      creation_date: ""
+      survey_creation_date: ""
     }
   }),
 
@@ -208,7 +224,7 @@ export default {
           .put(`http://localhost:3005/surveys/` + this.editedItem.id, {
             survey_title: this.editedItem.survey_title,
             client_name: this.editedItem.client_name,
-            creation_date: this.editedItem.creation_date,
+            survey_creation_date: this.editedItem.survey_creation_date,
             company: this.editedItem.company
           })
           .then(response => {
@@ -225,7 +241,7 @@ export default {
             .post(`http://localhost:3005/surveys`, {
               survey_title: this.editedItem.survey_title,
               client_name: this.editedItem.client_name,
-              creation_date: this.editedItem.creation_date,
+              survey_creation_date: this.editedItem.survey_creation_date,
               company: this.editedItem.company
             })
             .then(response => {

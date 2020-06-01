@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px" class="home">CONDITIONS GENERALES</div>
+  <div style="margin-top:100px">CONDITIONS GENERALES</div>
 </template>
 
 <script>

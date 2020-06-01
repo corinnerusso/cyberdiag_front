@@ -70,7 +70,7 @@
               color="blue-grey darken-4"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit(),showChart()"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit(),showChart(), closeModal()"
             >Soumettre</v-btn>
           </template>
           <div v-if="modal">
