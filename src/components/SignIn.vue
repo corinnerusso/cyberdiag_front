@@ -4,28 +4,20 @@
       <h2>Login</h2>
       <form>
         <div class="inputBox">
-          <input
-            type="email"
-            name="email"
-            required
-            onkeyup="this.setAttribute('value', this.value);"
-            value
-          />
-          <label>Identifiant</label>
+          <v-text-field v_model="email" type="email" label="email" required></v-text-field>
         </div>
         <div class="inputBox">
-          <input
-            type="password"
-            name="password"
+          <v-text-field
+            v-model="password"
+            label="password"
+            :type="show1 ? 'text' : 'password'"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="show1 = !show1"
             required
-            value
-            onkeyup="this.setAttribute('value', this.value);"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-          />
-          <label>Mot de passe</label>
+          ></v-text-field>
         </div>
-        <input type="submit" name="sign-in" value="Sign In" />
+        <!-- <input type="submit" name="sign-in" value="Sign In" @click="handleSubmit()" /> -->
+        <v-btn color="#175a77" class="mr-4" @click="handleSubmit">Login</v-btn>
       </form>
       <div class="signup">
         <p class="user">Nouvel utilisateur ?</p>
@@ -38,8 +30,65 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "SignIn"
+  name: "SignIn",
+
+  data() {
+    return {
+      email: "",
+      password: "",
+      users: [],
+
+      show1: false
+    };
+  },
+
+  mounted() {
+    this.getAll();
+  },
+
+  methods: {
+    getAll() {
+      axios.get("http://localhost:3005/users").then(response => {
+        this.users = response.data;
+        console.log(response.data);
+      });
+    },
+
+    handleSubmit(e) {
+      e.preventDefault();
+      if (this.password.length > 0) {
+        axios
+          .post("http://localhost:3005/login", {
+            email: this.email,
+            password: this.password
+          })
+          .then(response => {
+            /* let is_admin = response.data.user.is_admin */
+            let is_admin = response.data.user.user.is_admin;
+            console.log(is_admin);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            localStorage.setItem("jwt", response.data.token);
+            if (localStorage.getItem("jwt") != null) {
+              this.$emit("loggedIn");
+              if (this.$route.params.nextUrl != null) {
+                this.$router.push(this.$route.params.nextUrl);
+              } else {
+                if (is_admin !== "admin") {
+                  this.$router.push("home");
+                } else {
+                  this.$router.push("dashboard");
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.error(error.response);
+          });
+      }
+    }
+  }
 };
 </script>
 
