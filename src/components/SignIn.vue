@@ -3,7 +3,7 @@
     <div class="box">
       <h2>Login</h2>
       <form>
-        <p class="error" v-if="error===400">Mot de pass ou email erroné</p>
+        <p class="error" v-if="error===400">Mot de passe ou email erroné</p>
         <div class="inputBox">
           <v-text-field v-model="email" type="email" label="email" required></v-text-field>
         </div>

@@ -48,7 +48,7 @@
                           surveyAnswer.answer_quote, 
                           currentSurveys.survey_title, 
                           surveyTopic.topic_title, 
-                          surveyTopic.topic_max_quote), onClick()"
+                          surveyTopic.topic_max_quote)"
                       />
                       <label>{{ surveyAnswer.answer_title }}</label>
                     </div>

@@ -59,7 +59,7 @@ export default {
       } else {
         this.role = "Admin";
       }
-      this.myProfile = userStatus.user.lastname;
+      this.myProfile = userStatus.user.firstname;
     },
     checkProfileStatus() {
       const userStatus = JSON.parse(localStorage.getItem("user"));
