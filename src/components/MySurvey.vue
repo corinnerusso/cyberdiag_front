@@ -1,8 +1,6 @@
 <template>
   <div class="infos">
-    <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
-
-    <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
+    <p>{{ currentSurveys.survey_title }}</p>
 
     <div>
       <!-- 1rst loop to parse all datas -->
@@ -61,32 +59,34 @@
       </div>
       <br />
 
-      <!-- modal -->
       <div class="text-center">
         <v-dialog width="500">
           <template v-slot:activator="{ on }">
             <v-btn
               class="v-btn"
-              color="blue-grey darken-4"
+              color="#175a77"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit(),showChart(), closeModal()"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal(),finalSubmit(),showChart(), closeModal())"
             >Soumettre</v-btn>
           </template>
-          <div v-if="modal">
-            <v-card>
-              <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
+          <!-- modal -->
+          <template v-if="modal">
+            <div>
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
 
-              <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
+                <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
 
-              <v-divider></v-divider>
+                <v-divider></v-divider>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
-              </v-card-actions>
-            </v-card>
-          </div>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
+          </template>
           <!-- ******************* -->
         </v-dialog>
       </div>
@@ -116,7 +116,7 @@ export default {
     checkedQuestions: [],
     currentSurveys: [],
     finalArray: [],
-    modal: false,
+    modal: true,
     notAnsweredQuestions: [],
     isSurveyId: null,
     isModelId: null,
@@ -134,7 +134,6 @@ export default {
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
         this.currentSurveys = response.data;
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -170,6 +169,7 @@ export default {
         topic_max_quote
       };
       this.finalArray[questionId] = finalAnswer;
+      console.log(this.finalArray);
     },
 
     //********** SUBMIT BUTTON FUNCTIONS ****************//
@@ -203,7 +203,7 @@ export default {
     },
 
     //compare two arrays, checkedQuestions[] and allQuestionsIds[] and create an array
-    //array with all questions not checked (notAnsweredQuestions[])
+    // with all questions not checked (notAnsweredQuestions[])
     compareArrays(allQuestionsIds, checkedQuestions) {
       const array1 = allQuestionsIds
         .toString()
@@ -263,18 +263,18 @@ export default {
     //show modal
     showModal() {
       if (this.notAnsweredQuestions.length < 1) {
-        this.modal = false;
-      } else {
         this.modal = true;
+      } else {
+        this.modal = false;
       }
     },
 
     // close modal
     closeModal() {
-      if (this.modal == false) {
-        this.modal = true;
-      } else {
+      if (this.modal == true) {
         this.modal = false;
+      } else {
+        this.modal = true;
       }
     },
 
