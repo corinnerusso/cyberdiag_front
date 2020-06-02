@@ -170,12 +170,12 @@ export default {
     password: "",
     password_confirmation: "",
     checkbox: false,
+    date: "",
 
     disabled: true,
     samePassword: null,
     errorMessages: "",
     errors: [],
-    formHasErrors: false,
 
     has_number: false,
     has_uppercase: false,
@@ -184,9 +184,7 @@ export default {
     show1: false,
 
     modal: false,
-    dialog: false,
-
-    modalError: false
+    dialog: false
   }),
 
   //check form
@@ -207,6 +205,10 @@ export default {
     name() {
       this.errorMessages = "";
     }
+  },
+
+  mounted() {
+    this.getPresentDate();
   },
 
   methods: {
@@ -238,7 +240,8 @@ export default {
             cie_name: this.cieName,
             phone_number: this.phoneNumber,
             password: this.password_confirmation,
-            CGU: !this.disabled
+            CGU: !this.disabled,
+            user_creation_date: this.date
           })
           .then(response => {
             console.log(response.data);
@@ -279,6 +282,7 @@ export default {
       console.log("samePassword", this.samePassword);
     },
 
+    //Empty datas when form is sent
     DeleteInfosAfterRegister() {
       (this.firstname = ""),
         (this.lastname = ""),
@@ -286,8 +290,21 @@ export default {
         (this.email = ""),
         (this.password = ""),
         (this.password_confirmation = "");
+    },
+
+    getPresentDate() {
+      var currentDate = new Date();
+
+      this.date = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "/");
+
+      console.log("currentDate", this.date);
     }
   }
+
+  //post
 };
 </script>
 

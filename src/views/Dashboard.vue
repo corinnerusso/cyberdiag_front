@@ -106,7 +106,7 @@ export default {
     },
     getAllUsers() {
       axios
-        .get(`http://localhost:3005/users/dashboard`)
+        .get(`http://localhost:3005/users`)
         .then(response => {
           this.users = response.data;
           console.log("response.data", response.data);

@@ -134,6 +134,7 @@ export default {
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
         this.currentSurveys = response.data;
+        console.log(response.data);
       })
       .catch(e => {
         console.log(e);

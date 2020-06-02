@@ -4,7 +4,7 @@
       <h2>Login</h2>
       <form>
         <div class="inputBox">
-          <v-text-field v_model="email" type="email" label="email" required></v-text-field>
+          <v-text-field v-model="email" type="email" label="email" required></v-text-field>
         </div>
         <div class="inputBox">
           <v-text-field
@@ -13,6 +13,7 @@
             :type="show1 ? 'text' : 'password'"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
+            @keyup.enter="handleSubmit"
             required
           ></v-text-field>
         </div>
@@ -75,7 +76,7 @@ export default {
               if (this.$route.params.nextUrl != null) {
                 this.$router.push(this.$route.params.nextUrl);
               } else {
-                if (is_admin !== "admin") {
+                if (is_admin !== 1) {
                   this.$router.push("home");
                 } else {
                   this.$router.push("dashboard");
