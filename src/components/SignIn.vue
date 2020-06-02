@@ -3,6 +3,7 @@
     <div class="box">
       <h2>Login</h2>
       <form>
+        <p class="error" v-if="error===400">Mot de pass ou email erroné</p>
         <div class="inputBox">
           <v-text-field v-model="email" type="email" label="email" required></v-text-field>
         </div>
@@ -18,7 +19,7 @@
           ></v-text-field>
         </div>
         <!-- <input type="submit" name="sign-in" value="Sign In" @click="handleSubmit()" /> -->
-        <v-btn color="#175a77" class="mr-4" @click="handleSubmit">Login</v-btn>
+        <v-btn color="#175a77" class="vbtn" @click="handleSubmit">Login</v-btn>
       </form>
       <div class="signup">
         <p class="user">Nouvel utilisateur ?</p>
@@ -40,6 +41,7 @@ export default {
       email: "",
       password: "",
       users: [],
+      error: "",
 
       show1: false
     };
@@ -50,10 +52,13 @@ export default {
   },
 
   methods: {
+    getError() {
+      console.log(error);
+    },
+
     getAll() {
       axios.get("http://localhost:3005/users").then(response => {
         this.users = response.data;
-        console.log(response.data);
       });
     },
 
@@ -65,27 +70,38 @@ export default {
             email: this.email,
             password: this.password
           })
-          .then(response => {
-            /* let is_admin = response.data.user.is_admin */
-            let is_admin = response.data.user.user.is_admin;
-            console.log(is_admin);
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-            localStorage.setItem("jwt", response.data.token);
-            if (localStorage.getItem("jwt") != null) {
-              this.$emit("loggedIn");
-              if (this.$route.params.nextUrl != null) {
-                this.$router.push(this.$route.params.nextUrl);
-              } else {
-                if (is_admin !== 1) {
-                  this.$router.push("home");
+          .then(
+            response => {
+              console.log("response.data", response.data.data);
+
+              /* let is_admin = response.data.user.is_admin */
+              let is_admin = response.data.user.user.is_admin;
+              console.log(is_admin);
+              localStorage.setItem("user", JSON.stringify(response.data.user));
+              localStorage.setItem("jwt", response.data.token);
+              if (localStorage.getItem("jwt") == null) {
+                this.showError !== this.showError;
+              }
+              if (localStorage.getItem("jwt") != null) {
+                this.$emit("loggedIn");
+
+                if (this.$route.params.nextUrl != null) {
+                  this.$router.push(this.$route.params.nextUrl);
                 } else {
-                  this.$router.push("dashboard");
+                  if (is_admin !== 1) {
+                    this.$router.push("home");
+                  } else {
+                    this.$router.push("dashboard");
+                  }
                 }
               }
+            },
+            error => {
+              this.error = error.response.status;
             }
-          })
+          )
           .catch(function(error) {
-            console.error(error.response);
+            console.error("error lalala", error.response);
           });
       }
     }
@@ -107,14 +123,18 @@ export default {
   cursor: pointer;
   color: white;
 }
+.vbtn {
+  color: white;
+}
+.error {
+  color: red;
+  background-color: transparent !important;
+}
 
 .user {
   padding-top: 5%;
 }
-.login {
-  padding-left: 10%;
-  padding-right: 10%;
-}
+
 .box {
   position: absolute;
   top: 50%;
