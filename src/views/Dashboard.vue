@@ -1,16 +1,27 @@
 <template>
-  <div style="margin-top:100px">
-    <v-data-table :headers="headers" :items="users" sort-by="cie_name" class="elevation-1">
+  <div style="margin-top:100px; margin-left:2%; margin-right:2%">
+    <v-data-table
+      :search="search"
+      :headers="headers"
+      :items="users"
+      sort-by="cie_name"
+      class="elevation-1"
+    >
       <template v-slot:top>
         <v-toolbar flat color="white">
           <v-toolbar-title>DASHBOARD</v-toolbar-title>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Chercher"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
-            <!-- comments button" -->
-            <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">Ajouter commentaires</v-btn>
-            </template>
             <v-card>
               <!-- MODAL -->
               <v-card-text>
@@ -26,7 +37,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -51,7 +62,7 @@ export default {
   name: "Dashboard",
   data: () => ({
     dialog: false,
-
+    search: "",
     users: [],
     errors: [],
     hasSurvey: [],
@@ -74,7 +85,7 @@ export default {
       { text: "Date de création", value: "user_creation_date" },
       { text: "A rempli un questionnaire", value: "surveys[0].id" },
       { text: "Commentaires", value: "comments" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "Ajouter/modifier", value: "actions", sortable: false }
     ],
 
     editedIndex: -1,
@@ -106,7 +117,7 @@ export default {
     },
     getAllUsers() {
       axios
-        .get(`http://localhost:3005/users/dashboard`)
+        .get(`http://localhost:3005/users`)
         .then(response => {
           this.users = response.data;
           console.log("response.data", response.data);
@@ -139,7 +150,7 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         axios
-          .put(`http://localhost:3005/users/` + this.editedItem.userId, {
+          .put(`http://localhost:3005/users/` + this.editedItem.id, {
             comments: this.editedItem.comments
           })
           .then(response => {

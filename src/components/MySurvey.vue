@@ -1,92 +1,88 @@
 <template>
   <div class="infos">
-    <p>Nom du questionnaire : {{ currentSurveys.survey_title }}</p>
-
-    <p>Type d'entreprise : {{ currentSurveys.company.company_type }}</p>
-
     <div>
+      QUESTIONNAIRE
+      {{isUserId}}
       <!-- 1rst loop to parse all datas -->
-      <div v-for="(currentSurvey, index) in currentSurveys" v-bind:key="index">
+      <div v-for="(currentSurvey, index) in userSurvey.company.models" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
             <!-- 2nd loop to access models -->
+
+            <!-- 3rd loop to access topics -->
             <v-expansion-panel
-              v-for="(surveyModel, index) in currentSurvey.models"
+              v-for="(surveyTopic, index) in currentSurvey.topics"
               v-bind:key="index"
             >
-              <!-- 3rd loop to access topics -->
-              <v-expansion-panel
-                v-for="(surveyTopic, index) in surveyModel.topics"
+              <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
+
+              <!-- 4th loop to access questions -->
+              <v-expansion-panel-content
+                v-for="(surveyQuestion, index) in surveyTopic.questions"
                 v-bind:key="index"
               >
-                <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
+                <div style="text-align : start">
+                  <p style="font-weight:bold">
+                    {{ surveyQuestion.questionId }} -
+                    {{ surveyQuestion.question_title }}
+                  </p>
+                  <p style="font-style:italic">{{ surveyQuestion.comments }}</p>
+                  <!-- 5th loop to access answers -->
 
-                <!-- 4th loop to access questions -->
-                <v-expansion-panel-content
-                  v-for="(surveyQuestion, index) in surveyTopic.questions"
-                  v-bind:key="index"
-                >
-                  <div style="text-align : start">
-                    <p style="font-weight:bold">
-                      {{ surveyQuestion.questionId }} -
-                      {{ surveyQuestion.question_title }}
-                    </p>
-                    <p style="font-style:italic">{{ surveyQuestion.comments }}</p>
-                    <!-- 5th loop to access answers -->
-
-                    <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
-                      <input
-                        type="radio"
-                        :value="surveyAnswer.answerId"
-                        v-model="surveyQuestion.answer"
-                        @change="getCheckedIds(
-                          currentSurveys.id,
-                          surveyModel.modelId,
+                  <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
+                    <input
+                      type="radio"
+                      :value="surveyAnswer.answerId"
+                      v-model="surveyQuestion.answer"
+                      @change="getCheckedIds(
+                          userSurvey.id,
+                         userSurvey.company.models[0].modelId,
                           surveyTopic.topicId, 
                           surveyQuestion.questionId, 
                           surveyAnswer.answerId, 
                           surveyAnswer.answer_quote, 
-                          currentSurveys.survey_title, 
+                          userSurvey.survey_title, 
                           surveyTopic.topic_title, 
-                          surveyTopic.topic_max_quote), onClick()"
-                      />
-                      <label>{{ surveyAnswer.answer_title }}</label>
-                    </div>
+                          surveyTopic.topic_max_quote)"
+                    />
+                    <label>{{ surveyAnswer.answer_title }}</label>
                   </div>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
+                </div>
+              </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
         </v-row>
       </div>
       <br />
 
-      <!-- modal -->
       <div class="text-center">
         <v-dialog width="500">
           <template v-slot:activator="{ on }">
             <v-btn
               class="v-btn"
-              color="blue-grey darken-4"
+              color="#175a77"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal()),finalSubmit(),showChart(), closeModal()"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal(),finalSubmit(),showChart(), closeModal())"
             >Soumettre</v-btn>
           </template>
-          <div v-if="modal">
-            <v-card>
-              <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
+          <!-- modal -->
+          <template v-if="modal">
+            <div>
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>Réponses manquantes</v-card-title>
 
-              <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
+                <v-card-text>Merci de répondre aux questions suivantes : {{notAnsweredQuestions}}.</v-card-text>
 
-              <v-divider></v-divider>
+                <v-divider></v-divider>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
-              </v-card-actions>
-            </v-card>
-          </div>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="(closeModal(), emptyArrays())">Fermer</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
+          </template>
           <!-- ******************* -->
         </v-dialog>
       </div>
@@ -114,9 +110,9 @@ export default {
     cliked: false,
     allQuestionsIds: [],
     checkedQuestions: [],
-    currentSurveys: [],
+
     finalArray: [],
-    modal: false,
+    modal: true,
     notAnsweredQuestions: [],
     isSurveyId: null,
     isModelId: null,
@@ -126,23 +122,32 @@ export default {
     isAnswer_quote: null,
     isSurveyTitle: null,
     isTopicTitle: null,
-    isTopicMaxQuote: null
+    isTopicMaxQuote: null,
+
+    userSurvey: [],
+    isUserId: null
   }),
 
   created() {
     axios
       .get(`http://localhost:3005/surveys/` + this.$route.params.id)
       .then(response => {
-        this.currentSurveys = response.data;
+        this.userSurvey = response.data;
       })
       .catch(e => {
         console.log(e);
-      });
+      }),
+      this.setUserId();
   },
 
-  beforeMount() {},
-
   methods: {
+    //set userId
+    setUserId: function() {
+      this.storageUser = JSON.parse(localStorage.getItem("user"));
+      this.isUserId = this.storageUser.user.id;
+      console.log("userId", this.isUserId);
+    },
+
     //********** RADIO BUTTON FUNCTIONS ****************//
 
     //function to modelize all the checked ids as an array of ids object (finalArray)
@@ -169,6 +174,7 @@ export default {
         topic_max_quote
       };
       this.finalArray[questionId] = finalAnswer;
+      console.log(this.finalArray);
     },
 
     //********** SUBMIT BUTTON FUNCTIONS ****************//
@@ -192,7 +198,7 @@ export default {
 
     //create an array with all the ids of the current survey (allQuestionsIds[])
     showIds() {
-      this.currentSurveys.company.models.forEach(item => {
+      this.userSurvey.company.models.forEach(item => {
         item.topics.forEach(topic => {
           topic.questions.forEach(question =>
             this.allQuestionsIds.push(question.questionId)
@@ -202,7 +208,7 @@ export default {
     },
 
     //compare two arrays, checkedQuestions[] and allQuestionsIds[] and create an array
-    //array with all questions not checked (notAnsweredQuestions[])
+    // with all questions not checked (notAnsweredQuestions[])
     compareArrays(allQuestionsIds, checkedQuestions) {
       const array1 = allQuestionsIds
         .toString()
@@ -248,7 +254,8 @@ export default {
                 answerQuote: this.isAnswer_quote,
                 surveyTitle: this.isSurveyTitle,
                 topicTitle: this.isTopicTitle,
-                topicQuote: this.isTopicMaxQuote
+                topicQuote: this.isTopicMaxQuote,
+                userId: this.isUserId
               })
               .then(function(data) {
                 console.log(data);
@@ -262,18 +269,18 @@ export default {
     //show modal
     showModal() {
       if (this.notAnsweredQuestions.length < 1) {
-        this.modal = false;
-      } else {
         this.modal = true;
+      } else {
+        this.modal = false;
       }
     },
 
     // close modal
     closeModal() {
-      if (this.modal == false) {
-        this.modal = true;
-      } else {
+      if (this.modal == true) {
         this.modal = false;
+      } else {
+        this.modal = true;
       }
     },
 

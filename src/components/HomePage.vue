@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p style="color:white">{{editedItem.isUserId}}</p>
     <v-data-table
       :headers="headers"
       :items="surveys"
@@ -8,18 +9,18 @@
       :search="search"
     >
       <template v-slot:top>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Chercher"
-          single-line
-          hide-details
-        ></v-text-field>
         <v-toolbar color="#4CA3BB">
-          <v-toolbar-title style="color:white">
-            MES QUESTIONNAIRES
-            <v-spacer></v-spacer>
-          </v-toolbar-title>
+          <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Chercher"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <!-- new survey button-->
@@ -72,22 +73,33 @@
       <!-- ACTIONS -->
       <template v-slot:item.actions="{ item }">
         <!-- Remplir le questionnaire -->
-        <router-link class="router-link" :to="`/survey/${item.id}`">
-          <v-icon
-            class="router-link"
-            title="Remplir le questionnaire"
-            small
-            v-model="editedItem.company"
-            @click="showSurvey = editedItem.id"
-          >mdi-pencil</v-icon>
-        </router-link>
-
+        <span v-if="!hasSurvey">
+          <router-link class="router-link" :to="`/survey/${item.id}`">
+            <v-icon
+              class="router-link"
+              title="Remplir le questionnaire"
+              small
+              v-model="editedItem.id"
+              @click="((showSurvey = editedItem.id),userHasSurvey(item))"
+            >mdi-pencil</v-icon>
+          </router-link>
+        </span>
+        <span v-else>
+          <router-link class="router-link" :to="`/survey/${item.id}`">
+            <v-icon
+              class="router-link"
+              title="Questionnaire déjà complété"
+              small
+              v-model="editedItem.id"
+            >done</v-icon>
+          </router-link>
+        </span>
         <!-- Voir le graphique -->
         <router-link class="router-link" :to="`/charts/${item.id}`">
           <v-icon
             small
             title="Voir les résultats"
-            v-model="editedItem.company"
+            v-model="editedItem.id"
             @click="showSurvey = editedItem.id"
           >trending_up</v-icon>
         </router-link>
@@ -160,12 +172,17 @@ export default {
       survey_title: "",
       client_name: "",
       company: "",
-      survey_creation_date: ""
-    }
+      survey_creation_date: "",
+      isUserId: ""
+    },
+
+    storageUser: null,
+    hasSurvey: false
   }),
 
   mounted() {
     this.retrieveAllSurveys();
+    this.setUserId();
   },
 
   updated() {
@@ -178,15 +195,34 @@ export default {
   },
 
   methods: {
+    //*********** */
+    //set has_a_survey column from false to true in backend
+    userHasSurvey(item) {
+      const index = this.surveys.indexOf(item);
+      axios
+        .put(`http://localhost:3005/surveys/` + item.id, {
+          has_a_survey: true
+        })
+        .then(response => {
+          console.log(response);
+        });
+    },
+
+    //set userId
+    setUserId() {
+      this.storageUser = JSON.parse(localStorage.getItem("user"));
+      this.editedItem.isUserId = this.storageUser.user.id;
+    },
+
     editItem(item) {
       this.editedIndex = this.surveys.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
+    //retrieve all surveys for the user connected
     retrieveAllSurveys() {
       axios
-        .get(`http://localhost:3005/surveys`)
+        .get(`http://localhost:3005/surveys/user/` + this.editedItem.isUserId)
         .then(response => {
           this.surveys = response.data;
         })
@@ -195,11 +231,13 @@ export default {
         });
     },
 
+    //set the survey and survey index
     setActiveSurvey(survey, index) {
       this.currentSurvey = survey;
       this.currentIndex = index;
     },
 
+    //delete a survey
     deleteItem(item) {
       const index = this.surveys.indexOf(item);
       confirm("Suppression de ce questionnaire ?") &&
@@ -211,6 +249,7 @@ export default {
         });
     },
 
+    //close modal
     close() {
       this.dialog = false;
       setTimeout(() => {
@@ -218,6 +257,7 @@ export default {
       }, 300);
     },
 
+    //save a new survey or change an existed one
     save() {
       if (this.editedIndex > -1) {
         axios
@@ -225,7 +265,8 @@ export default {
             survey_title: this.editedItem.survey_title,
             client_name: this.editedItem.client_name,
             survey_creation_date: this.editedItem.survey_creation_date,
-            company: this.editedItem.company
+            company: this.editedItem.company,
+            user: this.editedItem.isUserId
           })
           .then(response => {
             console.log(response);
@@ -235,14 +276,13 @@ export default {
         this.close();
       } else {
         {
-          console.log("created data");
-          console.log(this.editedItem);
           axios
             .post(`http://localhost:3005/surveys`, {
               survey_title: this.editedItem.survey_title,
               client_name: this.editedItem.client_name,
               survey_creation_date: this.editedItem.survey_creation_date,
-              company: this.editedItem.company
+              company: this.editedItem.company,
+              user: this.editedItem.isUserId
             })
             .then(response => {
               console.log("response", response);

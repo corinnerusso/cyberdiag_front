@@ -15,7 +15,6 @@
             v-model="firstname"
             :error-messages="errorMessages"
             label="Prénom"
-            placeholder="Jean"
             required
           ></v-text-field>
 
@@ -25,7 +24,6 @@
             v-model="lastname"
             :error-messages="errorMessages"
             label="Nom"
-            placeholder="Dupont"
             required
           ></v-text-field>
           <!-- COMPANY NAME -->
@@ -34,7 +32,6 @@
             v-model="cieName"
             :error-messages="errorMessages"
             label="Nom de l'entreprise"
-            placeholder="..."
             required
           ></v-text-field>
           <!-- PHONE NUMBER -->
@@ -43,7 +40,6 @@
             v-model="phoneNumber"
             :error-messages="errorMessages"
             label="N° de téléphone"
-            placeholder="0600000000"
             maxlength="10"
             counter
             required
@@ -54,14 +50,12 @@
             v-model="email"
             :error-messages="errorMessages"
             label="Email"
-            placeholder="jean.martin@mail.com"
             required
           ></v-text-field>
 
           <!-- PASSWORD -->
           <v-text-field
             label="Mot de passe"
-            placeholder="Mot de passe"
             name="password"
             minlength="12"
             counter
@@ -91,7 +85,6 @@
           <v-text-field
             label="Confirmer le mot de passe"
             v-model="password_confirmation"
-            placeholder="Mot de passe"
             :type="show1 ? 'text' : 'password'"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
@@ -100,15 +93,15 @@
           <v-checkbox v-model="checkbox" @change="(enableButton())">
             <template v-slot:label>
               <div>
-                J'ai lu et j'accepte
+                J'ai lu
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <a
                       target="_blank"
-                      href="http://localhost:8080/general-terms"
+                      href="http://localhost:8080/legal-terms"
                       @click.stop
                       v-on="on"
-                    >les conditions générales d'utilisation</a>
+                    >les mentions légales</a>
                   </template>
                   Ouvre dans un nouvel onglet
                 </v-tooltip>
@@ -122,7 +115,7 @@
                 color="#175a77"
                 class="mr-4 white--text"
                 :disabled="disabled"
-                @click="(checkPasswords(password, password_confirmation),handleSubmit(), showModal)"
+                @click="(checkPasswords(password, password_confirmation),handleSubmit(), showModal, DeleteInfosAfterRegister)"
                 v-on="on"
               >Enregistrer</v-btn>
             </template>
@@ -177,12 +170,12 @@ export default {
     password: "",
     password_confirmation: "",
     checkbox: false,
+    date: "",
 
     disabled: true,
     samePassword: null,
     errorMessages: "",
     errors: [],
-    formHasErrors: false,
 
     has_number: false,
     has_uppercase: false,
@@ -191,9 +184,7 @@ export default {
     show1: false,
 
     modal: false,
-    dialog: false,
-
-    modalError: false
+    dialog: false
   }),
 
   //check form
@@ -216,6 +207,10 @@ export default {
     }
   },
 
+  mounted() {
+    this.getPresentDate();
+  },
+
   methods: {
     //check if password respect good practicies/
     password_check: function() {
@@ -227,7 +222,6 @@ export default {
     //enable register button if CGU checkbox is cliked
     enableButton() {
       this.disabled = !this.disabled;
-      console.log(this.disabled);
     },
 
     //submit form
@@ -238,14 +232,15 @@ export default {
         this.password_confirmation.length > 0
       ) {
         axios
-          .post(`http://localhost:3005/users`, {
+          .post(`http://localhost:3005/register`, {
             firstname: this.firstname,
             lastname: this.lastname,
             email: this.email,
-            cieName: this.cieName,
-            phoneNumber: this.phoneNumber,
+            cie_name: this.cieName,
+            phone_number: this.phoneNumber,
             password: this.password_confirmation,
-            CGU: !this.disabled
+            CGU: !this.disabled,
+            user_creation_date: this.date
           })
           .then(response => {
             console.log(response.data);
@@ -284,8 +279,31 @@ export default {
         this.samePassword = false;
       }
       console.log("samePassword", this.samePassword);
+    },
+
+    //Empty datas when form is sent
+    DeleteInfosAfterRegister() {
+      (this.firstname = ""),
+        (this.lastname = ""),
+        (this.cieName = ""),
+        (this.email = ""),
+        (this.password = ""),
+        (this.password_confirmation = "");
+    },
+
+    getPresentDate() {
+      var currentDate = new Date();
+
+      this.date = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "/");
+
+      console.log("currentDate", this.date);
     }
   }
+
+  //post
 };
 </script>
 
@@ -294,9 +312,11 @@ export default {
   display: flex;
   justify-content: center;
   height: 100%;
+
   .register {
     align-self: center;
     min-width: 50%;
+    margin-bottom: 4%;
   }
 }
 .form {

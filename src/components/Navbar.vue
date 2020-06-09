@@ -10,7 +10,7 @@
           transition="scale-transition"
           width="40"
         />
-
+        {{isConnected}}
         <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
       </div>
 
@@ -22,12 +22,13 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">No one ▼</v-btn>
+          <v-btn color="primary" dark v-on="on">{{myProfile}} ▼</v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index" :to="item.link" link>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
+          <v-list-item :to="`/account`">Mon compte</v-list-item>
+          <router-link to="/">
+            <v-list-item @click="disconnected">Deconnexion</v-list-item>
+          </router-link>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -38,8 +39,58 @@
 export default {
   name: "Navbar",
   data: () => ({
-    items: [{ title: "Mon compte", link: "/account" }, { title: "Deconnexion" }]
-  })
+    myProfile: "",
+    role: "",
+    isConnected: true,
+    token: null
+  }),
+
+  methods: {
+    disconnected() {
+      this.isConnected = false;
+
+      localStorage.clear();
+      console.log(localStorage.user);
+      console.log(this.token);
+    },
+    connected() {
+      this.isConnected = !this.isConnected;
+    },
+
+    profileRole() {
+      const userStatus = JSON.parse(localStorage.getItem("user"));
+      if (userStatus.user.role === "user") {
+        this.role = "User";
+      } else {
+        this.role = "Admin";
+      }
+      this.myProfile = userStatus.user.firstname;
+    },
+    checkProfileStatus() {
+      const userStatus = JSON.parse(localStorage.getItem("user"));
+      if (userStatus.user.activated !== false) {
+        this.isConnected = true;
+      } else {
+        this.isConnected = false;
+      }
+    }
+  },
+
+  computed: {
+    showAdmin() {
+      let user = JSON.parse(localStorage.getItem("user"));
+      let show = true;
+
+      if (user.user.is_admin !== 1 || user.user.role !== "admin") {
+        show = false;
+      }
+      return show;
+    }
+  },
+  created() {
+    this.profileRole();
+    this.checkProfileStatus();
+  }
 };
 </script>
 
