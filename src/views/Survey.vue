@@ -1,19 +1,22 @@
 <template>
   <div style="margin-top:100px;color:black;" class="survey">
-    <MySurvey />
+    <MySurvey  />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import MySurvey from "@/components/MySurvey.vue";
-
+import axios from "axios";
 export default {
   name: "Survey",
 
   components: {
-    MySurvey,
+    MySurvey
   },
+
+  
+ 
 };
 </script>
 

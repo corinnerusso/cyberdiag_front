@@ -6,7 +6,7 @@
         {{ new Date().getFullYear() }}
         <router-link class="router-link" to="/contact">Contact</router-link>
         <router-link class="router-link" to="/about">A propos</router-link>
-        <router-link class="router-link" to="/general-terms">Conditions générales</router-link>
+        <router-link class="router-link" to="/legal-terms">Mentions Legales</router-link>
       </v-col>
     </v-footer>
   </div>

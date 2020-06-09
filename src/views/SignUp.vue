@@ -93,15 +93,15 @@
           <v-checkbox v-model="checkbox" @change="(enableButton())">
             <template v-slot:label>
               <div>
-                J'ai lu et j'accepte
+                J'ai lu
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <a
                       target="_blank"
-                      href="http://localhost:8080/general-terms"
+                      href="http://localhost:8080/legal-terms"
                       @click.stop
                       v-on="on"
-                    >les conditions générales d'utilisation</a>
+                    >les mentions légales</a>
                   </template>
                   Ouvre dans un nouvel onglet
                 </v-tooltip>
@@ -222,7 +222,6 @@ export default {
     //enable register button if CGU checkbox is cliked
     enableButton() {
       this.disabled = !this.disabled;
-      console.log(this.disabled);
     },
 
     //submit form
@@ -313,9 +312,11 @@ export default {
   display: flex;
   justify-content: center;
   height: 100%;
+
   .register {
     align-self: center;
     min-width: 50%;
+    margin-bottom: 4%;
   }
 }
 .form {

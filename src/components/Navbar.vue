@@ -10,7 +10,7 @@
           transition="scale-transition"
           width="40"
         />
-
+        {{isConnected}}
         <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
       </div>
 
@@ -26,7 +26,9 @@
         </template>
         <v-list>
           <v-list-item :to="`/account`">Mon compte</v-list-item>
-          <v-list-item @click="disconnected">Deconnexion</v-list-item>
+          <router-link to="/">
+            <v-list-item @click="disconnected">Deconnexion</v-list-item>
+          </router-link>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -39,17 +41,20 @@ export default {
   data: () => ({
     myProfile: "",
     role: "",
-    isConnected: true
+    isConnected: true,
+    token: null
   }),
 
   methods: {
     disconnected() {
       this.isConnected = false;
-      this.token = JSON.parse(localStorage.removeItem("jwt"));
+
+      localStorage.clear();
+      console.log(localStorage.user);
+      console.log(this.token);
     },
     connected() {
       this.isConnected = !this.isConnected;
-      console.log("hi");
     },
 
     profileRole() {

@@ -32,9 +32,9 @@ const routes = [
     component: () => import("@/views/Contact.vue"),
   },
   {
-    path: "/general-terms",
-    name: "GeneralTerms",
-    component: () => import("@/views/GeneralTerms.vue"),
+    path: "/legal-terms",
+    name: "LegalTerms",
+    component: () => import("@/views/LegalTerms.vue"),
   },
   {
     path: "/account",
