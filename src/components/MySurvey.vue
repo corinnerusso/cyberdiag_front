@@ -2,13 +2,10 @@
   <div class="infos">
     <div>
       QUESTIONNAIRE
-      {{isUserId}}
-      <!-- 1rst loop to parse all datas -->
+      <!-- 1rst loop to access models -->
       <div v-for="(currentSurvey, index) in userSurvey.company.models" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
-            <!-- 2nd loop to access models -->
-
             <!-- 3rd loop to access topics -->
             <v-expansion-panel
               v-for="(surveyTopic, index) in currentSurvey.topics"
@@ -107,10 +104,9 @@ export default {
     tile: true,
 
     //functions
-    cliked: false,
+
     allQuestionsIds: [],
     checkedQuestions: [],
-
     finalArray: [],
     modal: true,
     notAnsweredQuestions: [],
@@ -145,7 +141,6 @@ export default {
     setUserId: function() {
       this.storageUser = JSON.parse(localStorage.getItem("user"));
       this.isUserId = this.storageUser.user.id;
-      console.log("userId", this.isUserId);
     },
 
     //********** RADIO BUTTON FUNCTIONS ****************//
@@ -293,7 +288,7 @@ export default {
       }
     },
 
-    //test//
+    //show charts when submit answers//
     showChart: function() {
       if (this.notAnsweredQuestions.length === 0) {
         this.$router.push("/charts/" + this.$route.params.id);
@@ -304,9 +299,6 @@ export default {
 </script>
 
 <style scoped>
-.red {
-  background-color: red;
-}
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
   background-image: linear-gradient(to right, #56b1c8, #175a77);
@@ -314,9 +306,7 @@ export default {
 }
 
 /*QUESTIONS*/
-.selected {
-  border: 1px solid red;
-}
+
 p {
   margin-bottom: 7px;
   margin-top: 7px;

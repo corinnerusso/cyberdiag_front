@@ -1,12 +1,11 @@
 <template>
-  <div style="margin-top:100px" class="login">
+  <div style="margin-top:100px">
     <SignIn />
   </div>
 </template>
 
 <script>
 import SignIn from "@/components/SignIn.vue";
-// @ is an alias to /src
 
 export default {
   name: "Login",
@@ -16,5 +15,3 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>

@@ -34,8 +34,6 @@ export default {
 }
 
 .text-center {
-  /* display: flex;
-  justify-content: space-around; */
   background-image: linear-gradient(to right, #56b1c8, #175a77) !important;
   color: white;
 }

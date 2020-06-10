@@ -18,7 +18,7 @@
             required
           ></v-text-field>
         </div>
-        <!-- <input type="submit" name="sign-in" value="Sign In" @click="handleSubmit()" /> -->
+
         <v-btn color="#175a77" class="vbtn" @click="handleSubmit">Login</v-btn>
       </form>
       <div class="signup">
@@ -42,7 +42,6 @@ export default {
       password: "",
       users: [],
       error: "",
-
       show1: false
     };
   },
@@ -52,10 +51,6 @@ export default {
   },
 
   methods: {
-    getError() {
-      console.log(error);
-    },
-
     getAll() {
       axios.get("http://localhost:3005/users").then(response => {
         this.users = response.data;
@@ -74,9 +69,8 @@ export default {
             response => {
               console.log("response.data", response.data.data);
 
-              /* let is_admin = response.data.user.is_admin */
               let is_admin = response.data.user.user.is_admin;
-              console.log(is_admin);
+
               localStorage.setItem("user", JSON.stringify(response.data.user));
               localStorage.setItem("jwt", response.data.token);
               if (localStorage.getItem("jwt") == null) {
@@ -101,7 +95,7 @@ export default {
             }
           )
           .catch(function(error) {
-            console.error("error lalala", error.response);
+            console.error("error", error.response);
           });
       }
     }

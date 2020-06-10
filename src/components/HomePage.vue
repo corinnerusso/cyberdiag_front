@@ -1,24 +1,12 @@
 <template>
   <div>
     <p style="color:white">{{editedItem.isUserId}}</p>
-    <v-data-table
-      :headers="headers"
-      :items="surveys"
-      sort-by="client"
-      class="elevation-1"
-      :search="search"
-    >
+    <v-data-table :headers="headers" :items="surveys" sort-by="client" :search="search">
       <template v-slot:top>
         <v-toolbar color="#4CA3BB">
           <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
           <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Chercher"
-              single-line
-              hide-details
-            ></v-text-field>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Chercher" hide-details></v-text-field>
           </v-card-title>
 
           <v-spacer></v-spacer>
@@ -59,20 +47,20 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-              <!-- Bouttons Annuler et Sauvegarder dans la modal -->
+              <!-- Close and save buttons in modal -->
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
                 <v-btn color="blue darken-1" text @click="save">Sauvegarder</v-btn>
               </v-card-actions>
-              <!-- FIN DE LA MODAL -->
+              <!-- END OF MODAL -->
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
       <!-- ACTIONS -->
       <template v-slot:item.actions="{ item }">
-        <!-- Remplir le questionnaire -->
+        <!-- Fill survey -->
         <span v-if="!hasSurvey">
           <router-link class="router-link" :to="`/survey/${item.id}`">
             <v-icon
@@ -94,7 +82,7 @@
             >done</v-icon>
           </router-link>
         </span>
-        <!-- Voir le graphique -->
+        <!-- See graphs -->
         <router-link class="router-link" :to="`/charts/${item.id}`">
           <v-icon
             small
@@ -104,14 +92,13 @@
           >trending_up</v-icon>
         </router-link>
 
-        <!-- Modifier le questionnaire -->
+        <!-- Modify survey -->
         <v-icon small class="mr-2" @click="editItem(item)" title="Modifier le questionnaire">build</v-icon>
 
-        <!-- Supprimer un questionnaire -->
+        <!-- Delete survey -->
         <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
       </template>
     </v-data-table>
-    <!-- test transmission props -->
   </div>
 </template>
 
@@ -195,7 +182,6 @@ export default {
   },
 
   methods: {
-    //*********** */
     //set has_a_survey column from false to true in backend
     userHasSurvey(item) {
       const index = this.surveys.indexOf(item);
@@ -291,10 +277,6 @@ export default {
         }
         this.close();
       }
-    },
-
-    computed() {
-      this.retrieveAllSurveys();
     }
   }
 };

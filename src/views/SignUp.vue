@@ -2,9 +2,7 @@
   <div class="register-container">
     <v-card max-width="344" class="register">
       <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="headline">Créer un compte</v-list-item-title>
-        </v-list-item-content>
+        <v-list-item-title class="headline">Créer un compte</v-list-item-title>
       </v-list-item>
 
       <v-card-text>
@@ -26,6 +24,7 @@
             label="Nom"
             required
           ></v-text-field>
+
           <!-- COMPANY NAME -->
           <v-text-field
             ref="cieName"
@@ -34,6 +33,7 @@
             label="Nom de l'entreprise"
             required
           ></v-text-field>
+
           <!-- PHONE NUMBER -->
           <v-text-field
             ref="phoneNumber"
@@ -44,6 +44,7 @@
             counter
             required
           ></v-text-field>
+
           <!--EMAIL-->
           <v-text-field
             ref="email"
@@ -207,19 +208,20 @@ export default {
     }
   },
 
+  //set the date to insert in database
   mounted() {
     this.getPresentDate();
   },
 
   methods: {
-    //check if password respect good practicies/
+    //check if password respect good practicies
     password_check: function() {
       this.has_number = /\d/.test(this.password);
       this.has_uppercase = /[A-Z]/.test(this.password);
       this.has_special = /[!@#$%^&*+=._-]/.test(this.password);
     },
 
-    //enable register button if CGU checkbox is cliked
+    //enable register button if legal terms checkbox is cliked
     enableButton() {
       this.disabled = !this.disabled;
     },
@@ -239,7 +241,7 @@ export default {
             cie_name: this.cieName,
             phone_number: this.phoneNumber,
             password: this.password_confirmation,
-            CGU: !this.disabled,
+            legal_terms: !this.disabled,
             user_creation_date: this.date
           })
           .then(response => {
@@ -260,7 +262,6 @@ export default {
     },
 
     //check if the 2 passwords are the same
-
     checkPasswords(password, password_confirmation) {
       if (password.length !== password_confirmation) {
         this.samePassword = false;
@@ -298,12 +299,8 @@ export default {
         .toJSON()
         .slice(0, 10)
         .replace(/-/g, "/");
-
-      console.log("currentDate", this.date);
     }
   }
-
-  //post
 };
 </script>
 
@@ -312,6 +309,7 @@ export default {
   display: flex;
   justify-content: center;
   height: 100%;
+  padding-top: 10px;
 
   .register {
     align-self: center;

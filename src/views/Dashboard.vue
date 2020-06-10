@@ -4,21 +4,18 @@
       :search="search"
       :headers="headers"
       :items="users"
+      :items-per-page="50"
       sort-by="cie_name"
       class="elevation-1"
     >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>DASHBOARD</v-toolbar-title>
-          <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Chercher"
-              single-line
-              hide-details
-            ></v-text-field>
+          <v-toolbar-title class="v-card-title">DASHBOARD</v-toolbar-title>
+
+          <v-card-title class="search_field">
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Chercher" hide-details></v-text-field>
           </v-card-title>
+
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -36,8 +33,8 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Sauvegarder</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -65,11 +62,6 @@ export default {
     search: "",
     users: [],
     errors: [],
-    hasSurvey: [],
-    field: "test",
-
-    currentUser: null,
-    currentIndex: -1,
 
     headers: [
       {
@@ -83,24 +75,19 @@ export default {
       { text: "Email", value: "email" },
       { text: "Phone", value: "phone_number" },
       { text: "Date de création", value: "user_creation_date" },
-      { text: "A rempli un questionnaire", value: "surveys[0].id" },
+      { text: "A rempli un questionnaire", value: "surveys[0].has_a_survey" },
       { text: "Commentaires", value: "comments" },
       { text: "Ajouter/modifier", value: "actions", sortable: false }
     ],
 
     editedIndex: -1,
     editedItem: {
-      ok: "",
       comments: ""
     }
   }),
 
   created() {
     this.getAllUsers();
-  },
-
-  mounted() {
-    // this.surveyExist();
   },
 
   watch: {
@@ -115,30 +102,20 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
+
+    //get datas for all users
     getAllUsers() {
       axios
         .get(`http://localhost:3005/users`)
         .then(response => {
           this.users = response.data;
-          console.log("response.data", response.data);
         })
         .catch(e => {
           this.errors.push(e);
         });
     },
 
-    setActiveUser(user, index) {
-      this.currentUser = user;
-      this.currentIndex = index;
-    },
-
-    // close() {
-    //   this.dialog = false;
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem);
-    //     this.editedIndex = -1;
-    //   });
-    // },
+    //******** MODAL OPTIONS ********* */
 
     close() {
       this.dialog = false;
@@ -164,3 +141,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.v-card-title {
+  width: 10% !important;
+  text-align: left;
+}
+
+.search_field {
+  width: 40% !important;
+}
+</style>

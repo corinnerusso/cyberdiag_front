@@ -98,6 +98,11 @@ export default {
     this.updateLabel();
   },
 
+  beforeUpdate() {
+    this.updateSeries();
+    this.updateLabel();
+  },
+
   methods: {
     updateSeries() {
       let newserie = this.series;
