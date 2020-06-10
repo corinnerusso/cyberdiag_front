@@ -167,9 +167,11 @@ export default {
     hasSurvey: false
   }),
 
-  mounted() {
-    this.retrieveAllSurveys();
+  created() {
     this.setUserId();
+  },
+  beforeMount() {
+    this.retrieveAllSurveys();
   },
 
   updated() {
@@ -213,7 +215,7 @@ export default {
           this.surveys = response.data;
         })
         .catch(e => {
-          this.errors.push(e);
+          console.log(e);
         });
     },
 

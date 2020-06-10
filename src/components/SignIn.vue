@@ -67,7 +67,7 @@ export default {
           })
           .then(
             response => {
-              console.log("response.data", response.data.data);
+              console.log("response.data", response.data);
 
               let is_admin = response.data.user.user.is_admin;
 
