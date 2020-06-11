@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px;color:black;" class="survey">
+  <div class="survey">
     <v-tabs v-model="tabs" centered background-color="cyan darken-1">
       <v-tab>Radar</v-tab>
       <v-tab>Cercle</v-tab>
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import Radar from "@/components/Radar.vue";
 import Radial from "@/components/Radial.vue";
 
 import axios from "axios";
+
 export default {
   name: "Charts",
 
@@ -46,15 +46,25 @@ export default {
     };
   },
 
-  beforeCreate() {
-    axios
-      .get(`http://localhost:3005/submit/` + this.$route.params.id)
-      .then(response => {
-        this.chartDatas.push(...response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  beforeMount() {
+    this.getDatasForCharts();
+  },
+
+  updated() {
+    this.getDatasForCharts;
+  },
+
+  methods: {
+    getDatasForCharts() {
+      axios
+        .get(`http://localhost:3005/submit/` + this.$route.params.id)
+        .then(response => {
+          this.chartDatas.push(...response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 };
 </script>
@@ -63,5 +73,6 @@ export default {
 .survey {
   padding-left: 10%;
   padding-right: 10%;
+  margin-top: 100px;
 }
 </style>

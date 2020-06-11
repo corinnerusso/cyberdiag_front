@@ -10,15 +10,11 @@
           transition="scale-transition"
           width="40"
         />
-        {{isConnected}}
+
         <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-avatar class="avatar_pic" color="orange darken-3">
-        <v-icon dark>mdi-account-circle</v-icon>
-      </v-avatar>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
@@ -26,7 +22,7 @@
         </template>
         <v-list>
           <v-list-item :to="`/account`">Mon compte</v-list-item>
-          <router-link to="/">
+          <router-link class="connect_router_link" to="/">
             <v-list-item @click="disconnected">Deconnexion</v-list-item>
           </router-link>
         </v-list>
@@ -41,40 +37,8 @@ export default {
   data: () => ({
     myProfile: "",
     role: "",
-    isConnected: true,
-    token: null
+    isConnected: true
   }),
-
-  methods: {
-    disconnected() {
-      this.isConnected = false;
-
-      localStorage.clear();
-      console.log(localStorage.user);
-      console.log(this.token);
-    },
-    connected() {
-      this.isConnected = !this.isConnected;
-    },
-
-    profileRole() {
-      const userStatus = JSON.parse(localStorage.getItem("user"));
-      if (userStatus.user.role === "user") {
-        this.role = "User";
-      } else {
-        this.role = "Admin";
-      }
-      this.myProfile = userStatus.user.firstname;
-    },
-    checkProfileStatus() {
-      const userStatus = JSON.parse(localStorage.getItem("user"));
-      if (userStatus.user.activated !== false) {
-        this.isConnected = true;
-      } else {
-        this.isConnected = false;
-      }
-    }
-  },
 
   computed: {
     showAdmin() {
@@ -90,6 +54,38 @@ export default {
   created() {
     this.profileRole();
     this.checkProfileStatus();
+  },
+
+  methods: {
+    //connect
+    connected() {
+      this.isConnected = !this.isConnected;
+    },
+
+    profileRole() {
+      const userStatus = JSON.parse(localStorage.getItem("user"));
+      if (userStatus.user.role === "user") {
+        this.role = "User";
+      } else {
+        this.role = "Admin";
+      }
+      this.myProfile = userStatus.user.firstname;
+    },
+
+    checkProfileStatus() {
+      const userStatus = JSON.parse(localStorage.getItem("user"));
+      if (userStatus.user.activated !== false) {
+        this.isConnected = true;
+      } else {
+        this.isConnected = false;
+      }
+    },
+
+    //disconnect
+    disconnected() {
+      this.isConnected = false;
+      localStorage.clear();
+    }
   }
 };
 </script>
@@ -108,15 +104,7 @@ export default {
   padding-left: 1vw;
 }
 
-/* PROFILE PIC */
-.avatar_pic {
-  height: 45px !important;
-  min-width: 44px;
-  width: 44px;
-  margin: 2%;
-}
-
-.v-icon.v-icon {
-  font-size: 30px;
+.connect_router_link {
+  text-decoration: none !important;
 }
 </style>
