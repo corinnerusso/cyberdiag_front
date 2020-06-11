@@ -241,7 +241,7 @@ export default {
             this.checkedQuestions.push(this.isQuestionId),
             axios
               .post(`http://localhost:3005/submit`, {
-                surveyId: this.isSurveyId,
+                survey: this.isSurveyId,
                 answerId: this.isAnswerId,
                 modelId: this.isModelId,
                 topicId: this.isTopicId,
