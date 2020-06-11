@@ -46,15 +46,25 @@ export default {
     };
   },
 
-  beforeCreate() {
-    axios
-      .get(`http://localhost:3005/submit/` + this.$route.params.id)
-      .then(response => {
-        this.chartDatas.push(...response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  beforeMount() {
+    this.getDatasForCharts();
+  },
+
+  updated() {
+    this.getDatasForCharts;
+  },
+
+  methods: {
+    getDatasForCharts() {
+      axios
+        .get(`http://localhost:3005/submit/` + this.$route.params.id)
+        .then(response => {
+          this.chartDatas.push(...response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 };
 </script>
