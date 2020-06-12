@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px" class="login">
+  <div style="margin-top:100px">
     <div class="box">
       <h2>Login</h2>
       <form>
@@ -134,10 +134,13 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 25rem;
+  width: 35rem;
+  height: 25rem;
   padding: 2.5rem;
   box-sizing: border-box;
-  background: #bdbdbd;
+
+  background-image: url("../assets/cadenas2.jpg") !important;
+
   border-radius: 0.625rem;
 }
 
@@ -146,10 +149,6 @@ export default {
   padding: 0;
   color: #fff;
   text-align: center;
-}
-
-.box .inputBox {
-  position: relative;
 }
 
 .box .inputBox input {

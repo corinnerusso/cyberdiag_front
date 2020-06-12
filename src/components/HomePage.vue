@@ -1,19 +1,30 @@
 <template>
   <div>
-    <p style="color:white">{{editedItem.isUserId}}</p>
-    <v-data-table :headers="headers" :items="surveys" sort-by="client" :search="search">
+    <v-data-table
+      :headers="headers"
+      :items="surveys"
+      sort-by="client"
+      :search="search"
+      class="elevation-16"
+    >
       <template v-slot:top>
-        <v-toolbar color="#4CA3BB">
-          <v-toolbar-title style="color:white">MES QUESTIONNAIRES</v-toolbar-title>
-          <v-card-title>
-            <v-text-field v-model="search" append-icon="mdi-magnify" label="Chercher" hide-details></v-text-field>
-          </v-card-title>
-
+        <v-toolbar color="#F5F8FA">
+          <v-toolbar-title color="yellow">MES QUESTIONNAIRES</v-toolbar-title>
+          <span class="search_field">
+            <v-card-title>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Chercher"
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+          </span>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <!-- new survey button-->
             <template v-slot:activator="{ on }">
-              <v-btn color="#40778f" dark class="mb-2" v-on="on">Nouveau questionnaire</v-btn>
+              <v-btn color="#142968" dark class="mb-2" v-on="on">Nouveau questionnaire</v-btn>
             </template>
 
             <v-card>
@@ -61,31 +72,30 @@
       <!-- ACTIONS -->
       <template v-slot:item.actions="{ item }">
         <!-- Fill survey -->
-        <span v-if="!hasSurvey">
+        <span v-if="item.has_a_survey==false">
           <router-link class="router-link" :to="`/survey/${item.id}`">
             <v-icon
               class="router-link"
               title="Remplir le questionnaire"
-              small
+              size="25"
               v-model="editedItem.id"
               @click="((showSurvey = editedItem.id),userHasSurvey(item))"
             >mdi-pencil</v-icon>
           </router-link>
         </span>
         <span v-else>
-          <router-link class="router-link" :to="`/survey/${item.id}`">
-            <v-icon
-              class="router-link"
-              title="Questionnaire déjà complété"
-              small
-              v-model="editedItem.id"
-            >done</v-icon>
-          </router-link>
+          <v-icon
+            class="router-link"
+            color="green"
+            title="Questionnaire déjà complété"
+            size="25"
+            v-model="editedItem.id"
+          >done</v-icon>
         </span>
         <!-- See graphs -->
         <router-link class="router-link" :to="`/charts/${item.id}`">
           <v-icon
-            small
+            size="25"
             title="Voir les résultats"
             v-model="editedItem.id"
             @click="showSurvey = editedItem.id"
@@ -93,10 +103,15 @@
         </router-link>
 
         <!-- Modify survey -->
-        <v-icon small class="mr-2" @click="editItem(item)" title="Modifier le questionnaire">build</v-icon>
+        <v-icon
+          size="20"
+          class="mr-2"
+          @click="editItem(item)"
+          title="Modifier le questionnaire"
+        >build</v-icon>
 
         <!-- Delete survey -->
-        <v-icon small @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
+        <v-icon size="20" @click="deleteItem(item)" title="Supprimer">mdi-delete</v-icon>
       </template>
     </v-data-table>
   </div>
@@ -155,6 +170,7 @@ export default {
     ],
 
     editedIndex: -1,
+
     editedItem: {
       survey_title: "",
       client_name: "",
@@ -163,8 +179,7 @@ export default {
       isUserId: ""
     },
 
-    storageUser: null,
-    hasSurvey: false
+    storageUser: null
   }),
 
   created() {
@@ -285,6 +300,11 @@ export default {
 </script>
 
 <style scoped>
+.search_field {
+  width: 40% !important;
+  color: white !important;
+  padding-left: 2% !important;
+}
 .v-icon.v-icon.v-icon--link {
   margin: 4px;
   color: gray;

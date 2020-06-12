@@ -2,7 +2,7 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="radar" height="700" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="radar" :height="700" :options="chartOptions" :series="series"></apexchart>
     </div>
     <br />
     <br />
@@ -118,4 +118,7 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>
 
