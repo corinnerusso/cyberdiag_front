@@ -23,9 +23,9 @@
                     <v-col cols="12" sm="12" md="40">
                       <v-text-field v-model="editedItem.email" label="email"></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="12" md="40">
-                      <v-text-field v-model="editedItem.password" label="Mot de passe"></v-text-field>
-                    </v-col>
+                    <!-- <v-col cols="12" sm="12" md="40">
+                      <v-text-field v-model="editedItem.password" label="mot de passe"></v-text-field>
+                    </v-col>-->
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -64,6 +64,7 @@ export default {
 
   data: () => ({
     dialog: false,
+
     headers: [
       {
         text: "Nom",
@@ -74,7 +75,7 @@ export default {
       { text: "Prénom", value: "firstname" },
       { text: "N° tel", value: "phone_number" },
       { text: "email", value: "email" },
-      { text: "Mot de passe", value: "password" },
+      // { text: "Mot de passe", value: "password" },
       { text: "Actions", value: "actions", sortable: false }
     ],
 

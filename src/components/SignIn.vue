@@ -19,7 +19,7 @@
           ></v-text-field>
         </div>
 
-        <v-btn color="#175a77" class="vbtn" @click="handleSubmit">Login</v-btn>
+        <button class="button" @click="handleSubmit">Login</button>
       </form>
       <div class="signup">
         <p class="user">Nouvel utilisateur ?</p>
@@ -108,18 +108,15 @@ export default {
   display: flex;
   justify-content: space-between;
   padding-top: 1.2rem;
-  color: white;
 }
 .button {
-  background-color: #175a77;
+  background-color: #001f68;
   border-radius: 0.312rem;
   padding: 0.625rem 1.25rem;
   cursor: pointer;
   color: white;
 }
-.vbtn {
-  color: white;
-}
+
 .error {
   color: red;
   background-color: transparent !important;
@@ -127,6 +124,7 @@ export default {
 
 .user {
   padding-top: 5%;
+  color: black;
 }
 
 .box {
@@ -138,16 +136,12 @@ export default {
   height: 25rem;
   padding: 2.5rem;
   box-sizing: border-box;
-
-  background-image: url("../assets/cadenas2.jpg") !important;
-
+  background-color: rgb(219, 215, 215);
   border-radius: 0.625rem;
 }
 
 .box h2 {
   margin: 0 0 1.875rem;
-  padding: 0;
-  color: #fff;
   text-align: center;
 }
 
@@ -170,32 +164,7 @@ export default {
   left: 0;
   padding: 0.625rem 0;
   font-size: 1rem;
-  color: #fff;
   pointer-events: none;
   transition: 0.5s;
-}
-
-.box .inputBox input:focus ~ label,
-.box .inputBox input:valid ~ label,
-.box .inputBox input:not([value=""]) ~ label {
-  top: -1.125rem;
-  left: 0;
-  color: #175a77;
-  font-size: 0.75rem;
-}
-
-.box input[type="submit"] {
-  border: none;
-  outline: none;
-  color: #fff;
-  background-color: #175a77;
-  padding: 0.625rem 8.25rem;
-  cursor: pointer;
-  border-radius: 0.312rem;
-  font-size: 1rem;
-}
-
-.box input[type="submit"]:hover {
-  background-color: #175a77;
 }
 </style>
