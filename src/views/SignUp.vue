@@ -113,7 +113,7 @@
           <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ on }">
               <v-btn
-                color="#175a77"
+                color="#001f68"
                 class="mr-4 white--text"
                 :disabled="disabled"
                 @click="(checkPasswords(password, password_confirmation),handleSubmit(), showModal, DeleteInfosAfterRegister)"

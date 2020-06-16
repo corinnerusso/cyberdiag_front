@@ -60,6 +60,9 @@ export default {
     this.getDatasForCharts();
   },
 
+  mounted() {
+    this.getDatasForCharts;
+  },
   updated() {
     this.getDatasForCharts;
   },
