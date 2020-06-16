@@ -35,11 +35,11 @@
       </div>
 
       <div class="details">
-        <v-icon class="v-icon">phone</v-icon>+33 0 01 74 13 54
+        <v-icon class="v-icon">phone</v-icon>+33 5 56 58 62 45
       </div>
 
       <div class="details">
-        <v-icon class="v-icon">email</v-icon>bernard.roussely@cyberens.fr
+        <v-icon class="v-icon">email</v-icon>info@cyberens.fr
       </div>
     </v-card>
   </div>

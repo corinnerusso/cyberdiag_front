@@ -1,14 +1,15 @@
-# CYBERDIAG
-This app is used to create a first cyber-security diagnostic for compagnies.
+# CYBERDIAG : What is it ? How does it work ?
 
-## How does it work ?
+This app is used to create a first cyber-security diagnostic for compagnies or consultants working in insurance (for instance) and filling the surveys with the clients.
+
+### How does it work ?
 
 When you arrive on the app, you have to possibilities :
 - You are already registered and you sign in
 - You are not already registerd, and you create an account
 ![Login page](Screenshots/Login.png)
 
-### Create an account 
+ Create an account 
 Just clik on the button "Créer un compte" and the follow the different steps, that is to say fill the fields
 - Firstname
 - Lastname
@@ -57,7 +58,8 @@ When the user attemps to the survey page, he will see the survey corresponding t
 The different topics appear as cards to display. Just click on the first one and the questions will appear.
 
 ![Survey page](Screenshots/SurveyPage.png)
-![Questions to complete](Screenshots/surveyPage2.png)
+
+![Questions to complete](Screenshots/SurveyPage2.png)
 
 When the user has answered all the questions, jsut click on the submit button and he will be redirected to the charts page.
 If he forgot to answer some questions, a modal will be opened to alert the question numbers no completed.
@@ -84,23 +86,27 @@ The user will see his results as a percentage of success for each topic.
 In the navbar, the user has access to the profile page as he clicks on the "Mon compte" option.
 The he will have access to his personal details and is able to change somes (all execpt password).
 ![Profile options](Screenshots/ProfileOptions.png)
+
 ![Profile page](Screenshots/Account.png)
 
 
-## Accounts connection
+### Accounts connection
 
 These are the logins you can use to connect to the app:
 - As a user : user@mail.com // Password : Userconnect33!
 - As an admin : admin@mail.com   // Passwrod : Adminconnect33!
 
-## Tech
-Cyberdiag uses a number of open source projects to work properly :
- - [Vuejs](https://vuejs.org/)
- - [Vuetify](https://vuetifyjs.com/en/) 
- - [ApexCharts](https://apexcharts.com/)
+## Database
+A shema of database is available at cyberdiag app/DatabaseSchema.png
+![Databse schema](DatabaseSchema.png)
 
+For the moment, only the company type "TPE" has a survey.
+If a user selects another type of company when he creates a new survey, the survey page will be empty.
 
-## Next features possible
+A file with all questions and answers of TPE company type survey is available at TPEModelSurvey.xls
+
+II - NEXT FEATURES POSSIBLE
+## Next possible features 
 ### As a user :
 - Profile page : change password
 - Charts page : send charts by email
@@ -114,7 +120,19 @@ Cyberdiag uses a number of open source projects to work properly :
 ### For all the app
 - Insert responsive css
 - Insert logo cleanly in navbar
+- Insert tests
+- Add Night Mode
 
+
+## TECH
+Cyberdiag uses a number of open source projects to work properly :
+ - [Vuejs](https://vuejs.org/)
+ - [VueCli](https://cli.vuejs.org/)
+ - [Vuetify](https://vuetifyjs.com/en/) 
+ - [ApexCharts](https://apexcharts.com/) (to create charts)
+
+
+### INSTALLATION AND RUN
 ## Project setup
 ```
 npm install
@@ -137,3 +155,9 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+
+
+
