@@ -79,7 +79,7 @@
               title="Remplir le questionnaire"
               size="25"
               v-model="editedItem.id"
-              @click="((showSurvey = editedItem.id),userHasSurvey(item))"
+              @click="((showSurvey = editedItem.id))"
             >mdi-pencil</v-icon>
           </router-link>
         </span>
@@ -199,18 +199,6 @@ export default {
   },
 
   methods: {
-    //set has_a_survey column from false to true in backend
-    userHasSurvey(item) {
-      const index = this.surveys.indexOf(item);
-      axios
-        .put(`http://localhost:3005/surveys/` + item.id, {
-          has_a_survey: true
-        })
-        .then(response => {
-          console.log(response);
-        });
-    },
-
     //set userId
     setUserId() {
       this.storageUser = JSON.parse(localStorage.getItem("user"));

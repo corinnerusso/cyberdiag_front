@@ -70,7 +70,7 @@
               color="#162967"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal(),finalSubmit(),showChart(), closeModal())"
+              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal(),finalSubmit(),showChart(), userHasSurvey(),closeModal())"
             >Soumettre</v-btn>
           </template>
           <!-- modal -->
@@ -268,6 +268,19 @@ export default {
           )
         );
       }
+    },
+
+    //set has_a_survey to true when a user submit a survey in survey table
+    userHasSurvey: function() {
+      let surveyId = this.isSurveyId;
+
+      axios
+        .put(`http://localhost:3005/surveys/` + surveyId, {
+          has_a_survey: true
+        })
+        .then(response => {
+          console.log(response);
+        });
     },
 
     //********** MODAL FUNCTIONS ****************//
