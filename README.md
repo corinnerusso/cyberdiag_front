@@ -98,7 +98,7 @@ These are the logins you can use to connect to the app:
 
 ## Database
 A shema of database is available at cyberdiag app/DatabaseSchema.png
-![Databse schema](DatabaseSchema.png)
+![Database schema](DatabaseSchema.png)
 
 For the moment, only the company type "TPE" has a survey.
 If a user selects another type of company when he creates a new survey, the survey page will be empty.
