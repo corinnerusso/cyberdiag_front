@@ -2,14 +2,15 @@
   <div>
     <v-app-bar app color="primary">
       <div class="d-flex align-center">
-        <v-img
-          :src="require('../assets/security.svg')"
-          class="my-3"
-          contain
-          height="200"
-          transition="scale-transition"
-          width="40"
-        />
+        <router-link to="/home" class="home_router_link">
+          <v-img
+            :src="require('../assets/Logo-triangle.png')"
+            contain
+            height="400"
+            transition="scale-transition"
+            width="80"
+          />
+        </router-link>
 
         <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
       </div>
@@ -92,7 +93,7 @@ export default {
 
 <style scoped>
 .v-application .primary {
-  background-image: linear-gradient(to right, #56b1c8, #175a77) !important;
+  background-image: url("../assets/plex-bleu.jpg") !important;
   color: white;
 }
 

@@ -1,13 +1,24 @@
 <template>
   <div class="survey">
-    <v-tabs v-model="tabs" centered background-color="cyan darken-1">
+    <div class="survey_title">
+      <img
+        :src="require('../assets/presentation.png')"
+        height="50"
+        width="70"
+        contain
+        style="padding-right:20px"
+      />
+      <h2>Titre : {{chartDatas[0].survey_surveyTitle}}</h2>
+    </div>
+
+    <v-tabs v-model="tabs" centered color="#162967">
+      <v-tabs-slider color="#162967"></v-tabs-slider>
       <v-tab>Radar</v-tab>
       <v-tab>Cercle</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tabs">
       <v-tab-item>
         <v-card flat>
-          <v-card-title class="headline">Titre : {{chartDatas[0].survey_surveyTitle}}</v-card-title>
           <v-card-text>
             <Radar v-bind:chartDatas="chartDatas" />
           </v-card-text>
@@ -15,7 +26,6 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-title class="headline">Titre : {{chartDatas[0].survey_surveyTitle}}</v-card-title>
           <v-card-text>
             <Radial v-bind:chartDatas="chartDatas" />
           </v-card-text>
@@ -50,6 +60,9 @@ export default {
     this.getDatasForCharts();
   },
 
+  mounted() {
+    this.getDatasForCharts;
+  },
   updated() {
     this.getDatasForCharts;
   },
@@ -70,6 +83,11 @@ export default {
 </script>
 
 <style scoped>
+.survey_title {
+  margin: 1%;
+  color: #162967;
+  display: flex;
+}
 .survey {
   padding-left: 10%;
   padding-right: 10%;

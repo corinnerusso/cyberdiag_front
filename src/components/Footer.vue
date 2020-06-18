@@ -34,7 +34,7 @@ export default {
 }
 
 .text-center {
-  background-image: linear-gradient(to right, #56b1c8, #175a77) !important;
+  background-image: url("../assets/plex-bleu.jpg") !important;
   color: white;
 }
 </style>

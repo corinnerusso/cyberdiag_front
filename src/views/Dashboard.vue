@@ -76,6 +76,7 @@ export default {
       { text: "Phone", value: "phone_number" },
       { text: "Date de création", value: "user_creation_date" },
       { text: "A rempli un questionnaire", value: "surveys[0].has_a_survey" },
+      { text: "Role", value: "role" },
       { text: "Commentaires", value: "comments" },
       { text: "Ajouter/modifier", value: "actions", sortable: false }
     ],

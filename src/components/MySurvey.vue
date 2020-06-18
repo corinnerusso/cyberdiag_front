@@ -1,7 +1,17 @@
 <template>
   <div class="infos">
     <div>
-      QUESTIONNAIRE
+      <div class="survey_title">
+        <img
+          :src="require('../assets/survey.png')"
+          height="50"
+          width="70"
+          contain
+          style="padding-right:20px"
+        />
+        <h2>Titre : {{userSurvey.survey_title}}</h2>
+      </div>
+
       <!-- 1rst loop to access models -->
       <div v-for="(currentSurvey, index) in userSurvey.company.models" v-bind:key="index">
         <v-row align="center">
@@ -11,14 +21,14 @@
               v-for="(surveyTopic, index) in currentSurvey.topics"
               v-bind:key="index"
             >
-              <v-expansion-panel-header style="color:white">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
+              <v-expansion-panel-header style="color:#162967">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
 
               <!-- 4th loop to access questions -->
               <v-expansion-panel-content
                 v-for="(surveyQuestion, index) in surveyTopic.questions"
                 v-bind:key="index"
               >
-                <div style="text-align : start">
+                <div style="text-align : start" class="subparagraph">
                   <p style="font-weight:bold">
                     {{ surveyQuestion.questionId }} -
                     {{ surveyQuestion.question_title }}
@@ -57,7 +67,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               class="v-btn"
-              color="#175a77"
+              color="#162967"
               dark
               v-on="on"
               @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsIds, checkedQuestions), showModal(),finalSubmit(),showChart(), closeModal())"
@@ -299,10 +309,26 @@ export default {
 </script>
 
 <style scoped>
+/* SURVEY TITLE */
+.survey_title {
+  margin: 1%;
+  color: #162967;
+  display: flex;
+}
+
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
-  background-image: linear-gradient(to right, #56b1c8, #175a77);
+  /* background-image: linear-gradient(to right, #001a5f, #003382); */
+
   font-size: 1.2em;
+  border-radius: 5px;
+}
+
+/* PARAGRAPHS */
+.subparagraph {
+  background-color: #f5f8fa !important;
+  border-radius: 5px;
+  padding: 2%;
 }
 
 /*QUESTIONS*/
@@ -320,6 +346,8 @@ label {
 }
 
 .v-btn {
-  font-size: 1.2em;
+  font-size: 1.4em;
+  margin: 2%;
+  padding: 2% !important;
 }
 </style>
