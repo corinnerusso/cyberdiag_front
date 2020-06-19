@@ -21,7 +21,17 @@
               v-for="(surveyTopic, index) in currentSurvey.topics"
               v-bind:key="index"
             >
-              <v-expansion-panel-header style="color:#162967">{{ surveyTopic.topic_title }}</v-expansion-panel-header>
+              <v-expansion-panel-header style="color:#162967">
+                {{ surveyTopic.topic_title }}
+                <div class="topic_questions">
+                  <p style="padding-left:10px">Questions n°</p>
+                  <p
+                    style="padding-left:10px"
+                    v-for="(surveyQuestion, index) in surveyTopic.questions"
+                    v-bind:key="index"
+                  >{{ surveyQuestion.questionNumber }}</p>
+                </div>
+              </v-expansion-panel-header>
 
               <!-- 4th loop to access questions -->
               <v-expansion-panel-content
@@ -275,7 +285,7 @@ export default {
       }
     },
 
-    //set has_a_survey to true when a user submit a survey in survey table
+    //set has_a_survey to true in survey table when a user submits a survey
     userHasSurvey: function() {
       if (this.notAnsweredQuestions.length === 0) {
         let surveyId = this.isSurveyId;
@@ -337,12 +347,15 @@ export default {
 
 /* THEME TITLE */
 .v-application--is-ltr .v-expansion-panel-header {
-  /* background-image: linear-gradient(to right, #001a5f, #003382); */
-
   font-size: 1.2em;
   border-radius: 5px;
 }
 
+/* TOPIC HEARDER */
+.topic_questions {
+  display: flex;
+  font-size: 0.95rem;
+}
 /* PARAGRAPHS */
 .subparagraph {
   background-color: #f5f8fa !important;
