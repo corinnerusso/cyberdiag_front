@@ -17,14 +17,14 @@
 
       <v-spacer></v-spacer>
 
-      <v-menu offset-y>
+      <v-menu v-if="infos" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">{{myProfile}} ▼</v-btn>
         </template>
         <v-list>
           <v-list-item :to="`/account`">Mon compte</v-list-item>
           <router-link class="connect_router_link" to="/">
-            <v-list-item @click="disconnected">Deconnexion</v-list-item>
+            <v-list-item @click="(userDisconnection())">Deconnexion</v-list-item>
           </router-link>
         </v-list>
       </v-menu>
@@ -33,12 +33,16 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Navbar",
   data: () => ({
     myProfile: "",
     role: "",
-    isConnected: true
+    infos: "",
+    isConnected: true,
+    isUserId: "",
+    test: ""
   }),
 
   computed: {
@@ -49,20 +53,39 @@ export default {
       if (user.user.is_admin !== 1 || user.user.role !== "admin") {
         show = false;
       }
+
       return show;
     }
   },
   created() {
+    this.setUserId();
+    this.checkConnection();
     this.profileRole();
     this.checkProfileStatus();
   },
 
+  updated() {
+    this.setUserId();
+    this.checkConnection();
+  },
   methods: {
-    //connect
-    connected() {
-      this.isConnected = !this.isConnected;
+    //retrieve user id
+    setUserId() {
+      this.storageUser = JSON.parse(localStorage.getItem("user"));
+      this.isUserId = this.storageUser.user.id;
     },
 
+    //check if the user is connected
+    //If user is connected, show user menu, if not, don't show it
+    checkConnection() {
+      axios
+        .get(`http://localhost:3005/users/` + this.isUserId)
+        .then(response => {
+          this.infos = response.data.connected;
+        });
+    },
+
+    //check user profile
     profileRole() {
       const userStatus = JSON.parse(localStorage.getItem("user"));
       if (userStatus.user.role === "user") {
@@ -73,19 +96,28 @@ export default {
       this.myProfile = userStatus.user.firstname;
     },
 
+    //check user status
+
     checkProfileStatus() {
       const userStatus = JSON.parse(localStorage.getItem("user"));
-      if (userStatus.user.activated !== false) {
+      if (userStatus.user.connected !== false) {
         this.isConnected = true;
       } else {
         this.isConnected = false;
       }
     },
 
-    //disconnect
-    disconnected() {
-      this.isConnected = false;
+    //disconnection
+    userDisconnection() {
+      // this.isConnected = false;
       localStorage.clear();
+      axios
+        .put(`http://localhost:3005/users/` + this.isUserId, {
+          connected: false
+        })
+        .then(response => {
+          console.log(response);
+        });
     }
   }
 };

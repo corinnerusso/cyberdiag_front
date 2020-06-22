@@ -48,11 +48,6 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    },
-
-    //change user datas
-    changeDatas() {
-      axios.put(`http://localhost:3005/users/` + this.isUserId);
     }
   }
 };

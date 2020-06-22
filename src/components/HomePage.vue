@@ -184,6 +184,7 @@ export default {
 
   created() {
     this.setUserId();
+    this.userConnection();
   },
   beforeMount() {
     this.retrieveAllSurveys();
@@ -203,6 +204,17 @@ export default {
     setUserId() {
       this.storageUser = JSON.parse(localStorage.getItem("user"));
       this.editedItem.isUserId = this.storageUser.user.id;
+    },
+
+    //set connected from false to true when a user is connected
+    userConnection() {
+      axios
+        .put(`http://localhost:3005/users/` + this.editedItem.isUserId, {
+          connected: true
+        })
+        .then(response => {
+          console.log(response);
+        });
     },
 
     editItem(item) {

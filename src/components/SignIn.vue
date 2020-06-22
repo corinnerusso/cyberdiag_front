@@ -1,32 +1,30 @@
 <template>
-  <div style="margin-top:100px">
-    <div class="box">
-      <h2>Login</h2>
-      <form>
-        <p class="error" v-if="error===400">Mot de passe ou email erroné</p>
-        <div class="inputBox">
-          <v-text-field v-model="email" type="email" label="email" required></v-text-field>
-        </div>
-        <div class="inputBox">
-          <v-text-field
-            v-model="password"
-            label="password"
-            :type="show1 ? 'text' : 'password'"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="show1 = !show1"
-            @keyup.enter="handleSubmit"
-            required
-          ></v-text-field>
-        </div>
-
-        <button class="button" @click="handleSubmit">Login</button>
-      </form>
-      <div class="signup">
-        <p class="user">Nouvel utilisateur ?</p>
-        <router-link :to="`/register`">
-          <button class="button">Créer un compte</button>
-        </router-link>
+  <div class="box">
+    <h2>Login</h2>
+    <form>
+      <p class="error" v-if="error===400">Mot de passe ou email erroné</p>
+      <div class="inputBox">
+        <v-text-field v-model="email" type="email" label="email" required></v-text-field>
       </div>
+      <div class="inputBox">
+        <v-text-field
+          v-model="password"
+          label="password"
+          :type="show1 ? 'text' : 'password'"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="show1 = !show1"
+          @keyup.enter="handleSubmit"
+          required
+        ></v-text-field>
+      </div>
+
+      <button class="button" @click="handleSubmit">Login</button>
+    </form>
+    <div class="signup">
+      <p class="user">Nouvel utilisateur ?</p>
+      <router-link :to="`/register`">
+        <button class="button">Créer un compte</button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -68,8 +66,8 @@ export default {
           .then(
             response => {
               console.log("response.data", response.data);
-
               let is_admin = response.data.user.user.is_admin;
+              // let connected = response.data.user.user.connected;
 
               localStorage.setItem("user", JSON.stringify(response.data.user));
               localStorage.setItem("jwt", response.data.token);
@@ -166,5 +164,15 @@ export default {
   font-size: 1rem;
   pointer-events: none;
   transition: 0.5s;
+}
+
+@media screen and (max-width: 640px) {
+  .signup {
+    flex-direction: column;
+  }
+  .box {
+    width: 80%;
+    height: 60%;
+  }
 }
 </style>
