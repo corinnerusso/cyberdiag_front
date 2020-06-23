@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <span class="search_field2">
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Chercher" hide-details></v-text-field>
+      </v-card-title>
+    </span>
     <v-data-table
       :headers="headers"
       :items="surveys"
@@ -9,7 +14,8 @@
     >
       <template v-slot:top>
         <v-toolbar color="#F5F8FA">
-          <v-toolbar-title color="yellow">MES QUESTIONNAIRES</v-toolbar-title>
+          <v-toolbar-title class="homepage_title">MES QUESTIONNAIRES</v-toolbar-title>
+          <!-- search field -->
           <span class="search_field">
             <v-card-title>
               <v-text-field
@@ -25,6 +31,7 @@
             <!-- new survey button-->
             <template v-slot:activator="{ on }">
               <v-btn color="#142968" dark class="mb-2" v-on="on">Nouveau questionnaire</v-btn>
+              <v-btn color="#142968" dark class="add_button" v-on="on">+</v-btn>
             </template>
 
             <v-card>
@@ -43,7 +50,7 @@
                     </v-col>
                     <!-- creation date -->
                     <v-col cols="12" sm="6" md="4">
-                      <span>Crée le</span>
+                      <span>Date</span>
                       <br />
                       <input type="date" v-model="editedItem.survey_creation_date" label="Créé le" />
                     </v-col>
@@ -79,7 +86,7 @@
               title="Remplir le questionnaire"
               size="25"
               v-model="editedItem.id"
-              @click="((showSurvey = editedItem.id),userHasSurvey(item))"
+              @click="((showSurvey = editedItem.id))"
             >mdi-pencil</v-icon>
           </router-link>
         </span>
@@ -124,6 +131,7 @@ export default {
   name: "HomePage",
 
   data: () => ({
+    date: new Date().toISOString().substr(0, 10),
     search: "",
     showSurvey: null,
     currentSurvey: null,
@@ -159,7 +167,7 @@ export default {
       {
         text: "Titre du questionnaire",
         align: "start",
-        sortable: false,
+
         value: "survey_title"
       },
       { text: "Nom du client", value: "client_name" },
@@ -184,6 +192,7 @@ export default {
 
   created() {
     this.setUserId();
+    this.userConnection();
   },
   beforeMount() {
     this.retrieveAllSurveys();
@@ -199,22 +208,21 @@ export default {
   },
 
   methods: {
-    //set has_a_survey column from false to true in backend
-    userHasSurvey(item) {
-      const index = this.surveys.indexOf(item);
-      axios
-        .put(`http://localhost:3005/surveys/` + item.id, {
-          has_a_survey: true
-        })
-        .then(response => {
-          console.log(response);
-        });
-    },
-
     //set userId
     setUserId() {
       this.storageUser = JSON.parse(localStorage.getItem("user"));
       this.editedItem.isUserId = this.storageUser.user.id;
+    },
+
+    //set connected from false to true when a user is connected
+    userConnection() {
+      axios
+        .put(`http://localhost:3005/users/` + this.editedItem.isUserId, {
+          connected: true
+        })
+        .then(response => {
+          console.log(response);
+        });
     },
 
     editItem(item) {
@@ -305,14 +313,46 @@ export default {
   color: white !important;
   padding-left: 2% !important;
 }
+
+.search_field2 {
+  display: none;
+}
 .v-icon.v-icon.v-icon--link {
   margin: 4px;
   color: gray;
+}
+
+.add_button {
+  display: none;
 }
 
 .router-link {
   text-decoration: none !important;
   margin-right: 5px;
   color: gray;
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    padding-bottom: 25%;
+  }
+  .add_button {
+    display: flex;
+  }
+
+  .mb-2 {
+    display: none;
+  }
+
+  .homepage_title {
+    display: none;
+  }
+
+  .search_field {
+    display: none;
+  }
+  .search_field2 {
+    display: flex;
+  }
 }
 </style>

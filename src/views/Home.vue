@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:100px" class="home">
+  <div class="home">
     <HomePage />
   </div>
 </template>
@@ -23,5 +23,6 @@ export default {
 .home {
   padding-left: 10%;
   padding-right: 10%;
+  margin-top: 8%;
 }
 </style>

@@ -62,7 +62,8 @@ export default {
     search: "",
     users: [],
     errors: [],
-
+    isUserId: "",
+    connectect: "",
     headers: [
       {
         text: "Nom entreprise",
@@ -89,6 +90,8 @@ export default {
 
   created() {
     this.getAllUsers();
+    this.setUserId();
+    this.userConnection();
   },
 
   watch: {
@@ -98,6 +101,23 @@ export default {
   },
 
   methods: {
+    //set user id
+    setUserId() {
+      this.storageUser = JSON.parse(localStorage.getItem("user"));
+      this.isUserId = this.storageUser.user.id;
+    },
+
+    //set connected from false to true when a user is connected
+    userConnection() {
+      axios
+        .put(`http://localhost:3005/users/` + this.isUserId, {
+          connected: true
+        })
+        .then(response => {
+          console.log(response);
+        });
+    },
+
     editItem(item) {
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);

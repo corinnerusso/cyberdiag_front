@@ -2,7 +2,7 @@
   <div class="register-container">
     <v-card max-width="344" class="register">
       <v-list-item>
-        <v-list-item-title class="headline">Créer un compte</v-list-item-title>
+        <v-list-item-title class="headline1">Créer un compte</v-list-item-title>
       </v-list-item>
 
       <v-card-text>
@@ -110,7 +110,9 @@
             </template>
           </v-checkbox>
 
-          <v-dialog v-model="dialog" width="500">
+          <!-- MODAL -->
+
+          <v-dialog v-model="dialog" width="300">
             <template v-slot:activator="{ on }">
               <v-btn
                 color="#001f68"
@@ -121,7 +123,7 @@
               >Enregistrer</v-btn>
             </template>
 
-            <v-card v-if="samePassword==true">
+            <v-card class="modal" v-if="samePassword==true">
               <v-card-title class="headline grey lighten-2" primary-title>Confirmation</v-card-title>
 
               <v-card-text>Un e-mail de confirmation va vous être envoyé à l'adresse {{this.email}}</v-card-text>
@@ -138,7 +140,7 @@
 
             <!-- *** -->
 
-            <v-card v-if="samePassword==false">
+            <v-card class="modal" v-if="samePassword==false">
               <v-card-title class="headline grey lighten-2" primary-title>ERREUR</v-card-title>
 
               <v-card-text>Les mots de passe ne correspondent pas</v-card-text>
@@ -336,5 +338,31 @@ export default {
 }
 .frmValidation--passed {
   color: green;
+}
+
+@media screen and (max-width: 640px) {
+  .register-container {
+    padding-bottom: 20%;
+  }
+  .headline1 {
+    font-size: 1.5rem;
+  }
+
+  .register {
+    width: 85%;
+  }
+
+  .form {
+    margin: 0;
+    padding: 0;
+  }
+
+  .frmValidation {
+    font-size: 0.8rem;
+  }
+
+  // .modal {
+  //   width: 60%;
+  // }
 }
 </style>

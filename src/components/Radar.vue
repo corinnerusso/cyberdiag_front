@@ -2,10 +2,8 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="radar" :height="700" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="radar" :options="chartOptions" :series="series"></apexchart>
     </div>
-    <br />
-    <br />
   </div>
 </template>
 
@@ -35,16 +33,6 @@ export default {
       ],
 
       chartOptions: {
-        chart: {
-          height: 50,
-          type: "radar",
-          dropShadow: {
-            enabled: true,
-            blur: 2,
-            left: 2,
-            top: 2
-          }
-        },
         legend: {
           show: true,
           position: "top"
@@ -77,7 +65,37 @@ export default {
             enabled: true,
             borderRadius: 2
           }
-        }
+        },
+        responsive: [
+          {
+            breakpoint: 640,
+            options: {
+              legend: {
+                fontSize: "10px"
+              },
+              chart: {
+                height: 300
+              },
+              xaxis: {
+                labels: {
+                  show: true,
+                  style: {
+                    fontSize: "0.7rem"
+                  },
+                  offsetY: -10
+                }
+              }
+            },
+
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: "0.4rem"
+                }
+              }
+            }
+          }
+        ]
       }
     };
   },
@@ -119,6 +137,5 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+
 

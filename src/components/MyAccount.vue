@@ -18,7 +18,12 @@
                       <v-text-field v-model="editedItem.firstname" label="Prénom"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="40">
-                      <v-text-field v-model="editedItem.phone_number" label="N° tel"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.phone_number"
+                        label="N° tel"
+                        maxlength="10"
+                        counter
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="40">
                       <v-text-field v-model="editedItem.email" label="email"></v-text-field>

@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <Navbar v-if="showIt" />
-
     <router-view></router-view>
     <Footer />
   </v-app>
