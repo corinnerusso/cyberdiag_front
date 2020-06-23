@@ -65,9 +65,7 @@ export default {
           })
           .then(
             response => {
-              console.log("response.data", response.data);
               let is_admin = response.data.user.user.is_admin;
-              // let connected = response.data.user.user.connected;
 
               localStorage.setItem("user", JSON.stringify(response.data.user));
               localStorage.setItem("jwt", response.data.token);
@@ -172,7 +170,7 @@ export default {
   }
   .box {
     width: 80%;
-    height: 60%;
+    height: 70%;
   }
 }
 </style>

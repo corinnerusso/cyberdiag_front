@@ -29,7 +29,7 @@ For now, the function is half usable because it wil not send a real email, but y
 ### User dashbaord
 When a user is connected, he has an access to the homepage which is a dashboard with all the surveys he has filled (or nothing for the first connection).
 
-To create a new survey, he has to click on the button "Nouveau questionnaire", which opens a new modal. Then he cas to fill the different fields and register.
+To create a new survey, he has to click on the button "Nouveau questionnaire", which opens a new modal. Then he has to fill the different fields and register.
 He will see the new survey title on his dashboard.
 ![Create a new survey](Screenshots/NewSurvey.png)
 
@@ -42,6 +42,11 @@ The Actions column functions :
 - Break arrow : see charts page
 - Wrench : change some details of the survey (title, client name, creation date, type of company)
 - Trash : delete a survey and results
+
+
+For the moment, only 2 types of companies have a survey model:
+- TPE : the survey is good
+- PME : the survey is fake (it allows to test the application)
 
 ### Admin dashboard
 
@@ -109,7 +114,7 @@ II - NEXT FEATURES POSSIBLE
 ## Next possible features 
 ### As a user :
 - Profile page : change password
-- Charts page : send charts by email
+- Charts page : send charts by email 
 - Survey page : show question numbers corresponding to the topics
 - About page to complete
 
@@ -118,10 +123,11 @@ II - NEXT FEATURES POSSIBLE
 
 
 ### For all the app
-- Insert responsive css
+- Perfect responsive css - responsivity for charts is not good
 - Insert logo cleanly in navbar
 - Insert tests
 - Add Night Mode
+
 
 
 ## TECH

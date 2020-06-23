@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-app-bar app color="primary">
+      <!-- If the user is connected, the logo and text CYBERDIAG displays homepage
+      -->
       <div v-if="connectedUser" class="d-flex align-center">
-        <router-link to="/home" class="home_router_link">
+        <router-link to="/home" class="home_router_link_logo">
           <v-img
             :src="require('../assets/Logo-triangle.png')"
             contain
@@ -12,11 +14,11 @@
           />
         </router-link>
 
-        <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
+        <router-link to="/home" class="home_router_link2">CYBERDIAG</router-link>
       </div>
-
+      <!-- If the user is not connected, it displays login page -->
       <div v-else class="d-flex align-center">
-        <router-link to="/" class="home_router_link">
+        <router-link to="/" class="home_router_link_logo">
           <v-img
             :src="require('../assets/Logo-triangle.png')"
             contain
@@ -26,14 +28,14 @@
           />
         </router-link>
 
-        <router-link to="/" class="home_router_link">CYBERDIAG</router-link>
+        <router-link to="/" class="home_router_link2">CYBERDIAG</router-link>
       </div>
 
       <v-spacer></v-spacer>
-
+      <!-- User menu -->
       <v-menu v-if="connectedUser" offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">{{myProfile}} ▼</v-btn>
+          <v-btn class="navbar_menu" v-on="on">{{myProfile}} ▼</v-btn>
         </template>
         <v-list>
           <v-list-item :to="`/account`">Mon compte</v-list-item>
@@ -137,13 +139,21 @@ export default {
 </script>
 
 <style scoped>
+/* NAVBAR BACKGROUND */
 .v-application .primary {
   background-image: url("../assets/plex-bleu.jpg") !important;
   color: white;
 }
 
-/* CYBERDIAG BACK HOME */
-.home_router_link {
+/* CYBERDIAG LOGO AND TEXT */
+.home_router_link_logo {
+  text-decoration: none;
+  color: white;
+  font-size: 2rem;
+  padding-left: 1vw;
+}
+
+.home_router_link2 {
   text-decoration: none;
   color: white;
   font-size: 2rem;
@@ -152,5 +162,16 @@ export default {
 
 .connect_router_link {
   text-decoration: none !important;
+}
+
+.navbar_menu {
+  color: #263a74 !important;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 640px) {
+  .home_router_link2 {
+    display: none;
+  }
 }
 </style>

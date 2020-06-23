@@ -193,7 +193,6 @@ export default {
         topic_max_quote
       };
       this.finalArray[questionId] = finalAnswer;
-      console.log(this.finalArray);
     },
 
     //********** SUBMIT BUTTON FUNCTIONS ****************//

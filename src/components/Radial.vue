@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{allLabels}}
     <div>
       <apexchart type="radialBar" height="390" :options="chartOptions" :series="series"></apexchart>
     </div>
@@ -23,12 +22,6 @@ export default {
 
       chartOptions: {
         labels: [],
-
-        //chart
-        chart: {
-          height: 390,
-          type: "radialBar"
-        },
 
         //plotOptions
         plotOptions: {
@@ -77,12 +70,18 @@ export default {
             vertical: 3
           }
         },
+
+        //responsive
         responsive: [
           {
-            breakpoint: 480,
+            breakpoint: 640,
             options: {
               legend: {
-                show: false
+                position: "left-top",
+                fontSize: "10px"
+              },
+              chart: {
+                height: 300
               }
             }
           }
