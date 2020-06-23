@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="primary">
-      <div class="d-flex align-center">
+      <div v-if="connectedUser" class="d-flex align-center">
         <router-link to="/home" class="home_router_link">
           <v-img
             :src="require('../assets/Logo-triangle.png')"
@@ -15,9 +15,23 @@
         <router-link to="/home" class="home_router_link">CYBERDIAG</router-link>
       </div>
 
+      <div v-else class="d-flex align-center">
+        <router-link to="/" class="home_router_link">
+          <v-img
+            :src="require('../assets/Logo-triangle.png')"
+            contain
+            height="400"
+            transition="scale-transition"
+            width="80"
+          />
+        </router-link>
+
+        <router-link to="/" class="home_router_link">CYBERDIAG</router-link>
+      </div>
+
       <v-spacer></v-spacer>
 
-      <v-menu v-if="infos" offset-y>
+      <v-menu v-if="connectedUser" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">{{myProfile}} ▼</v-btn>
         </template>
@@ -39,10 +53,9 @@ export default {
   data: () => ({
     myProfile: "",
     role: "",
-    infos: "",
+    connectedUser: "",
     isConnected: true,
-    isUserId: "",
-    test: ""
+    isUserId: ""
   }),
 
   computed: {
@@ -81,7 +94,7 @@ export default {
       axios
         .get(`http://localhost:3005/users/` + this.isUserId)
         .then(response => {
-          this.infos = response.data.connected;
+          this.connectedUser = response.data.connected;
         });
     },
 

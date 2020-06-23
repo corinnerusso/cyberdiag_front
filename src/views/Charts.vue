@@ -55,15 +55,14 @@ export default {
       chartDatas: []
     };
   },
-
+  created() {
+    this.getDatasForCharts();
+  },
   beforeMount() {
     this.getDatasForCharts();
   },
 
   mounted() {
-    this.getDatasForCharts;
-  },
-  updated() {
     this.getDatasForCharts;
   },
 
