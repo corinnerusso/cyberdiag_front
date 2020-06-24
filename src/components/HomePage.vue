@@ -196,6 +196,7 @@ export default {
   },
   beforeMount() {
     this.retrieveAllSurveys();
+    this.userConnection();
   },
 
   updated() {
