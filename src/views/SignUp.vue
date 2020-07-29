@@ -12,6 +12,7 @@
             ref="firstname"
             v-model="firstname"
             :error-messages="errorMessages"
+            :rules="generalRules"
             label="Prénom"
             required
           ></v-text-field>
@@ -21,6 +22,7 @@
             ref="lastname"
             v-model="lastname"
             :error-messages="errorMessages"
+            :rules="generalRules"
             label="Nom"
             required
           ></v-text-field>
@@ -30,6 +32,7 @@
             ref="cieName"
             v-model="cieName"
             :error-messages="errorMessages"
+            :rules="generalRules"
             label="Nom de l'entreprise"
             required
           ></v-text-field>
@@ -50,6 +53,7 @@
             ref="email"
             v-model="email"
             :error-messages="errorMessages"
+            :rules="emailRules"
             label="Email"
             required
           ></v-text-field>
@@ -167,8 +171,16 @@ export default {
   data: () => ({
     firstname: "",
     lastname: "",
-    email: "",
     cieName: "",
+    generalRules: [
+ v => !!v || 'Ce champ est requis'
+    ],
+    email: "",
+    emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'Ce champ doit avoir un format valide',
+      ],
+    
     phoneNumber: "",
     password: "",
     password_confirmation: "",
@@ -361,8 +373,6 @@ export default {
     font-size: 0.8rem;
   }
 
-  // .modal {
-  //   width: 60%;
-  // }
+  
 }
 </style>
