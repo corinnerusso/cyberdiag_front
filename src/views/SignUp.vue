@@ -11,7 +11,6 @@
           <v-text-field
             ref="firstname"
             v-model="firstname"
-            :error-messages="errorMessages"
             :rules="generalRules"
             label="Prénom"
             required
@@ -21,7 +20,6 @@
           <v-text-field
             ref="lastname"
             v-model="lastname"
-            :error-messages="errorMessages"
             :rules="generalRules"
             label="Nom"
             required
@@ -31,7 +29,6 @@
           <v-text-field
             ref="cieName"
             v-model="cieName"
-            :error-messages="errorMessages"
             :rules="generalRules"
             label="Nom de l'entreprise"
             required
@@ -41,7 +38,6 @@
           <v-text-field
             ref="phoneNumber"
             v-model="phoneNumber"
-            :error-messages="errorMessages"
             label="N° de téléphone"
             maxlength="10"
             counter
@@ -52,7 +48,6 @@
           <v-text-field
             ref="email"
             v-model="email"
-            :error-messages="errorMessages"
             :rules="emailRules"
             label="Email"
             required
@@ -142,7 +137,7 @@
               </v-card-actions>
             </v-card>
 
-            <!-- *** -->
+            <!-- MODAL IF THE 2 PASSWORDS ARE DIFFERENT -->
 
             <v-card class="modal" v-if="samePassword==false">
               <v-card-title class="headline grey lighten-2" primary-title>ERREUR</v-card-title>
@@ -173,7 +168,7 @@ export default {
     lastname: "",
     cieName: "",
     generalRules: [
- v => !!v || 'Ce champ est requis'
+        v => !!v || 'Ce champ est requis'
     ],
     email: "",
     emailRules: [
@@ -189,7 +184,6 @@ export default {
 
     disabled: true,
     samePassword: null,
-    errorMessages: "",
     errors: [],
 
     has_number: false,
@@ -215,12 +209,7 @@ export default {
     }
   },
 
-  //check if something is written in the form fields
-  watch: {
-    name() {
-      this.errorMessages = "";
-    }
-  },
+ 
 
   //set the date to insert in database
   mounted() {
@@ -277,18 +266,11 @@ export default {
 
     //check if the 2 passwords are the same
     checkPasswords(password, password_confirmation) {
-      if (password.length !== password_confirmation) {
+      if (password.length !== password_confirmation.length) {
         this.samePassword = false;
       }
-      let newPassword = password
-        .split("")
-        .sort()
-        .join("");
-      let newPasswordConfirmation = password_confirmation
-        .split("")
-        .sort()
-        .join("");
-      if (newPassword === newPasswordConfirmation) {
+     
+      if (password === password_confirmation) {
         this.samePassword = true;
       } else {
         this.samePassword = false;
