@@ -16,7 +16,7 @@
       <div v-for="(currentSurvey, index) in userSurvey.company.models" v-bind:key="index">
         <v-row align="center">
           <v-expansion-panels :popout="popout" :tile="tile">
-            <!-- 3rd loop to access topics -->
+            <!-- 2nd loop to access topics -->
             <v-expansion-panel
               v-for="(surveyTopic, index) in currentSurvey.topics"
               v-bind:key="index"
@@ -24,8 +24,9 @@
               <v-expansion-panel-header style="color:#162967">
                 {{ surveyTopic.topic_title }}
                 <div class="topic_questions">
-                  <p style="padding-left:10px">Questions n°</p>
+                  <p class="question_numbers" style="padding-left:10px">Questions n°</p>
                   <p
+                  class="question_numbers"
                     style="padding-left:10px"
                     v-for="(surveyQuestion, index) in surveyTopic.questions"
                     v-bind:key="index"
@@ -33,7 +34,7 @@
                 </div>
               </v-expansion-panel-header>
 
-              <!-- 4th loop to access questions -->
+              <!-- 3rd loop to access questions -->
               <v-expansion-panel-content
                 v-for="(surveyQuestion, index) in surveyTopic.questions"
                 v-bind:key="index"
@@ -44,7 +45,7 @@
                     {{ surveyQuestion.question_title }}
                   </p>
                   <p style="font-style:italic">{{ surveyQuestion.comments }}</p>
-                  <!-- 5th loop to access answers -->
+                  <!-- 4th loop to access answers -->
 
                   <div v-for="(surveyAnswer, index) in surveyQuestion.answers" :key="index">
                     <input
@@ -81,7 +82,13 @@
               color="#162967"
               dark
               v-on="on"
-              @click="(questionIsChecked(),showIds(),compareArrays(allQuestionsNumbers, checkedQuestionsNumbers), showModal(),finalSubmit(),showChart(),closeModal(), userHasSurvey())"
+              @click="(questionIsChecked(),
+              showIds(),
+              compareArrays(allQuestionsNumbers, checkedQuestionsNumbers), 
+              showModal(),
+              finalSubmit(),
+              showChart(),closeModal(), 
+              userHasSurvey())"
             >Soumettre</v-btn>
           </template>
           <!-- modal -->
@@ -380,5 +387,13 @@ label {
   font-size: 1.4em;
   margin: 2%;
   padding: 2% !important;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 640px) {
+  .question_numbers {
+    display: none;
+   
+  }  
 }
 </style>
