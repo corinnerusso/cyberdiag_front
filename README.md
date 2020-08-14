@@ -115,7 +115,6 @@ II - NEXT FEATURES POSSIBLE
 ### As a user :
 - Profile page : change password
 - Charts page : send charts by email 
-- Survey page : show question numbers corresponding to the topics
 - About page to complete
 
 ### As an admin :
@@ -125,7 +124,7 @@ II - NEXT FEATURES POSSIBLE
 ### For all the app
 - Perfect responsive css - responsivity for charts is not good
 - Insert logo cleanly in navbar
-- Insert tests
+- Insert more tests
 - Add Night Mode
 
 
@@ -136,6 +135,7 @@ Cyberdiag uses a number of open source projects to work properly :
  - [VueCli](https://cli.vuejs.org/)
  - [Vuetify](https://vuetifyjs.com/en/) 
  - [ApexCharts](https://apexcharts.com/) (to create charts)
+ - [Jest](https://jestjs.io/)(to test the app)
 
 
 ### INSTALLATION AND RUN
@@ -157,6 +157,10 @@ npm run build
 ### Lints and fixes files
 ```
 npm run lint
+```
+### Test the application
+```
+npm run test:unit"
 ```
 
 ### Customize configuration
