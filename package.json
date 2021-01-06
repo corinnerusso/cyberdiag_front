@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "apexcharts": "^3.19.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "eslint": "^7.1.0",
     "material-design-icons": "^3.0.1",
